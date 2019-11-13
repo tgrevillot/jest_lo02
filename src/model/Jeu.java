@@ -20,14 +20,7 @@ public class Jeu {
 	private ArrayList<Joueur> joueurs;
 	
 	
-	
-	
-	
-	
-	
 	public Jeu(int nbJoueurs,int nbHumains, int difficulte) {
-		
-		
 		//on créée le deck de cartes
 		this.deck = new LinkedList<Carte>();
 		
@@ -47,9 +40,6 @@ public class Jeu {
 		
 		
 	}
-	
-	
-	
 	
 	private void attribuerTrophee(Trophee t) {
 		throw new Error("A COMPLETER");
@@ -81,12 +71,12 @@ public class Jeu {
 	
 	public static void main(String[] args) {
 		//On Lance la partie 
-		
 		Scanner scan = new Scanner(System.in);
+		String lineSeparator = System.getProperty("line.separator");
 		
 
 		System.out.println("Bienvenue dans le Jest !");
-		System.out.println("Suivez les instructions suivantes pour configurer la partie et pouvoir jouer \n\n");
+		System.out.println("Suivez les instructions suivantes pour configurer la partie et pouvoir jouer" + lineSeparator);
 		
 		//choix du nombre de joueurs	
 			System.out.println("Veuillez entrer le nombre de joueurs (3 ou 4) : ");
@@ -96,7 +86,7 @@ public class Jeu {
 				System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
 				nbJoueurs = scan.nextInt();
 			}
-			System.out.println("Vous avez choisi "+nbJoueurs+" joueurs \n");
+			System.out.println("Vous avez choisi "+nbJoueurs+" joueurs " + lineSeparator);
 		
 		//choix du nombre de joueur humains
 			System.out.println("Veuillez entrer le nombre de joueurs humains (entre 1 et "+nbJoueurs+" inclus) : ");
@@ -106,7 +96,7 @@ public class Jeu {
 				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
 				nbHumains = scan.nextInt();
 			}
-			System.out.println("Il y aura donc "+nbHumains+" joueurs humains \n");
+			System.out.println("Il y aura donc "+nbHumains+" joueurs humains " + lineSeparator);
 		
 		int difficulte = 0;
 		//Choix de la difficulté 	
@@ -119,15 +109,13 @@ public class Jeu {
 					System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
 					difficulte = scan.nextInt();
 				}
-				System.out.println("Le niveau est donc reglé sur "+difficulte+" \n");
+				System.out.println("Le niveau est donc reglé sur "+difficulte+ lineSeparator);
 			} else {
 				System.out.println("Il n'y a pas d'IA dans cette partie");
 			}
 		
-		Jeu j = new Jeu(nbJoueurs,nbHumains,difficulte);
-		
-		
-		
+		new Jeu(nbJoueurs,nbHumains,difficulte);
+		scan.close();
 	}
 	
 	

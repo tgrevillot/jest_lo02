@@ -4,26 +4,32 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Joueur implements Compteur {
-	/**indique si le joueur a déja joué pendant ce tour
+	/**
+	 * Indique si le joueur a déja joué pendant ce tour
 	 * par défaut a false 
 	 */
 	private boolean aJoue;
 	
-	/**La liste des cartes présentes dans la main du joueur pendant un tour précis
+	/**
+	 * La liste des cartes présentes dans la main du joueur pendant un tour précis
 	 * Par défaut vide. Contient 0, 1 ou 2 cartes selon le moment.
 	 */
 	private ArrayList<Carte> main;
 	
-	/**Correspond au jest du joueur, un ensemble de cartes qui lui sont propre
+	/**
+	 * Correspond au jest du joueur, un ensemble de cartes qui lui sont propre
 	 * Selon les règles officielles, il peut contenir entre 0 et 7 cartes selon le type et l'avancée de la partie.
 	 */
 	private HashSet<Carte> jest;
 	
+	/**
+	 * 
+	 */
+	private IAStrategie strat;
 	
-	//TODO la stratégie de quel type ????
 	
-	
-	/** Chaîne de caractère représentant le pseudonyme du joueur affiché en jeu.
+	/** 
+	 * Chaîne de caractère représentant le pseudonyme du joueur affiché en jeu.
 	 * Les Ia seront nommées de la sorte : strategie_id (où l'id est unique de 0 jusqu'à 3)
 	 */
 	private String nom;
