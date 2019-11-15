@@ -13,11 +13,18 @@ public abstract class Carte {
 	 */
 	private boolean cache;
 	
+	/**
+	 * C'est l'attribut qui indique quelle est la condition pour obtenir cette carte
+	 * Il sera a null pour toute carte n'étant pas un trophé 
+	 */
+	private Condition condition;
+	
+	
 	
 	/**Constructeur des Carte
 	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
-	 * 		Expliquer ici aussi à quoi sert le paramètre
+	 * 		Ce paramètre permet de donner la valeu souhaitée a la carte 
 	 */
 	public Carte(int val) {
 		this.valeur=val;

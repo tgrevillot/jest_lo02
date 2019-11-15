@@ -20,7 +20,10 @@ public class Jeu {
 	private ArrayList<Joueur> joueurs;
 	
 	
-	public Jeu(int nbJoueurs,int nbHumains, int difficulte) {
+	private Trophee[] trophees;
+	
+	
+	public Jeu(int nbJoueurs,int nbHumains, int difficulte, String[] tabPseudos) {
 		//on créée le deck de cartes
 		this.deck = new LinkedList<Carte>();
 		
@@ -31,13 +34,32 @@ public class Jeu {
 			this.deck.add(new Pique(i));
 			this.deck.add(new Trefle(i));
 		}
-		
+		//on mélange le deck
+		Collections.shuffle(this.deck);
 		
 		//On initialise maintenant les joueurs 
-		this.joueurs = new ArrayList<Joueur>();
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		//on ajoute nbJoueurs joueurs
+		// on ajoute d'abbord nbHumains Humains
+		for (int j=0 ; j<nbHumains ; j++) {
+			joueurs.add(new Joueur(tabPseudos[j],0));
+		}
+		//les joueurs restants sont des IA
+		for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
+			joueurs.add(new Joueur(""+k,difficulte));
+		}
+		this.joueurs= joueurs;
+		//on choisi le(s) trophé(s)
 		
-		//TODO FAIRE LA CREATION DES JOUEURS 
-		
+		/*                  	      WIP 
+		 * 		TODO Voir de quelle manière on doit instancier trophées et conditions
+		 * 
+		Carte carteTrophee1 =  deck.pop();
+		// s'il y a 4 joueurs on rajoute un deuxièeme trophée
+		if (nbJoueurs==3) {
+			
+		}
+		*/
 		
 	}
 	
@@ -113,8 +135,21 @@ public class Jeu {
 			} else {
 				System.out.println("Il n'y a pas d'IA dans cette partie");
 			}
+		//On demande le(s) pseudo(s) a l'utilisateur 
+			String[] tableauPseudos = {"J1","J2","J3","J4"};
+			//on regarde le nombre d'humains
+			if (nbHumains==1) {
+				System.out.println("Vous allez maintenant devoir entrer votre pseudo");
+			} else {
+				System.out.println("Vous allez maintenant devoir entrer les pseudos des joueurs humains");
+			}
+			//on demande nbHumains pseudos
+			for (int i=0; i<nbHumains;i++) {
+				System.out.println("Veuillez entrer le pseudo du joueur "+ (i+1));
+				tableauPseudos[i]= scan.next();
+			}
 		
-		new Jeu(nbJoueurs,nbHumains,difficulte);
+		new Jeu(nbJoueurs,nbHumains,difficulte, tableauPseudos);
 		scan.close();
 	}
 	

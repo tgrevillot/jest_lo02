@@ -30,15 +30,36 @@ public class Joueur implements Compteur {
 	
 	/** 
 	 * Chaîne de caractère représentant le pseudonyme du joueur affiché en jeu.
-	 * Les Ia seront nommées de la sorte : strategie_id (où l'id est unique de 0 jusqu'à 3)
+	 * Les Ia seront nommées de la sorte : strategie_id (où l'id est unique de 1 jusqu'à 3)
 	 */
 	private String nom;
 	
-	public Joueur(String pseudo) {
+	public Joueur(String pseudo, int iaType) {
 		this.aJoue=false;
 		this.main = new ArrayList<Carte>();
 		this.jest = new HashSet<Carte>();
-		this.nom = pseudo;
+		
+		//on associe le type de comportement selon l'entier iaType
+		// De même on associe pseudo aux reel et strategie_pseudo (ou pseudo est un chiffre) aux IA 
+		switch (iaType) {
+			case 0 :
+				this.nom = pseudo;
+				this.strat= new Reel();
+				break;
+			case 1 :
+				this.nom = "Random_"+pseudo;
+				this.strat= new Random();
+				break;
+			case 2 :
+				this.nom = "Basique_"+pseudo;
+				this.strat= new Basique();
+				break;
+			default :
+				this.nom = pseudo;
+				this.strat= new Reel() ;
+				break;
+		}
+		
 	}
 	
 	@Override
