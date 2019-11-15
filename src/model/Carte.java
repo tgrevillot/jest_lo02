@@ -5,7 +5,7 @@ public abstract class Carte {
 	 * La valeur de la carte est le chiffre qui lui est associé
 	 * Les valeurs vont de 1 à 5. Par défaut les As valent 1 et le Joker 4 
 	 */
-	private int valeur;
+	protected int valeur;
 	
 	/**
 	 * Cet attribut indique si la carte est face cachée où non, i.e si n'importe quel joueur peut la voir une fois sur le plateau.
@@ -32,5 +32,27 @@ public abstract class Carte {
 	}
 	
 	public abstract void opererScore();
-
+	/**
+	 * afficher sert a afficher les cartes sous une jolie forme
+	 * TODO rajouter un moyen de differencier si elle est cachée ou pas
+	 * @return
+	 * Cela renvois un String expliquant en Français quelle est la carte en question
+	 */
+	public abstract String afficher();
+	
+	
+	/**
+	 * Setter pour cacher une carte
+	 */
+	public void cacherCarte() {
+		this.cache = true;
+	}
+	
+	/**
+	 * Setter pour "dé-cacher" une carte
+	 *  
+	 */
+	public void antiCacherCarte() {
+		this.cache = false;
+	}
 }

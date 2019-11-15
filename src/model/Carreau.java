@@ -17,6 +17,13 @@ public class Carreau extends Carte {
 
 	}
 	
+	public String afficher() {
+		if (this.valeur==1) {
+			return "AS de Carreau" ;
+		} else {
+			return (this.valeur+" de Carreau");
+		}
+	}
 	
 	
 

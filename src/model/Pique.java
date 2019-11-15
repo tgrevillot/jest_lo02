@@ -14,4 +14,12 @@ public class Pique extends Carte {
 		
 	}
 	
+	
+	public String afficher() {
+		if (this.valeur==1) {
+			return "AS de Pique" ;
+		} else {
+			return (this.valeur+" de Pique");
+		}
+	}
 }

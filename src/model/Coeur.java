@@ -15,5 +15,11 @@ public class Coeur extends Carte {
 		// TODO Auto-generated method stub
 
 	}
-
+	public String afficher() {
+		if (this.valeur==1) {
+			return "AS de Coeur" ;
+		} else {
+			return (this.valeur+" de Coeur");
+		}
+	}
 }

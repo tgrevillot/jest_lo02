@@ -9,17 +9,22 @@ import java.util.Scanner;
 
 public class Jeu {
 	
-	/** Le deck est l'ensemble des cartes jouables du jeu. Il comporte 17 cartes différentes au départ. 
+	/** 
+	 * Le deck est l'ensemble des cartes jouables du jeu. Il comporte 17 cartes différentes au départ. 
 	 * Il contient un ensemble vide, partiel ou total des cartes disponibles sans redondance.
 	 */
 	private LinkedList<Carte> deck;
 	
-	/** joueurs est la liste des joueurs présents dans la partie.
+	/** 
+	 * joueurs est la liste des joueurs présents dans la partie.
 	 * Cette liste contient 3 ou 4 Joueurs 
 	 */
 	private ArrayList<Joueur> joueurs;
 	
-	
+	/**
+	 * Trophee est le tableau de trophee du jeu 
+	 * Ce tableau contient 1 [resp. 2] trophee pour 4 [resp. 3] joueurs
+	 */
 	private Trophee[] trophees;
 	
 	
@@ -51,13 +56,20 @@ public class Jeu {
 		this.joueurs= joueurs;
 		//on choisi le(s) trophé(s)
 		
-		/*                  	      WIP 
-		 * 		TODO Voir de quelle manière on doit instancier trophées et conditions
-		 * 
+		/*
 		Carte carteTrophee1 =  deck.pop();
-		// s'il y a 4 joueurs on rajoute un deuxièeme trophée
+
+		// TODO Faire en sorte que cela créé le bon trophé : trophee2
+		
+		// s'il y a 3 joueurs on rajoute un deuxièeme trophée
 		if (nbJoueurs==3) {
-			
+			Carte carteTrophee2 =  deck.pop();
+			// TODO Faire en sorte que cela créé le bon trophé : trophee2
+			Trophee[] trophees = {trophee1,trophee2};
+			this.trophees = trophees;
+		}else {
+			Trophee[] trophees = {trophee1};
+			this.trophees= trophees;
 		}
 		*/
 		

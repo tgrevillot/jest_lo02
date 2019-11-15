@@ -13,5 +13,11 @@ public class Trefle extends Carte {
 	public void opererScore() {
 		
 	}
-	
+	public String afficher() {
+		if (this.valeur==1) {
+			return "AS de Trefle" ;
+		} else {
+			return (this.valeur+" de Trefle");
+		}
+	}
 }
