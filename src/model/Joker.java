@@ -15,4 +15,10 @@ public class Joker extends Carte {
 
 	}
 
+	@Override
+	public String afficher() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

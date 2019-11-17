@@ -29,9 +29,22 @@ public class Jeu {
 	
 	
 	public Jeu(int nbJoueurs,int nbHumains, int difficulte, String[] tabPseudos) {
-		//on créée le deck de cartes
+		initialiser();		
+		ajouterJoueurs(nbHumains, nbJoueurs, tabPseudos, difficulte);
+		creerTrophees();
+	}
+	
+	private void initialiser() {
+		remplirPaquet();
+	}
+	
+	/**
+	 * Cree les cartes et remplis le paquet avec
+	 */
+	private void remplirPaquet() {
+		//on créé et on remplit le deck de cartes
 		this.deck = new LinkedList<Carte>();
-		
+				
 		this.deck.add(new Joker());
 		for (int i = 1; i<5; i++) {
 			this.deck.add(new Carreau(i));
@@ -40,22 +53,40 @@ public class Jeu {
 			this.deck.add(new Trefle(i));
 		}
 		//on mélange le deck
-		Collections.shuffle(this.deck);
-		
+		Collections.shuffle(this.deck);			
+	}
+	
+	/**
+	 * Cree les joueurs en fonction des parametres d'entrees
+	 * @param nbHumains
+	 * 		Nombre de joueurs reels allant s'affronter
+	 * @param nbJoueurs
+	 * 		Nombre de joueurs total, bots compris
+	 * @param tabPseudos
+	 * 		Tableaux contenant l'ensemble des pseudos
+	 * @param difficulte
+	 * 		Franchement je sais pas pourquoi t'as mis une difficulte
+	 */
+	private void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte) {
 		//On initialise maintenant les joueurs 
-		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
-		//on ajoute nbJoueurs joueurs
-		// on ajoute d'abbord nbHumains Humains
-		for (int j=0 ; j<nbHumains ; j++) {
-			joueurs.add(new Joueur(tabPseudos[j],0));
-		}
-		//les joueurs restants sont des IA
-		for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
-			joueurs.add(new Joueur(""+k,difficulte));
-		}
-		this.joueurs= joueurs;
-		//on choisi le(s) trophé(s)
-		
+				ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+				//on ajoute nbJoueurs joueurs
+				// on ajoute d'abbord nbHumains Humains
+				for (int j=0 ; j<nbHumains ; j++) {
+					joueurs.add(new Joueur(tabPseudos[j],0));
+				}
+				//les joueurs restants sont des IA
+				for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
+					joueurs.add(new Joueur(""+k,difficulte));
+				}
+				this.joueurs= joueurs;
+				//on choisi le(s) trophé(s)
+	}
+	
+	/**
+	 * Cree le trophee a utiliser durant la partie
+	 */
+	private void creerTrophees() {
 		/*
 		Carte carteTrophee1 =  deck.pop();
 
@@ -72,7 +103,6 @@ public class Jeu {
 			this.trophees= trophees;
 		}
 		*/
-		
 	}
 	
 	private void attribuerTrophee(Trophee t) {

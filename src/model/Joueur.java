@@ -57,7 +57,7 @@ public class Joueur implements Compteur {
 				break;
 			default :
 				this.nom = pseudo;
-				this.strat= new Reel() ;
+				this.strat= new Reel();
 				break;
 		}
 		
