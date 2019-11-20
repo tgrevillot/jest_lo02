@@ -1,29 +1,90 @@
 package model;
 
-public class Trophee extends Carte {
+public class Trophee {
+	/**
+	 * La condition a remplir pour obtenir le trophee
+	 */
+	private Condition condition;
+	
+	/**
+	 * carte est la carte associée a la condition
+	 * C'est ce que l'on renverra dans l'attribution des trophees
+	 */
+	private Carte carte;
 	
 	
-	//TODO Voir de quelle manière on doit instancier trophées et conditions
+	public Trophee(Carte carte) {
+		
+		this.carte=carte;
+		if (this.carte instanceof Coeur) {
+			this.condition = Condition.detenteurJoker;
+		} else {
+			if (this.carte instanceof Carreau) {
+				this.conditionCarreau();
+			} else {
+				if (this.carte instanceof Trefle) {
+					this.conditionTrefle();
+				} else {
+					if (this.carte instanceof Pique) {
+						this.conditionPique();
+					} else {
+						if (this.carte instanceof Joker) {
+							this.condition=Condition.bestJest;
+						} else {
+							throw new Error("La carte en argument n'est pas instanciée en un sous-type de carte");
+						}
+					}
+				}
+			}
+		}
+	}
 	
-	public Trophee(int val) {
-		super(val);
-		// TODO Auto-generated constructor stub
+	
+	private void conditionCarreau() {
+		switch(this.carte.valeur) {
+		case 1 :
+			this.condition= Condition.plusDeCartes4;
+		case 2 :
+			this.condition= Condition.plusGrandCarreau;
+		case 3 :
+			this.condition= Condition.plusPetitCarreau;
+		case 4 :
+			this.condition= Condition.bestJestWithoutJoker;
+		}
+	}
+	private void conditionTrefle() {
+		switch(this.carte.valeur) {
+		case 1 :
+			this.condition= Condition.plusGrandPique;
+		case 2 :
+			this.condition= Condition.plusPetitCoeur;
+		case 3 :
+			this.condition= Condition.plusGrandCoeur;
+		case 4 :
+			this.condition= Condition.plusPetitPique;
+		}
+		
+	}
+	private void conditionPique() {
+		switch(this.carte.valeur) {
+		case 1 :
+			this.condition= Condition.plusGrandTrefle;
+		case 2 :
+			this.condition= Condition.plusDeCartes3;
+		case 3 :
+			this.condition= Condition.plusDeCartes2;
+		case 4 :
+			this.condition= Condition.plusPetitTrefle;
+		}
+		
 	}
 
-	@Override
-	public void opererScore() {
-		// TODO Auto-generated method stub
-
+	
+	public Condition getCondition() {
+		return this.condition;
 	}
 	
 	public String afficher() {
-		//TODO a terminer quand on saura comment marche vraiment les trophées
-		/*
-		if (this.valeur==1) {
-			return ("Trophee ...");
-		} else {
-			return (this.valeur+" ... ");
-		}*/
-		return "A IMPLEMENTER";
+		return "Trophee de type : " +this.carte.afficher() + " et condition : " +this.condition;
 	}
 }

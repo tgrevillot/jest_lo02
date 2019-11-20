@@ -81,43 +81,7 @@ public class Joueur implements Compteur {
 	 * S'il est une IA : une décision random
 	 */
 	public void choisirFaceCachee() {
-		throw new Error("A COMPLETER");
-		/*
-		Scanner scan = new Scanner(System.in);
-		ArrayList<Carte> main = this.main;
-		
-		
-		//TODO FAIRE LE SWITCH CASE AVEC LE COMPORTEMENT()
-		
-		
-		//_____CAS du joueur reel
-		System.out.println("Voici votre main : ");
-		System.out.println((main.get(0)).afficher() + " ET " + (main.get(1)).afficher()  );
-		System.out.println("Quelle carte voulez vous cacher dans votre offre ? (1 ou 2)");
-		int carteARetourner= Integer.parseInt(scan.next());
-		while (carteARetourner != 1 && carteARetourner != 2) {
-			System.out.println("Vous devez choisir 1 ou 2 :");
-			carteARetourner= Integer.parseInt(scan.next());
-		}
-		switch (carteARetourner) {
-		case 1 : 
-			this.main.get(0).cacherCarte();
-			System.out.println("Vous avez choisi de cacher la carte " + (this.main.get(0)).afficher());
-			break;
-		case 2 :
-			this.main.get(1).cacherCarte();
-			System.out.println("Vous avez choisi de cacher la carte " + (this.main.get(1)).afficher());
-			break;
-		}
-		
-		//_____CAS du joueur IA
-		//on utilise une décision random pour ce choix 
-		if (Math.random()<0.5) {
-			this.main.get(0).cacherCarte();
-		} else {
-			this.main.get(1).cacherCarte();
-		}
-		*/
+		this.strat.offre(this.main);
 	}
 	
 	public HashSet<Carte> consulterJest() {

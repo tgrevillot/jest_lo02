@@ -27,113 +27,8 @@ public class Jeu {
 	 */
 	private Trophee[] trophees;
 	
-	
-	public Jeu(int nbJoueurs,int nbHumains, int difficulte, String[] tabPseudos) {
-		initialiser();		
-		ajouterJoueurs(nbHumains, nbJoueurs, tabPseudos, difficulte);
-		creerTrophees();
-	}
-	
-	private void initialiser() {
-		remplirPaquet();
-	}
-	
-	/**
-	 * Cree les cartes et remplis le paquet avec
-	 */
-	private void remplirPaquet() {
-		//on créé et on remplit le deck de cartes
-		this.deck = new LinkedList<Carte>();
-				
-		this.deck.add(new Joker());
-		for (int i = 1; i<5; i++) {
-			this.deck.add(new Carreau(i));
-			this.deck.add(new Coeur(i));
-			this.deck.add(new Pique(i));
-			this.deck.add(new Trefle(i));
-		}
-		//on mélange le deck
-		Collections.shuffle(this.deck);			
-	}
-	
-	/**
-	 * Cree les joueurs en fonction des parametres d'entrees
-	 * @param nbHumains
-	 * 		Nombre de joueurs reels allant s'affronter
-	 * @param nbJoueurs
-	 * 		Nombre de joueurs total, bots compris
-	 * @param tabPseudos
-	 * 		Tableaux contenant l'ensemble des pseudos
-	 * @param difficulte
-	 * 		Franchement je sais pas pourquoi t'as mis une difficulte
-	 */
-	private void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte) {
-		//On initialise maintenant les joueurs 
-				ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
-				//on ajoute nbJoueurs joueurs
-				// on ajoute d'abbord nbHumains Humains
-				for (int j=0 ; j<nbHumains ; j++) {
-					joueurs.add(new Joueur(tabPseudos[j],0));
-				}
-				//les joueurs restants sont des IA
-				for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
-					joueurs.add(new Joueur(""+k,difficulte));
-				}
-				this.joueurs= joueurs;
-				//on choisi le(s) trophé(s)
-	}
-	
-	/**
-	 * Cree le trophee a utiliser durant la partie
-	 */
-	private void creerTrophees() {
-		/*
-		Carte carteTrophee1 =  deck.pop();
 
-		// TODO Faire en sorte que cela créé le bon trophé : trophee2
-		
-		// s'il y a 3 joueurs on rajoute un deuxièeme trophée
-		if (nbJoueurs==3) {
-			Carte carteTrophee2 =  deck.pop();
-			// TODO Faire en sorte que cela créé le bon trophé : trophee2
-			Trophee[] trophees = {trophee1,trophee2};
-			this.trophees = trophees;
-		}else {
-			Trophee[] trophees = {trophee1};
-			this.trophees= trophees;
-		}
-		*/
-	}
-	
-	private void attribuerTrophee(Trophee t) {
-		throw new Error("A COMPLETER");
-	}
-	
-	private int compterPoints() {
-		throw new Error("A COMPLETER");
-	}
-	
-	private void determinerTour(Joueur j) {
-		throw new Error("A COMPLETER");
-	}
-	
-	private Joueur determinerPlusGrand() {
-		throw new Error("A COMPLETER");
-	}
-
-	private Joueur determinerGagnant() {
-		throw new Error("A COMPLETER");
-	}
-	
-	public void faireUnTour(LinkedList<Carte> cartesRestantes) {
-		throw new Error("A COMPLETER");
-	}
-	
-	public LinkedList<Carte> recupererCartesRestantes() {
-		throw new Error("A COMPLETER");
-	}
-	
-	public static void main(String[] args) {
+	private Jeu() {
 		//On Lance la partie 
 		Scanner scan = new Scanner(System.in);
 		String lineSeparator = System.getProperty("line.separator");
@@ -191,8 +86,130 @@ public class Jeu {
 				tableauPseudos[i]= scan.next();
 			}
 		
-		new Jeu(nbJoueurs,nbHumains,difficulte, tableauPseudos);
+		remplirPaquet();
+		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
+		creerTrophees();
 		scan.close();
+	}
+	
+	/**
+	 * Cree les cartes et remplis le paquet avec
+	 */
+	private void remplirPaquet() {
+		//on créé et on remplit le deck de cartes
+		this.deck = new LinkedList<Carte>();
+		
+		for (int i = 1; i<5; i++) {
+			this.deck.add(new Carreau(i));
+			this.deck.add(new Coeur(i));
+			this.deck.add(new Pique(i));
+			this.deck.add(new Trefle(i));
+		}
+		this.deck.add(new Joker());
+		//on mélange le deck
+		Collections.shuffle(this.deck);	
+		
+	}
+	
+	/**
+	 * Cree les joueurs en fonction des parametres d'entrees
+	 * @param nbHumains
+	 * 		Nombre de joueurs reels allant s'affronter
+	 * @param nbJoueurs
+	 * 		Nombre de joueurs total, bots compris
+	 * @param tabPseudos
+	 * 		Tableaux contenant l'ensemble des pseudos
+	 * @param difficulte
+	 * 		Franchement je sais pas pourquoi t'as mis une difficulte
+	 */
+	private void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte) {
+		//On initialise maintenant les joueurs 
+				ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+				//on ajoute nbJoueurs joueurs
+				// on ajoute d'abbord nbHumains Humains
+				for (int j=0 ; j<nbHumains ; j++) {
+					joueurs.add(new Joueur(tabPseudos[j],0));
+				}
+				//les joueurs restants sont des IA
+				for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
+					joueurs.add(new Joueur(""+k,difficulte));
+				}
+				this.joueurs= joueurs;
+				//on choisi le(s) trophé(s)
+	}
+	
+	/**
+	 * Cree le trophee a utiliser durant la partie
+	 */
+	private void creerTrophees() {
+		
+		Carte carteTrophee1 =  this.deck.pop();
+		Trophee trophee1= new Trophee(carteTrophee1);
+		
+		// s'il y a 3 joueurs on rajoute un deuxièeme trophée
+		if (this.joueurs.size()==3) {
+			Carte carteTrophee2 =  this.deck.pop();
+			Trophee trophee2= new Trophee(carteTrophee2);
+			Trophee[] trophees = {trophee1,trophee2};
+			this.trophees = trophees; 
+		}else { //il y a 4 joueurs donc 1 seul trophee 
+			Trophee[] trophees = {trophee1};
+			this.trophees= trophees;
+		}
+	}
+	
+	private void attribuerTrophee(Trophee t) {
+		throw new Error("A COMPLETER");
+		/*
+		switch (t.getCondition()) {
+		case detenteurJoker :
+		case bestJest :
+		case plusPetitPique :
+		case plusPetitTrefle :
+		case plusPetitCarreau :
+		case plusPetitCoeur :
+		case plusGrandPique :
+		case plusGrandTrefle :
+		case plusGrandCarreau :
+		case plusGrandCoeur :
+		case bestJestWithoutJoker :
+		case plusDeCartes2 :
+		case plusDeCartes3 :
+		case plusDeCartes4 :
+		default : 
+			throw new Error("CE N'EST PAS UNE CONDITION VALIDE");
+		}*/
+	}
+
+	
+	private int compterPoints() {
+		throw new Error("A COMPLETER");
+	}
+	
+	private void determinerTour(Joueur j) {
+		throw new Error("A COMPLETER");
+	}
+	
+	private Joueur determinerPlusGrand() {
+		throw new Error("A COMPLETER");
+	}
+
+	private Joueur determinerGagnant() {
+		throw new Error("A COMPLETER");
+	}
+	
+	public void faireUnTour(LinkedList<Carte> cartesRestantes) {
+		throw new Error("A COMPLETER");
+	}
+	
+	public LinkedList<Carte> recupererCartesRestantes() {
+		throw new Error("A COMPLETER");
+	}
+	
+	public static void main(String[] args) {
+
+		new Jeu();
+
 	}
 	
 	

@@ -15,4 +15,7 @@ public enum Condition {
 	plusDeCartes2,
 	plusDeCartes3,
 	plusDeCartes4;
+	
+	
+	
 }
