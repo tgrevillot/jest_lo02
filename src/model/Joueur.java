@@ -128,7 +128,18 @@ public class Joueur implements Compteur {
 		throw new Error("A COMPLETER");
 	}
 	
+	public void accepterCarte(Carte c) {
+		if(c != null)
+			this.main.add(c);
+	}
+	
 	public int compterScore() {
 		throw new Error("A COMPLETER");
+	}
+	
+	public Carte getCarteRestante() {
+		if(this.main.size() == 1)
+			return this.main.get(0);
+		return null;
 	}
 }
