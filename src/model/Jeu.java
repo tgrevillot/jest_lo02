@@ -186,7 +186,7 @@ public class Jeu {
 		throw new Error("A COMPLETER");
 	}
 	
-	private void determinerTour(Joueur j) {
+	private Joueur determinerTour(Joueur j) {
 		throw new Error("A COMPLETER");
 	}
 	
@@ -199,7 +199,44 @@ public class Jeu {
 	}
 	
 	public void faireUnTour(LinkedList<Carte> cartesRestantes) {
-		throw new Error("A COMPLETER");
+		//On mélange les cartes restantes avec les cartes du deck
+		LinkedList<Carte> buffer = new LinkedList<Carte>();
+		
+		//On commence par ajouter 4 cartes depuis le deck dans le buffer
+		for(int i = 0; i < 4; i++)
+			buffer.add(this.deck.removeFirst());
+		
+		//Si les cartes ne sont pas vides
+		if(!cartesRestantes.isEmpty()) {
+			//On regroupe le buffer et les cartes restantes
+			buffer.addAll(cartesRestantes);
+			//On mélange le tout
+			Collections.shuffle(buffer);
+		} else {
+			//On repioche 4 cartes comme on se trouve en début de partie
+			for(int i = 0; i < 4; i++)
+				buffer.add(this.deck.removeFirst());
+		}
+			
+		//On distribue les cartes
+		for(int i = 0; i < 2; i++)
+			for(Joueur j : this.joueurs)
+				j.accepterCarte(buffer.removeFirst());
+			
+		//On détermine le tour de l'utilisateur
+		Joueur j = null;
+		for(int k = 0; k < this.joueurs.size(); k++) {
+			j = determinerTour(j);
+			
+			//Chaque joueur fait son offre
+			j.choisirFaceCachee();
+			//TODO APPELER LA METHODE prendreOffre()
+		}
+		
+		//On récupère les cartes restantes de chaque joueur
+		for(Joueur joueur : this.joueurs)
+			buffer.add(joueur.getCarteRestante());
+		throw new Error("Il manque la super méthode prendreOffre");
 	}
 	
 	public LinkedList<Carte> recupererCartesRestantes() {
