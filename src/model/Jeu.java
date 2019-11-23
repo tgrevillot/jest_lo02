@@ -162,7 +162,8 @@ public class Jeu {
 			Trophee[] trophees = {trophee1,trophee2};
 			this.trophees = trophees; 
 		}else { //il y a 4 joueurs donc 1 seul trophee 
-			this.trophees[0] = trophee1;
+			Trophee[] trophee = {trophee1};
+			this.trophees = trophee;
 		}
 		
 		
