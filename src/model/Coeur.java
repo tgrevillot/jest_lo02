@@ -2,12 +2,14 @@ package model;
 
 public class Coeur extends Carte {
 	
+	private final static int priority = 1;
+	
 	/**Constructeur des cartes Coeur 
 	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
 	 */
 	public Coeur(int val) {
-		super(val);
+		super(val, priority);
 	}
 	
 	@Override
@@ -16,10 +18,6 @@ public class Coeur extends Carte {
 
 	}
 	public String afficher() {
-		if (this.valeur==1) {
-			return "AS de Coeur" ;
-		} else {
-			return (this.valeur+" de Coeur");
-		}
+		return super.afficher() + "Coeur";
 	}
 }

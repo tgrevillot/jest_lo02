@@ -37,7 +37,7 @@ public class Joueur implements Compteur {
 	
 	public Joueur(String pseudo, int iaType) {
 		this.aJoue=false;
-		this.main = new ArrayList<Carte>();
+		this.main = new ArrayList<Carte>(2);
 		this.jest = new HashSet<Carte>();
 		
 		//on associe le type de comportement selon l'entier iaType
@@ -68,7 +68,10 @@ public class Joueur implements Compteur {
 		throw new Error("A COMPLETER");
 	}
 	
-	public void prendreOffre(Joueur j) {
+	public void prendreOffre() {
+		//J'ai changer la signature de la méthode pour pouvoir l'utiliser dans Jeu.
+		//L'idée ici c'est d'utiliser le patron stratégie pour savoir à quelle joueur on va prendre l'offre
+		//et quelle carte va être choisie. Hésites pas à changer les méthodes d'IAStratégie si besoin.
 		throw new Error("A COMPLETER");
 	}
 	
@@ -106,4 +109,25 @@ public class Joueur implements Compteur {
 			return this.main.get(0);
 		return null;
 	}
+
+	public Carte getVisibleCard() {
+		for(Carte c : this.main)
+			if(!c.isCacher())
+				return c;
+		
+		return null;
+	}
+	
+	public boolean aJoue() {
+		return aJoue;
+	}
+
+	public void vientDeJouer() {
+		this.aJoue = true;
+	}
+	
+	public void peutJouer() {
+		this.aJoue = false;
+	}
+
 }
