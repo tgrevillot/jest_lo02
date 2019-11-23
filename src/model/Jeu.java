@@ -13,6 +13,7 @@ import model.cards.Joker;
 import model.cards.Pique;
 import model.cards.Trefle;
 import model.cards.Trophee;
+import model.cards.Condition;
 import model.joueur.Joueur;
 
 public class Jeu {
@@ -170,26 +171,38 @@ public class Jeu {
 	}
 	
 	private void attribuerTrophee(Trophee t) {
-		throw new Error("A COMPLETER");
-		/*
 		switch (t.getCondition()) {
-		case detenteurJoker :
-		case bestJest :
-		case plusPetitPique :
-		case plusPetitTrefle :
-		case plusPetitCarreau :
-		case plusPetitCoeur :
-		case plusGrandPique :
-		case plusGrandTrefle :
-		case plusGrandCarreau :
-		case plusGrandCoeur :
-		case bestJestWithoutJoker :
-		case plusDeCartes2 :
-		case plusDeCartes3 :
-		case plusDeCartes4 :
-		default : 
-			throw new Error("CE N'EST PAS UNE CONDITION VALIDE");
-		}*/
+			case detenteurJoker:
+				Condition.detenteurJoker();
+			case bestJest:
+				Condition.bestJest();
+			case plusPetitPique:
+				Condition.plusPetitPique();
+			case plusPetitTrefle:
+				Condition.plusPetitTrefle();
+			case plusPetitCarreau:
+				Condition.plusPetitCarreau();
+			case plusPetitCoeur:
+				Condition.plusPetitCoeur();
+			case plusGrandPique:
+				Condition.plusGrandPique();
+			case plusGrandTrefle:
+				Condition.plusGrandTrefle();
+			case plusGrandCarreau:
+				Condition.plusGrandCarreau();
+			case plusGrandCoeur:
+				Condition.plusGrandCoeur();
+			case bestJestWithoutJoker:
+				Condition.bestJestWithoutJoker();
+			case plusDeCartes2:
+				Condition.plusDeCartes2();
+			case plusDeCartes3:
+				Condition.plusDeCartes3();
+			case plusDeCartes4:
+				Condition.plusDeCartes4();
+			default : 
+				throw new Error("CE N'EST PAS UNE CONDITION VALIDE");
+		}
 	}
 
 	
@@ -248,10 +261,12 @@ public class Jeu {
 	}
 
 	private Joueur determinerGagnant() {
-		throw new Error("A COMPLETER");
+		//attribuerTrophee();
+		compterPoints();
+		return null;
 	}
 	
-	public void faireUnTour(LinkedList<Carte> cartesRestantes) {
+	private void faireUnTour(LinkedList<Carte> cartesRestantes) {
 		//On mélange les cartes restantes avec les cartes du deck
 		LinkedList<Carte> buffer = new LinkedList<Carte>();
 		
@@ -278,23 +293,26 @@ public class Jeu {
 		
 		//Chacun choisie sa carte à mettre face cachée
 		//Place donc les cartes en mode defense ou attaque
+		Joueur ancienJ;
 		for(Joueur j : this.joueurs)
 			j.choisirFaceCachee();
 		//On détermine le tour de l'utilisateur
 		Joueur j = null;
 		for(int k = 0; k < this.joueurs.size(); k++) {
 			j = determinerTour(j);
-			ArrayList<Joueur> Ljoueurs = new ArrayList<Joueur>();
+			ArrayList<Joueur> lJoueurs = new ArrayList<Joueur>();
 			//on definit la liste de joueurs auxquels on peut prendre une carte
 			for (Joueur joueur : this.joueurs) {
 				if (joueur.tailleMain()==2 && joueur!=j) {
-					Ljoueurs.add(joueur);
+					lJoueurs.add(joueur);
 				}
 			}
 			
 			//Chaque joueur choisis une offre
-			j.prendreOffre(Ljoueurs);
-			j.vientDeJouer();
+			ancienJ = j;
+			j = ancienJ.prendreOffre(lJoueurs);
+			//On indique que ce joueur vient de jouer
+			ancienJ.vientDeJouer();
 		}
 		
 		//On vérifie s'il y a encore des cartes dans le deck
@@ -305,7 +323,10 @@ public class Jeu {
 	}
 	
 	private LinkedList<Carte> recupererCartesRestantes() {
-		throw new Error("A COMPLETER");
+		LinkedList<Carte> cartes = new LinkedList<Carte>();
+		for(Joueur j : this.joueurs)
+			cartes.add(j.getCarteRestante());
+		return cartes;
 	}
 	
 	public static void main(String[] args) {
