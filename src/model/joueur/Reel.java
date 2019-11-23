@@ -48,14 +48,15 @@ public class Reel implements IAStrategie {
 			System.out.println("Vous devez choisir entre 1 et "+i);
 			choixJoueur= Integer.parseInt(scan.next());
 		}
+		i--;
 		boolean cache;  // si le choix est pair c'est une carte cachee
-		if (i%choixJoueur==0) {
+		if (choixJoueur%2==0) {
 			cache= true;
 		}else {
 			cache=false;
 		}
-		
-		Carte cartePrise = joueurs.get(choixJoueur/2).prendreCarte(cache);
+		int JoueurAPrendre = (choixJoueur-1)/2;
+		Carte cartePrise = joueurs.get(JoueurAPrendre).prendreCarte(cache);
 		System.out.println("Vous avez pris la carte : "+ cartePrise.afficher());
 		return cartePrise; //on recupere la carte visible du joueur choisi
 		
