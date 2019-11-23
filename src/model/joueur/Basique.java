@@ -22,15 +22,26 @@ public class Basique implements IAStrategie {
 	 * @param joueurs 
 	 * la liste des joueurs disponibles
 	 */
-	public Carte choisir(ArrayList<Joueur> joueurs,String pseudo) {
+	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
+		Carte cartePrise;
+		Joueur joueurAPrendre;
+		if (joueurs.size()==0) { //CAS ou le joueur est le dernier et doit prendre ses propres cartes
+			joueurAPrendre = joueurJouant;
+		}else {// Cas ou il reste d'autres personnes avec des offres valides
 		int choixJoueur = (int) ((Math.random())*(joueurs.size())); // un int random entre 0 et nombre de joueurs-1 inclus
-
-		double choixCache = Math.round(Math.random());
-		if (choixCache==0) {
-			return joueurs.get(choixJoueur).prendreCarte(false); //on recupere la carte visible du joueur choisi
-		}else {
-			return joueurs.get(choixJoueur).prendreCarte(true); //on recupere la carte cachee du joueur choisi
+		joueurAPrendre = joueurs.get(choixJoueur);
+		
 		}
+		
+		double choixCache = Math.round(Math.random()); //on choisis aleatoirement si on veut la cachée ou la visible
+		if (choixCache==0) {
+			cartePrise = joueurAPrendre.prendreCarte(false); //on recupere la carte visible du joueur choisi
+		}else {
+			cartePrise = joueurAPrendre.prendreCarte(true); //on recupere la carte cachee du joueur choisi
+		}
+		
+		joueurJouant.ajouterDansJest(cartePrise);
+		return joueurJouant;
 		
 		
 	}

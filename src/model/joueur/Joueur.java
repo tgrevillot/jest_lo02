@@ -69,23 +69,17 @@ public class Joueur implements Compteur {
 	public void compterPointsCarte() {
 		throw new Error("A COMPLETER");
 	}
-	
-	public void prendreOffre(ArrayList<Joueur> Ljoueurs) {
-		//J'ai changer la signature de la méthode pour pouvoir l'utiliser dans Jeu.
-		//L'idée ici c'est d'utiliser le patron stratégie pour savoir à quelle joueur on va prendre l'offre
-		//et quelle carte va être choisie. Hésites pas à changer les méthodes d'IAStratégie si besoin.
-
-		this.strat.choisir(Ljoueurs, this.nom);
-		
-		
-		
-		
-		
+	/**
+	 * Cette fonction définie le choix de l'offre pour chaque joueur 
+	 * S'il est reel : un choix entre les cartes des autres joueurs (qui n'ont pas déja donné une offre)
+	 * S'il est une IA : une décision random parmis ces mêmes personnes
+	 * @param lJoueurs
+	 * lJoueurs est la liste des joueurs qui peuvent donner une carte (i.e qui en ont encore 2)
+	 */
+	public Joueur prendreOffre(ArrayList<Joueur> lJoueurs) {
+		return this.strat.choisir(lJoueurs, this);
 	}
 	
-	public void montrer2emeCarte() {
-		throw new Error("A COMPLETER");
-	}
 	/**
 	 * Cette fonction est le choix de l'offre par le joueur 
 	 * S'il est reel : un choix entre la carte 1ere et la 2eme carte 
@@ -94,6 +88,12 @@ public class Joueur implements Compteur {
 	public void choisirFaceCachee() {
 		this.strat.offrir(this.main, this.nom);
 	}
+	
+	
+	public void montrer2emeCarte() {
+		throw new Error("A COMPLETER");
+	}
+	
 	
 	public HashSet<Carte> consulterJest() {
 		throw new Error("A COMPLETER");
@@ -134,6 +134,10 @@ public class Joueur implements Compteur {
 	public boolean aJoue() {
 		return aJoue;
 	}
+	
+	public String getNom() {
+		return this.nom;
+	}
 
 	public void vientDeJouer() {
 		this.aJoue = true;
@@ -147,7 +151,7 @@ public class Joueur implements Compteur {
 	 * Cette methode renvois la carte (cachée ou non) après l'avoir enlevé 
 	 * @param cache
 	 * signifie que l'on veut la carte cachée ou visible 
-	 * @return
+	 * @return 
 	 * renvois la carte que l'on a enlevé de la main
 	 */
 	public Carte prendreCarte(boolean cache) {
@@ -160,5 +164,13 @@ public class Joueur implements Compteur {
 		}
 		
 		throw new Error("Pas de carte correspondant au critère :" + cache + "dans " + this.main);
+	}
+	
+	/**
+	 * Cette fonction ajoute la crte en parametre dans le jest
+	 * @param carte
+	 */
+	public void ajouterDansJest(Carte carte) {
+		this.jest.add(carte);
 	}
 }

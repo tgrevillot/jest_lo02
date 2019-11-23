@@ -11,7 +11,7 @@ public class Reel implements IAStrategie {
 	public void offrir(ArrayList<Carte> main, String pseudo) {
 		Scanner scan = new Scanner(System.in);
 
-		System.out.println("Joueur "+pseudo+" voici votre main : ");
+		System.out.println("Joueur "+ pseudo +" voici votre main : ");
 		System.out.println((main.get(0)).afficher() + " ET " + (main.get(1)).afficher()  );
 		System.out.println("Quelle carte voulez vous cacher dans votre offre ? (1 ou 2)");
 		int carteARetourner= Integer.parseInt(scan.next());
@@ -32,9 +32,32 @@ public class Reel implements IAStrategie {
 		}
 	}
 	
-	public Carte choisir(ArrayList<Joueur> joueurs,String pseudo) {
+	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Joueur "+pseudo+", les cartes disponibles sont : ");
+		Carte cartePrise;
+		Joueur joueurAPrendre;
+		if (joueurs.size()==0) { //CAS ou le joueur est le dernier et doit prendre ses propres cartes
+			System.out.println("Joueur "+joueurJouant.getNom()+", il ne reste plus que vos carte : ");
+			System.out.println("1- "+ (joueurJouant.getVisibleCard()).afficher());
+			System.out.println("2- Carte cachée");
+			System.out.println("Quelle carte voulez vous prendre dans votre jest ? (1 ou 2)");
+			int choixJoueur= Integer.parseInt(scan.next());
+			while (choixJoueur!=1 && choixJoueur!=2) {
+				System.out.println("Vous devez choisir entre 1 et 2");
+				choixJoueur= Integer.parseInt(scan.next());
+			}
+			joueurAPrendre = joueurJouant;
+			if (choixJoueur==2) {
+				
+				cartePrise = joueurJouant.prendreCarte(true);
+				
+			}else {
+				cartePrise = joueurJouant.prendreCarte(false);
+			}
+			
+			
+		} else { // cas ou il reste d'autres joueurs avec des offres disponibles
+		System.out.println("Joueur "+joueurJouant.getNom()+", les cartes disponibles sont : ");
 		int i = 1 ;
 		for (Joueur j : joueurs) {
 			System.out.println(i +"- "+ (j.getVisibleCard()).afficher());
@@ -42,7 +65,7 @@ public class Reel implements IAStrategie {
 			System.out.println(i +"- Carte cachée");
 			i++;
 		}
-		System.out.println("Quelle carte voulez vousprendre dans votre jest ? (numéro)");
+		System.out.println("Quelle carte voulez vous prendre dans votre jest ? (numéro)");
 		int choixJoueur= Integer.parseInt(scan.next());
 		while (choixJoueur < 1 || choixJoueur >i) {
 			System.out.println("Vous devez choisir entre 1 et "+i);
@@ -55,10 +78,13 @@ public class Reel implements IAStrategie {
 		}else {
 			cache=false;
 		}
-		int JoueurAPrendre = (choixJoueur-1)/2;
-		Carte cartePrise = joueurs.get(JoueurAPrendre).prendreCarte(cache);
+		joueurAPrendre = joueurs.get((choixJoueur-1)/2);
+		cartePrise = joueurAPrendre.prendreCarte(cache);
+		}
+		
 		System.out.println("Vous avez pris la carte : "+ cartePrise.afficher());
-		return cartePrise; //on recupere la carte visible du joueur choisi
+		joueurJouant.ajouterDansJest(cartePrise);
+		return joueurAPrendre; //on recupere la carte visible du joueur choisi
 		
 	}
 }
