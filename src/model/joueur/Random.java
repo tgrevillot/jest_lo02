@@ -1,6 +1,8 @@
-package model;
+package model.joueur;
 
 import java.util.ArrayList;
+
+import model.cards.Carte;
 
 public class Random implements IAStrategie {
 

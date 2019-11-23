@@ -1,8 +1,10 @@
-package model;
+package model.joueur;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
+
+import model.cards.Carte;
 
 public class Joueur implements Compteur {
 	/**

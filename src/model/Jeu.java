@@ -6,6 +6,15 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
+import model.cards.Carreau;
+import model.cards.Carte;
+import model.cards.Coeur;
+import model.cards.Joker;
+import model.cards.Pique;
+import model.cards.Trefle;
+import model.cards.Trophee;
+import model.joueur.Joueur;
+
 public class Jeu {
 	
 	/** 

@@ -1,23 +1,28 @@
-package model;
+package model.cards;
 
-public class Coeur extends Carte {
+public class Carreau extends Carte {
 	
-	private final static int priority = 1;
+	private final static int priority = 2;
 	
-	/**Constructeur des cartes Coeur 
+	/**Constructeur des cartes Carreau 
 	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
 	 */
-	public Coeur(int val) {
+	public Carreau(int val) {
 		super(val, priority);
 	}
+	
 	
 	@Override
 	public void opererScore() {
 		// TODO Auto-generated method stub
 
 	}
+	
 	public String afficher() {
-		return super.afficher() + "Coeur";
+		return super.afficher() + "Carreau";
 	}
+	
+	
+
 }
