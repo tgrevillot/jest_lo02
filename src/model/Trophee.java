@@ -85,6 +85,6 @@ public class Trophee {
 	}
 	
 	public String afficher() {
-		return "Trophee de type : " +this.carte.afficher() + " et condition : " +this.condition;
+		return "Trophee de type : " +this.carte.afficher() + " ; condition : " +this.condition;
 	}
 }

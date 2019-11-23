@@ -145,7 +145,6 @@ public class Jeu {
 		
 		Carte carteTrophee1 =  this.deck.pop();
 		Trophee trophee1= new Trophee(carteTrophee1);
-		
 		// s'il y a 3 joueurs on rajoute un deuxièeme trophée
 		if (this.joueurs.size()==3) {
 			Carte carteTrophee2 =  this.deck.pop();
@@ -156,6 +155,8 @@ public class Jeu {
 			Trophee[] trophees = {trophee1};
 			this.trophees= trophees;
 		}
+		
+		
 	}
 	
 	private void attribuerTrophee(Trophee t) {
