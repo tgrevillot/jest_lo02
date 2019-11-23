@@ -93,7 +93,7 @@ public class Jeu {
 				System.out.println("Veuillez entrer le pseudo du joueur "+ (i+1));
 				tableauPseudos[i]= scan.next();
 			}
-		
+			System.out.println("");
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
 		creerTrophees();
@@ -280,14 +280,21 @@ public class Jeu {
 		//Place donc les cartes en mode defense ou attaque
 		for(Joueur j : this.joueurs)
 			j.choisirFaceCachee();
-		
 		//On détermine le tour de l'utilisateur
 		Joueur j = null;
 		for(int k = 0; k < this.joueurs.size(); k++) {
 			j = determinerTour(j);
+			ArrayList<Joueur> Ljoueurs = new ArrayList<Joueur>();
+			//on definit la liste de joueurs auxquels on peut prendre une carte
+			for (Joueur joueur : this.joueurs) {
+				if (joueur.tailleMain()==2 && joueur!=j) {
+					Ljoueurs.add(joueur);
+				}
+			}
 			
-			//Chaque joueur fait son offre
-			j.prendreOffre();
+			//Chaque joueur choisis une offre
+			j.prendreOffre(Ljoueurs);
+			j.vientDeJouer();
 		}
 		
 		//On vérifie s'il y a encore des cartes dans le deck

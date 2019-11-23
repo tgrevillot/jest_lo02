@@ -7,17 +7,11 @@ import model.cards.Carte;
 
 public class Reel implements IAStrategie {
 
-	@Override
-	public void comportement() {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	
-	public void offre(ArrayList<Carte> main) {
+	public void offrir(ArrayList<Carte> main, String pseudo) {
 		Scanner scan = new Scanner(System.in);
 
-		System.out.println("Voici votre main : ");
+		System.out.println("Joueur "+pseudo+" voici votre main : ");
 		System.out.println((main.get(0)).afficher() + " ET " + (main.get(1)).afficher()  );
 		System.out.println("Quelle carte voulez vous cacher dans votre offre ? (1 ou 2)");
 		int carteARetourner= Integer.parseInt(scan.next());
@@ -28,14 +22,42 @@ public class Reel implements IAStrategie {
 		switch (carteARetourner) {
 		case 1 : 
 			main.get(0).cacherCarte();
-			System.out.println("Vous avez choisi de cacher la carte " + (main.get(0)).afficher());
+			System.out.println("Vous avez choisi de cacher la carte " + (main.get(0)).afficher()+"\n");
 			break;
 		case 2 :
 			main.get(1).cacherCarte();
-			System.out.println("Vous avez choisi de cacher la carte " + (main.get(1)).afficher());
+			System.out.println("Vous avez choisi de cacher la carte " + (main.get(1)).afficher()+"\n");
 			break;
 		
 		}
-		scan.close();
+	}
+	
+	public Carte choisir(ArrayList<Joueur> joueurs,String pseudo) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Joueur "+pseudo+", les cartes disponibles sont : ");
+		int i = 1 ;
+		for (Joueur j : joueurs) {
+			System.out.println(i +"- "+ (j.getVisibleCard()).afficher());
+			i++;
+			System.out.println(i +"- Carte cachée");
+			i++;
+		}
+		System.out.println("Quelle carte voulez vousprendre dans votre jest ? (numéro)");
+		int choixJoueur= Integer.parseInt(scan.next());
+		while (choixJoueur < 1 || choixJoueur >i) {
+			System.out.println("Vous devez choisir entre 1 et "+i);
+			choixJoueur= Integer.parseInt(scan.next());
+		}
+		boolean cache;  // si le choix est pair c'est une carte cachee
+		if (i%choixJoueur==0) {
+			cache= true;
+		}else {
+			cache=false;
+		}
+		
+		Carte cartePrise = joueurs.get(choixJoueur/2).prendreCarte(cache);
+		System.out.println("Vous avez pris la carte : "+ cartePrise.afficher());
+		return cartePrise; //on recupere la carte visible du joueur choisi
+		
 	}
 }

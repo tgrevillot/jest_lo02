@@ -70,11 +70,17 @@ public class Joueur implements Compteur {
 		throw new Error("A COMPLETER");
 	}
 	
-	public void prendreOffre() {
+	public void prendreOffre(ArrayList<Joueur> Ljoueurs) {
 		//J'ai changer la signature de la méthode pour pouvoir l'utiliser dans Jeu.
 		//L'idée ici c'est d'utiliser le patron stratégie pour savoir à quelle joueur on va prendre l'offre
 		//et quelle carte va être choisie. Hésites pas à changer les méthodes d'IAStratégie si besoin.
-		throw new Error("A COMPLETER");
+
+		this.strat.choisir(Ljoueurs, this.nom);
+		
+		
+		
+		
+		
 	}
 	
 	public void montrer2emeCarte() {
@@ -86,7 +92,7 @@ public class Joueur implements Compteur {
 	 * S'il est une IA : une décision random
 	 */
 	public void choisirFaceCachee() {
-		this.strat.offre(this.main);
+		this.strat.offrir(this.main, this.nom);
 	}
 	
 	public HashSet<Carte> consulterJest() {
@@ -120,6 +126,11 @@ public class Joueur implements Compteur {
 		return null;
 	}
 	
+	public int tailleMain() {
+		return this.main.size();
+	}
+	
+	
 	public boolean aJoue() {
 		return aJoue;
 	}
@@ -131,5 +142,23 @@ public class Joueur implements Compteur {
 	public void peutJouer() {
 		this.aJoue = false;
 	}
-
+	
+	/**
+	 * Cette methode renvois la carte (cachée ou non) après l'avoir enlevé 
+	 * @param cache
+	 * signifie que l'on veut la carte cachée ou visible 
+	 * @return
+	 * renvois la carte que l'on a enlevé de la main
+	 */
+	public Carte prendreCarte(boolean cache) {
+		
+		for (Carte c : this.main) {
+			if (c.isCacher()==cache) {
+				this.main.remove(c);
+				return c;
+			}
+		}
+		
+		throw new Error("Pas de carte correspondant au critère :" + cache + "dans " + this.main);
+	}
 }
