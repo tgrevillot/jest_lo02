@@ -1,4 +1,4 @@
-package model;
+package model.cards;
 
 public class Trophee {
 	/**
@@ -41,7 +41,7 @@ public class Trophee {
 	
 	
 	private void conditionCarreau() {
-		switch(this.carte.valeur) {
+		switch(this.carte.getFaceValue()) {
 		case 1 :
 			this.condition= Condition.plusDeCartes4;
 		case 2 :
@@ -53,7 +53,7 @@ public class Trophee {
 		}
 	}
 	private void conditionTrefle() {
-		switch(this.carte.valeur) {
+		switch(this.carte.getFaceValue()) {
 		case 1 :
 			this.condition= Condition.plusGrandPique;
 		case 2 :
@@ -66,7 +66,7 @@ public class Trophee {
 		
 	}
 	private void conditionPique() {
-		switch(this.carte.valeur) {
+		switch(this.carte.getFaceValue()) {
 		case 1 :
 			this.condition= Condition.plusGrandTrefle;
 		case 2 :

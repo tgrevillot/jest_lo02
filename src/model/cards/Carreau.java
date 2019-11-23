@@ -1,13 +1,15 @@
-package model;
+package model.cards;
 
 public class Carreau extends Carte {
+	
+	private final static int priority = 2;
 	
 	/**Constructeur des cartes Carreau 
 	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
 	 */
 	public Carreau(int val) {
-		super(val);
+		super(val, priority);
 	}
 	
 	
@@ -18,11 +20,7 @@ public class Carreau extends Carte {
 	}
 	
 	public String afficher() {
-		if (this.valeur==1) {
-			return "AS de Carreau" ;
-		} else {
-			return (this.valeur+" de Carreau");
-		}
+		return super.afficher() + "Carreau";
 	}
 	
 	

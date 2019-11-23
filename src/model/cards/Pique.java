@@ -1,12 +1,15 @@
-package model;
+package model.cards;
 
 public class Pique extends Carte {
+	
+	private final static int priority = 4;
+	
 	/**Constructeur des cartes Pique
 	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
 	 */
 	public Pique(int val) {
-		super(val);
+		super(val, priority);
 	}
 
 	@Override
@@ -16,10 +19,6 @@ public class Pique extends Carte {
 	
 	
 	public String afficher() {
-		if (this.valeur==1) {
-			return "AS de Pique" ;
-		} else {
-			return (this.valeur+" de Pique");
-		}
+		return super.afficher() + "Pique";
 	}
 }

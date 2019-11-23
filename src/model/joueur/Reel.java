@@ -1,7 +1,9 @@
-package model;
+package model.joueur;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import model.cards.Carte;
 
 public class Reel implements IAStrategie {
 

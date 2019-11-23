@@ -1,12 +1,15 @@
-package model;
+package model.cards;
 
 public class Trefle extends Carte {
+	
+	private final static int priority = 3;
+	
 	/**Constructeur des cartes Trefle
 	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
 	 */
 	public Trefle(int val) {
-		super(val);
+		super(val, priority);
 	}
 	
 	@Override
@@ -14,10 +17,6 @@ public class Trefle extends Carte {
 		
 	}
 	public String afficher() {
-		if (this.valeur==1) {
-			return "AS de Trefle" ;
-		} else {
-			return (this.valeur+" de Trefle");
-		}
+		return super.afficher() + "Trefle";
 	}
 }

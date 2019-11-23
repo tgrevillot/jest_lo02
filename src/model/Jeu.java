@@ -2,10 +2,18 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Stack;
+
+import model.cards.Carreau;
+import model.cards.Carte;
+import model.cards.Coeur;
+import model.cards.Joker;
+import model.cards.Pique;
+import model.cards.Trefle;
+import model.cards.Trophee;
+import model.joueur.Joueur;
 
 public class Jeu {
 	
@@ -89,6 +97,8 @@ public class Jeu {
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
 		creerTrophees();
+		faireUnTour(new LinkedList<Carte>());
+		determinerGagnant();
 		scan.close();
 	}
 	
@@ -152,8 +162,7 @@ public class Jeu {
 			Trophee[] trophees = {trophee1,trophee2};
 			this.trophees = trophees; 
 		}else { //il y a 4 joueurs donc 1 seul trophee 
-			Trophee[] trophees = {trophee1};
-			this.trophees= trophees;
+			this.trophees[0] = trophee1;
 		}
 		
 		
@@ -188,11 +197,53 @@ public class Jeu {
 	}
 	
 	private Joueur determinerTour(Joueur j) {
-		throw new Error("A COMPLETER");
+		//Joueur à faire jouer
+		Joueur joueur;
+		
+		//Soit le joueur a deja joue et on se base sur la plus grande carte encore en lice
+		if(j == null || j.aJoue()) 
+			joueur = determinerPlusGrand();
+		//Soit le joueur n'a pas encoure joué et il joue
+		else
+			joueur = j;
+		
+		return joueur;
 	}
 	
 	private Joueur determinerPlusGrand() {
-		throw new Error("A COMPLETER");
+		//On crée notre tampon contenant les joueurs n'ayant pas encore joué
+		Stack<Joueur> buffer = new Stack<Joueur>();
+		for(Joueur j : this.joueurs)
+			if(!j.aJoue())
+				buffer.add(j);
+		
+		//On fait une recherche de maximum de carte
+		Joueur joueurMax = buffer.pop();
+		Carte carteMax = joueurMax.getVisibleCard();
+		Carte carteActu;
+		for(Joueur j : buffer) {
+			carteActu = j.getVisibleCard();
+			//On va maintenant comparer les valeurs de ces cartes
+			//Si la face value de carte2 est superieure a celle de carte2 on met a jour carteMax et
+			//JoueurMax
+			if(carteActu.getFaceValue() > carteMax.getFaceValue()) {
+				carteMax = carteActu;
+				joueurMax = j;
+			}
+			//Si jamais les face values sont identiques, on se base sur les valeurs prises par
+			//les couleurs. Chaque couleur ayant un ordre predefini, on va se baser dessus
+			else if(carteActu.getFaceValue() == carteMax.getFaceValue()) {
+				//On recupere l'ordre de priorite de chaque carte et on les compare pour choisir 
+				//la carte la plus forte et determiner le joueur Max
+				if(carteActu.getOrdre() > carteMax.getOrdre()) {
+					//Si c'est le cas on met à jour la carte max et le joueur max
+					carteMax = carteActu;
+					joueurMax = j;
+				}
+			}
+		}
+		
+		return joueurMax;
 	}
 
 	private Joueur determinerGagnant() {
@@ -223,24 +274,29 @@ public class Jeu {
 		for(int i = 0; i < 2; i++)
 			for(Joueur j : this.joueurs)
 				j.accepterCarte(buffer.removeFirst());
-			
+		
+		//Chacun choisie sa carte à mettre face cachée
+		//Place donc les cartes en mode defense ou attaque
+		for(Joueur j : this.joueurs)
+			j.choisirFaceCachee();
+		
 		//On détermine le tour de l'utilisateur
 		Joueur j = null;
 		for(int k = 0; k < this.joueurs.size(); k++) {
 			j = determinerTour(j);
 			
 			//Chaque joueur fait son offre
-			j.choisirFaceCachee();
-			//TODO APPELER LA METHODE prendreOffre()
+			j.prendreOffre();
 		}
 		
-		//On récupère les cartes restantes de chaque joueur
-		for(Joueur joueur : this.joueurs)
-			buffer.add(joueur.getCarteRestante());
-		throw new Error("Il manque la super méthode prendreOffre");
+		//On vérifie s'il y a encore des cartes dans le deck
+		if(!this.deck.isEmpty())
+			//Si c'est le cas on repart pour un nouveau tour
+			faireUnTour(recupererCartesRestantes());
+		
 	}
 	
-	public LinkedList<Carte> recupererCartesRestantes() {
+	private LinkedList<Carte> recupererCartesRestantes() {
 		throw new Error("A COMPLETER");
 	}
 	
