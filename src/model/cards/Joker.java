@@ -14,9 +14,13 @@ public class Joker extends Carte {
 	}
 
 	@Override
-	public void opererScore() {
-		// TODO Auto-generated method stub
-
+	public int envoyerPoints() {
+		return 0;
+	}
+	
+	@Override
+	public String donnerCouleur() {
+		return "Joker";
 	}
 
 	@Override

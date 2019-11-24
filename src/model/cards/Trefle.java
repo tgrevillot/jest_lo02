@@ -13,9 +13,15 @@ public class Trefle extends Carte {
 	}
 	
 	@Override
-	public void opererScore() {
-		
+	public int envoyerPoints() {
+		return this.getFaceValue();
 	}
+	
+	@Override
+	public String donnerCouleur() {
+		return "Trefle";
+	}
+	
 	public String afficher() {
 		return super.afficher() + "Trefle";
 	}

@@ -13,10 +13,15 @@ public class Coeur extends Carte {
 	}
 	
 	@Override
-	public void opererScore() {
-		// TODO Auto-generated method stub
-
+	public int envoyerPoints() {
+		return - this.getFaceValue();
 	}
+	
+	@Override
+	public String donnerCouleur() {
+		return "Coeur";
+	}
+	
 	public String afficher() {
 		return super.afficher() + "Coeur";
 	}

@@ -39,7 +39,9 @@ public abstract class Carte {
 		this.priority = ordre;
 	}
 	
-	public abstract void opererScore();
+	public abstract int envoyerPoints();
+	
+	public abstract String donnerCouleur();
 	/**
 	 * afficher sert a afficher les cartes sous une jolie forme
 	 * TODO rajouter un moyen de differencier si elle est cachée ou pas

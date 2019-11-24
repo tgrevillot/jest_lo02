@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -206,8 +207,13 @@ public class Jeu {
 	}
 
 	
-	private int compterPoints() {
-		throw new Error("A COMPLETER");
+	private HashMap<Joueur, Integer> compterPoints() {
+		//On va utiliser un annuaire pour associer à chaque joueur son nombre de points
+		HashMap<Joueur, Integer> tabPoints = new HashMap<Joueur, Integer>();
+		//Pour chaque joueur on compte le nombre de points
+		for(Joueur j : this.joueurs) 
+			tabPoints.put(j, j.compterPoints());
+		return tabPoints;
 	}
 	
 	private Joueur determinerTour(Joueur j) {

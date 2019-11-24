@@ -13,10 +13,13 @@ public class Pique extends Carte {
 	}
 
 	@Override
-	public void opererScore() {
-		
+	public int envoyerPoints() {
+		return this.getFaceValue();
 	}
 	
+	public String donnerCouleur() {
+		return "Pique";
+	}
 	
 	public String afficher() {
 		return super.afficher() + "Pique";

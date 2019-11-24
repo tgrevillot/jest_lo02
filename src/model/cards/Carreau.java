@@ -14,15 +14,17 @@ public class Carreau extends Carte {
 	
 	
 	@Override
-	public void opererScore() {
-		// TODO Auto-generated method stub
-
+	public int envoyerPoints() {
+		return - this.getFaceValue();
 	}
 	
 	public String afficher() {
 		return super.afficher() + "Carreau";
 	}
 	
-	
+	@Override
+	public String donnerCouleur() {
+		return "Carreau";
+	}
 
 }
