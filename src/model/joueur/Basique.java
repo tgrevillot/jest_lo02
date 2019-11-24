@@ -30,19 +30,14 @@ public class Basique implements IAStrategie {
 		}else {// Cas ou il reste d'autres personnes avec des offres valides
 		int choixJoueur = (int) ((Math.random())*(joueurs.size())); // un int random entre 0 et nombre de joueurs-1 inclus
 		joueurAPrendre = joueurs.get(choixJoueur);
-		
 		}
-		
 		double choixCache = Math.round(Math.random()); //on choisis aleatoirement si on veut la cachée ou la visible
 		if (choixCache==0) {
 			cartePrise = joueurAPrendre.prendreCarte(false); //on recupere la carte visible du joueur choisi
 		}else {
 			cartePrise = joueurAPrendre.prendreCarte(true); //on recupere la carte cachee du joueur choisi
 		}
-		
 		joueurJouant.ajouterDansJest(cartePrise);
-		return joueurJouant;
-		
-		
+		return joueurAPrendre;
 	}
 }

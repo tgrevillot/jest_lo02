@@ -39,6 +39,16 @@ public class Jeu {
 	
 
 	private Jeu() {
+		initialiser();
+		faireUnTour(new LinkedList<Carte>());
+		determinerGagnant();
+	}
+	
+	/**
+	 * fonction d'initialisation des parametres de base pour la création du jeu 
+	 * inclus : les demandes a l'utilisateur, la création d'un deck mélangé, le choix du [des] trophé[s]  
+	 */
+	public void initialiser() {
 		//On Lance la partie 
 		Scanner scan = new Scanner(System.in);
 		String lineSeparator = System.getProperty("line.separator");
@@ -99,10 +109,9 @@ public class Jeu {
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
 		creerTrophees();
-		faireUnTour(new LinkedList<Carte>());
-		determinerGagnant();
 		scan.close();
 	}
+	
 	
 	/**
 	 * Cree les cartes et remplis le paquet avec

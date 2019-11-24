@@ -9,8 +9,8 @@ public class Reel implements IAStrategie {
 
 	
 	public void offrir(ArrayList<Carte> main, String pseudo) {
+		//TODO rajouter les options : voir jest
 		Scanner scan = new Scanner(System.in);
-
 		System.out.println("Joueur "+ pseudo +" voici votre main : ");
 		System.out.println((main.get(0)).afficher() + " ET " + (main.get(1)).afficher()  );
 		System.out.println("Quelle carte voulez vous cacher dans votre offre ? (1 ou 2)");
@@ -28,14 +28,14 @@ public class Reel implements IAStrategie {
 			main.get(1).cacherCarte();
 			System.out.println("Vous avez choisi de cacher la carte " + (main.get(1)).afficher()+"\n");
 			break;
-		
 		}
 	}
 	
 	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
+		//TODO rajouter les options : voir offre et voir jest
 		Scanner scan = new Scanner(System.in);
-		Carte cartePrise;
-		Joueur joueurAPrendre;
+		Carte cartePrise; //la carte que l'on prend
+		Joueur joueurAPrendre; //le joueur auquel on prend une carte
 		if (joueurs.size()==0) { //CAS ou le joueur est le dernier et doit prendre ses propres cartes
 			System.out.println("Joueur "+joueurJouant.getNom()+", il ne reste plus que vos carte : ");
 			System.out.println("1- "+ (joueurJouant.getVisibleCard()).afficher());
@@ -47,15 +47,11 @@ public class Reel implements IAStrategie {
 				choixJoueur= Integer.parseInt(scan.next());
 			}
 			joueurAPrendre = joueurJouant;
-			if (choixJoueur==2) {
-				
+			if (choixJoueur==2) { //la carte 2 est la carte cachée
 				cartePrise = joueurJouant.prendreCarte(true);
-				
-			}else {
+			}else { //la carte 1 est la carte visible
 				cartePrise = joueurJouant.prendreCarte(false);
 			}
-			
-			
 		} else { // cas ou il reste d'autres joueurs avec des offres disponibles
 		System.out.println("Joueur "+joueurJouant.getNom()+", les cartes disponibles sont : ");
 		int i = 1 ;
@@ -71,20 +67,18 @@ public class Reel implements IAStrategie {
 			System.out.println("Vous devez choisir entre 1 et "+i);
 			choixJoueur= Integer.parseInt(scan.next());
 		}
-		i--;
+		i--; //on corrige le dernier up de i pour en faire le compteur de carte disponibles
 		boolean cache;  // si le choix est pair c'est une carte cachee
 		if (choixJoueur%2==0) {
 			cache= true;
-		}else {
+		}else { //impair et c'est une carte visible
 			cache=false;
 		}
-		joueurAPrendre = joueurs.get((choixJoueur-1)/2);
-		cartePrise = joueurAPrendre.prendreCarte(cache);
-		}
-		
+		joueurAPrendre = joueurs.get((choixJoueur-1)/2); //un calcul simple pour definir a quel joueur on prend la carte
+		cartePrise = joueurAPrendre.prendreCarte(cache); //on prend la carte choisie du joueurAPrendre
+		}	
 		System.out.println("Vous avez pris la carte : "+ cartePrise.afficher());
-		joueurJouant.ajouterDansJest(cartePrise);
-		return joueurAPrendre; //on recupere la carte visible du joueur choisi
-		
+		joueurJouant.ajouterDansJest(cartePrise);//on met la carte que l'on a pris dans notre jest
+		return joueurAPrendre; //on renvois le joueur a qui on a pris une carte
 	}
 }
