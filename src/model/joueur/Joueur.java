@@ -86,7 +86,7 @@ public class Joueur implements Compteur {
 	 * S'il est une IA : une décision random
 	 */
 	public void choisirFaceCachee() {
-		this.strat.offrir(this.main, this.nom);
+		this.strat.offrir(this.main, this);
 	}
 	
 	
@@ -281,11 +281,35 @@ public class Joueur implements Compteur {
 		this.jest.add(carte);
 	}
 	
-	
 	private enum Couleur {
 		CARREAU,
 		COEUR,
 		PIQUE,
 		TREFLE;
+	}
+	
+	public void afficherMain() {
+		System.out.println("<======>");
+		System.out.println("Voici les cartes de votre main");
+		if (this.main.size()==0) {
+			System.out.println("Votre main est vide");
+		}else {
+			for (Carte c : this.main) {
+				c.toString();
+			}
+		}
+		System.out.println("<======>");
+	}
+	
+	public void afficherJest() {
+		System.out.println("<======>");
+		if (this.jest.size()==0) {
+			System.out.println("Votre jest est vide");
+		}else {
+			for (Carte c : this.jest) {
+				c.toString();
+			}
+		}
+		System.out.println("<======>");
 	}
 }

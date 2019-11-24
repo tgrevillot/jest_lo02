@@ -7,7 +7,7 @@ import model.cards.*;
 public class Basique implements IAStrategie {
 
 	
-	public void offrir(ArrayList<Carte> main,String pseudo) {
+	public void offrir(ArrayList<Carte> main, Joueur joueurJouant) {
 		//on utilise une décision random pour ce choix 
 		if (Math.random()<0.5) {
 			main.get(0).cacherCarte();

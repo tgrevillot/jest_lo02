@@ -5,6 +5,6 @@ import java.util.ArrayList;
 import model.cards.Carte;
 
 public interface IAStrategie {
-	public void offrir(ArrayList<Carte> main, String pseudo);
+	public void offrir(ArrayList<Carte> main, Joueur joueur);
 	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueur);
 }
