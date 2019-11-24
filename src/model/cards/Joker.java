@@ -25,7 +25,11 @@ public class Joker extends Carte {
 
 	@Override
 	public String afficher() {
+	if (this.isCacher()) {
+		return "Joker [caché]";
+	}else {
 		return "Joker";
+	}
 	}
 
 }

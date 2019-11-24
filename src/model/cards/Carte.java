@@ -44,7 +44,6 @@ public abstract class Carte {
 	public abstract String donnerCouleur();
 	/**
 	 * afficher sert a afficher les cartes sous une jolie forme
-	 * TODO rajouter un moyen de differencier si elle est cachée ou pas
 	 * @return
 	 * Cela renvois un String expliquant en Français quelle est la carte en question
 	 */

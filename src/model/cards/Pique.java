@@ -22,6 +22,11 @@ public class Pique extends Carte {
 	}
 	
 	public String afficher() {
-		return super.afficher() + "Pique";
+		if (this.isCacher()) {
+			return super.afficher() + "Pique [cachée]";
+		}else {
+			return super.afficher() + "Pique";
+		}
+		
 	}
 }

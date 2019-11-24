@@ -23,6 +23,11 @@ public class Trefle extends Carte {
 	}
 	
 	public String afficher() {
-		return super.afficher() + "Trefle";
+		if (this.isCacher()) {
+			return super.afficher() + "Trefle [cachée]";
+		}else {
+			return super.afficher() + "Trefle";
+		}
+		
 	}
 }

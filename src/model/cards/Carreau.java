@@ -19,7 +19,12 @@ public class Carreau extends Carte {
 	}
 	
 	public String afficher() {
-		return super.afficher() + "Carreau";
+		if (this.isCacher()) {
+			return super.afficher() + "Carreau [cachée]";
+		}else {
+			return super.afficher() + "Carreau";
+		}
+		
 	}
 	
 	@Override

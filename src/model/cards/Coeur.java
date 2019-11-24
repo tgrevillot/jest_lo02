@@ -23,6 +23,11 @@ public class Coeur extends Carte {
 	}
 	
 	public String afficher() {
-		return super.afficher() + "Coeur";
+		if (this.isCacher()) {
+			return super.afficher() + "Coeur [cachée]";
+		}else {
+			return super.afficher() + "Coeur";
+		}
+		
 	}
 }
