@@ -295,7 +295,7 @@ public class Joueur implements Compteur {
 			System.out.println("Votre main est vide");
 		}else {
 			for (Carte c : this.main) {
-				c.toString();
+				System.out.println(c.toString());
 			}
 		}
 		System.out.println("<======>");
@@ -307,7 +307,7 @@ public class Joueur implements Compteur {
 			System.out.println("Votre jest est vide");
 		}else {
 			for (Carte c : this.jest) {
-				c.toString();
+				System.out.println(c.toString());
 			}
 		}
 		System.out.println("<======>");

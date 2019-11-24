@@ -109,7 +109,6 @@ public class Jeu {
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
 		creerTrophees();
-		scan.close();
 	}
 	
 	
