@@ -276,7 +276,9 @@ public class Jeu {
 
 	private Joueur determinerGagnant() {
 		//attribuerTrophee();
-		compterPoints();
+		HashMap<Joueur, Integer> resultats = compterPoints();
+		for(Joueur j : resultats.keySet())
+			System.out.println("Le joueur " + j.getNom() + " a obtenu " + resultats.get(j) + " points");
 		return null;
 	}
 	
@@ -284,19 +286,35 @@ public class Jeu {
 		//On mélange les cartes restantes avec les cartes du deck
 		LinkedList<Carte> buffer = new LinkedList<Carte>();
 		
-		//On commence par ajouter 4 cartes depuis le deck dans le buffer
-		for(int i = 0; i < 4; i++)
+		//On commence par ajouter 3 ou 4 cartes depuis le deck dans le buffer 
+		//(suivant le nombre de joueur)
+		for(int i = 0; i < this.joueurs.size(); i++)
 			buffer.add(this.deck.removeFirst());
 		
 		//Si les cartes ne sont pas vides
 		if(!cartesRestantes.isEmpty()) {
+			
+			//On indique qu'on vient de finir un tour.
+			System.out.println("Fin du tour ! Redistribution des cartes ...");
+			
+			//On boucle dans cartesRestantes pour décacher les cartes 
+			for(Carte c : cartesRestantes)
+				c.antiCacherCarte();
+			
+			//On indique que les joueurs peuvent jouer
+			for(Joueur j : this.joueurs)
+				j.peutJouer();
+			
 			//On regroupe le buffer et les cartes restantes
 			buffer.addAll(cartesRestantes);
 			//On mélange le tout
 			Collections.shuffle(buffer);
+			
+			//On indique que le jeu est prêt
+			System.out.println("Le jeu a été distribué !");
 		} else {
-			//On repioche 4 cartes comme on se trouve en début de partie
-			for(int i = 0; i < 4; i++)
+			//On repioche 3 ou 4 cartes comme on se trouve en début de partie
+			for(int i = 0; i < this.joueurs.size(); i++)
 				buffer.add(this.deck.removeFirst());
 		}
 			

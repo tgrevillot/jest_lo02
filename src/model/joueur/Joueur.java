@@ -221,7 +221,7 @@ public class Joueur implements Compteur {
 	
 	public Carte getCarteRestante() {
 		if(this.main.size() == 1)
-			return this.main.get(0);
+			return this.main.remove(0);
 		return null;
 	}
 
@@ -255,7 +255,7 @@ public class Joueur implements Compteur {
 	}
 	
 	/**
-	 * Cette methode renvois la carte (cachée ou non) après l'avoir enlevé 
+	 * Cette methode renvoie la carte (cachée ou non) après l'avoir enlevé 
 	 * @param cache
 	 * signifie que l'on veut la carte cachée ou visible 
 	 * @return 
@@ -270,7 +270,7 @@ public class Joueur implements Compteur {
 			}
 		}
 		
-		throw new Error("Pas de carte correspondant au critère :" + cache + "dans " + this.main);
+		throw new Error("Pas de carte correspondant au critère :" + cache + " dans " + this.main);
 	}
 	
 	/**
