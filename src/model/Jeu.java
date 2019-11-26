@@ -213,39 +213,12 @@ public class Jeu {
 		
 	}
 	
-	private void attribuerTrophee(Trophee t) {
-		switch (t.getCondition()) {
-			case detenteurJoker:
-				Condition.detenteurJoker();
-			case bestJest:
-				Condition.bestJest();
-			case plusPetitPique:
-				Condition.plusPetitPique();
-			case plusPetitTrefle:
-				Condition.plusPetitTrefle();
-			case plusPetitCarreau:
-				Condition.plusPetitCarreau();
-			case plusPetitCoeur:
-				Condition.plusPetitCoeur();
-			case plusGrandPique:
-				Condition.plusGrandPique();
-			case plusGrandTrefle:
-				Condition.plusGrandTrefle();
-			case plusGrandCarreau:
-				Condition.plusGrandCarreau();
-			case plusGrandCoeur:
-				Condition.plusGrandCoeur();
-			case bestJestWithoutJoker:
-				Condition.bestJestWithoutJoker();
-			case plusDeCartes2:
-				Condition.plusDeCartes2();
-			case plusDeCartes3:
-				Condition.plusDeCartes3();
-			case plusDeCartes4:
-				Condition.plusDeCartes4();
-			default : 
-				throw new Error("CE N'EST PAS UNE CONDITION VALIDE");
-		}
+	private void attribuerTrophee() {
+		Joueur j;
+		/*
+		}*/
+		j = Condition.attribution(this.trophees[0].getCarte().getCondition(), this.joueurs);
+		j.ajouterDansJest(this.trophees[0].getCarte());
 	}
 
 	
@@ -253,8 +226,11 @@ public class Jeu {
 		//On va utiliser un annuaire pour associer à chaque joueur son nombre de points
 		HashMap<Joueur, Integer> tabPoints = new HashMap<Joueur, Integer>();
 		//Pour chaque joueur on compte le nombre de points
-		for(Joueur j : this.joueurs) 
-			tabPoints.put(j, j.compterPoints());
+		for(Joueur j : this.joueurs) {
+			j.generateSortJest();
+			attribuerTrophee();
+			tabPoints.put(j, j.compterPointsCarte());
+		}
 		return tabPoints;
 	}
 	

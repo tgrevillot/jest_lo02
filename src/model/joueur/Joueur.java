@@ -3,8 +3,11 @@ package model.joueur;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import model.cards.Carte;
+import model.cards.Couleur;
+import model.cards.Joker;
 
 public class Joueur implements Compteur {
 	/**
@@ -37,6 +40,8 @@ public class Joueur implements Compteur {
 	 */
 	private String nom;
 	
+	private HashMap<Couleur, HashSet<Carte>> cartesTri;
+	
 	public Joueur(String pseudo, int iaType) {
 		this.aJoue=false;
 		this.main = new ArrayList<Carte>(2);
@@ -66,8 +71,27 @@ public class Joueur implements Compteur {
 	}
 	
 	@Override
-	public void compterPointsCarte() {
-		throw new Error("A COMPLETER");
+	public int compterPointsCarte() {
+		int score = 0;
+		
+		//On ajoute les points obtenues avec les cartes coeur
+		score += scoreCoeur(cartesTri.get(Couleur.COEUR));
+		
+		//On repère ensuite les paires de cartes noires et pour chacune d'elles on ajoute 2 points
+		score += scorePairesNoires(cartesTri.get(Couleur.PIQUE), cartesTri.get(Couleur.TREFLE));
+		
+		//Pour le reste des cartes on se contente d'aller chercher les faces values 
+		//et de les ajouter au score.
+		//On va lier les autres paquets de carte dans une même collection pour boucler plus facilement
+		HashSet<Carte> melangeFinal = new HashSet<Carte>();
+		melangeFinal.addAll(cartesTri.get(Couleur.CARREAU));
+		melangeFinal.addAll(cartesTri.get(Couleur.PIQUE));
+		melangeFinal.addAll(cartesTri.get(Couleur.TREFLE));
+		
+		//Addition des points finales
+		score += addFaceValues(melangeFinal);
+		
+		return score;
 	}
 	/**
 	 * Cette fonction définie le choix de l'offre pour chaque joueur 
@@ -106,32 +130,6 @@ public class Joueur implements Compteur {
 	public void accepterCarte(Carte c) {
 		if(c != null)
 			this.main.add(c);
-	}
-	
-	public int compterPoints() {
-		int score = 0;
-		//Pour faciliter le calcul des points, on va trier les cartes et les ranger dans une Map
-		HashMap<Couleur, HashSet<Carte>> cartesTri = trierCartesParCouleur();
-		
-		//On ajoute les points obtenues avec les cartes coeur
-		score += scoreCoeur(cartesTri.get(Couleur.COEUR));
-		
-		//On repère ensuite les paires de cartes noires et pour chacune d'elles on ajoute 2 points
-		score += scorePairesNoires(cartesTri.get(Couleur.PIQUE), cartesTri.get(Couleur.TREFLE));
-		
-		//Pour le reste des cartes on se contente d'aller chercher les faces values 
-		//et de les ajouter au score.
-		//On va lier les autres paquets de carte dans une même collection pour boucler plus facilement
-		HashSet<Carte> melangeFinal = new HashSet<Carte>();
-		melangeFinal.addAll(cartesTri.get(Couleur.CARREAU));
-		melangeFinal.addAll(cartesTri.get(Couleur.PIQUE));
-		melangeFinal.addAll(cartesTri.get(Couleur.TREFLE));
-		
-		//Addition des points finales
-		score += addFaceValues(melangeFinal);
-		
-		return score;
-		
 	}
 	
 	private int addFaceValues(HashSet<Carte> cartes) {
@@ -176,47 +174,59 @@ public class Joueur implements Compteur {
 		return score;
 	}
 	
-	private boolean hasJoker() {
+	public boolean hasJoker() {
 		for(Carte c : this.jest) 
 			if(c.donnerCouleur().equals("Joker"))
 				return true;
 		return false;
 	}
 	
-	private HashMap<Couleur, HashSet<Carte>> trierCartesParCouleur() {
-		//On crée une Map qui va contenir l'ensemble des paquets de cartes triées
-		HashMap<Couleur, HashSet<Carte>> collecCouleur = new HashMap<Couleur, HashSet<Carte>>(4);
-
-		//On crée une liste de cartes par couleur 
-		HashSet<Carte> carreau = new HashSet<Carte>();
-		HashSet<Carte> trefle = new HashSet<Carte>();
-		HashSet<Carte> pique = new HashSet<Carte>();
-		HashSet<Carte> coeur = new HashSet<Carte>();
-		
-		//En fonction de la couleur de chaque carte on range dans le bon paquet
-		for(Carte c : this.jest) {
-			switch(c.donnerCouleur()) {
-				case "Carreau":
-					carreau.add(c);
-					break;
-				case "Coeur":
-					coeur.add(c);
-					break;
-				case "Pique":
-					pique.add(c);
-					break;
-				case "Trefle":
-					trefle.add(c);
-					break;
+	public Carte removeJoker() {
+		Carte joker;
+		for(Carte c : this.jest)
+			if(c.donnerCouleur().equals("Joker")) {
+				joker = c;
+				this.jest.remove(c);
+				return joker;
 			}
+		return null;
+	}
+	
+	public void generateSortJest() {
+		//Si les listes n'ont pas été déjà générées
+		if(!this.cartesTri.isEmpty()) {
+			//On crée une Map qui va contenir l'ensemble des paquets de cartes triées
+			this.cartesTri = new HashMap<Couleur, HashSet<Carte>>(4);
+	
+			//On crée une liste de cartes par couleur 
+			HashSet<Carte> carreau = new HashSet<Carte>();
+			HashSet<Carte> trefle = new HashSet<Carte>();
+			HashSet<Carte> pique = new HashSet<Carte>();
+			HashSet<Carte> coeur = new HashSet<Carte>();
+			
+			//En fonction de la couleur de chaque carte on range dans le bon paquet
+			for(Carte c : this.jest) {
+				switch(c.donnerCouleur()) {
+					case "Carreau":
+						carreau.add(c);
+						break;
+					case "Coeur":
+						coeur.add(c);
+						break;
+					case "Pique":
+						pique.add(c);
+						break;
+					case "Trefle":
+						trefle.add(c);
+						break;
+				}
+			}
+			//On range les différents paquet dans la Map précédemment créé.
+			this.cartesTri.put(Couleur.CARREAU, carreau);
+			this.cartesTri.put(Couleur.PIQUE, pique);
+			this.cartesTri.put(Couleur.TREFLE, trefle);
+			this.cartesTri.put(Couleur.COEUR, coeur);
 		}
-		//On range les différents paquet dans la Map précédemment créé.
-		collecCouleur.put(Couleur.CARREAU, carreau);
-		collecCouleur.put(Couleur.PIQUE, pique);
-		collecCouleur.put(Couleur.TREFLE, trefle);
-		collecCouleur.put(Couleur.COEUR, coeur);
-		
-		return collecCouleur;
 	}
 	
 	public Carte getCarteRestante() {
@@ -254,6 +264,41 @@ public class Joueur implements Compteur {
 		this.aJoue = false;
 	}
 	
+	public Carte meilleurCartePlusDe(int faceValueToCheck) {
+		Iterator<Carte> ite = this.jest.iterator();
+		Carte cMax = ite.next();
+		Carte cActu;
+		while(ite.hasNext()) {
+			cActu = ite.next();
+			if(cActu.getFaceValue() == faceValueToCheck) 
+				if(cActu.getOrdre() > cMax.getOrdre())
+					cMax = cActu;
+		}
+		return cMax;
+	}
+	
+	public int compterNbCartesMemeValue(int faceValueToSearch) {
+		int compteur = 0;
+		for(Carte c : this.jest) {
+			if(c.getFaceValue() == faceValueToSearch)
+				compteur++;
+		}
+		return compteur;
+	}
+	
+	public int plusGrandeFaceValue() {
+		int faceValue = -1;
+		for(Carte c : this.jest) 
+			if(c.getFaceValue() > faceValue)
+				faceValue = c.getFaceValue();
+		return faceValue;
+	}
+	
+	
+	public HashSet<Carte> getCartesTriJest(Couleur coul) {
+		return this.cartesTri.get(coul);
+	}
+	
 	/**
 	 * Cette methode renvoie la carte (cachée ou non) après l'avoir enlevé 
 	 * @param cache
@@ -280,13 +325,6 @@ public class Joueur implements Compteur {
 	public void ajouterDansJest(Carte carte) {
 		carte.antiCacherCarte();
 		this.jest.add(carte);
-	}
-	
-	private enum Couleur {
-		CARREAU,
-		COEUR,
-		PIQUE,
-		TREFLE;
 	}
 	
 	public void afficherMain() {
