@@ -159,7 +159,7 @@ public enum Condition {
 		int cMin = 6, cActu;
 		//Pour chaque joueur si on trouve une meilleure carte que la sienne on met à jour
 		for(Joueur jo : joueurs) {
-			cActu = rechercheCartePlusGrande(jo.getCartesTriJest(coul));
+			cActu = rechercheCartePlusPetite(jo.getCartesTriJest(coul));
 			if(cActu < cMin) {
 				cMin = cActu;
 				jCherche = jo;

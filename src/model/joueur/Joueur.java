@@ -46,6 +46,7 @@ public class Joueur implements Compteur {
 		this.aJoue=false;
 		this.main = new ArrayList<Carte>(2);
 		this.jest = new HashSet<Carte>();
+		this.cartesTri = new HashMap<Couleur, HashSet<Carte>>();
 		
 		//on associe le type de comportement selon l'entier iaType
 		// De même on associe pseudo aux reel et strategie_pseudo (ou pseudo est un chiffre) aux IA 
@@ -75,18 +76,18 @@ public class Joueur implements Compteur {
 		int score = 0;
 		
 		//On ajoute les points obtenues avec les cartes coeur
-		score += scoreCoeur(cartesTri.get(Couleur.COEUR));
+		score += scoreCoeur(this.cartesTri.get(Couleur.COEUR));
 		
 		//On repère ensuite les paires de cartes noires et pour chacune d'elles on ajoute 2 points
-		score += scorePairesNoires(cartesTri.get(Couleur.PIQUE), cartesTri.get(Couleur.TREFLE));
+		score += scorePairesNoires(this.cartesTri.get(Couleur.PIQUE), this.cartesTri.get(Couleur.TREFLE));
 		
 		//Pour le reste des cartes on se contente d'aller chercher les faces values 
 		//et de les ajouter au score.
 		//On va lier les autres paquets de carte dans une même collection pour boucler plus facilement
 		HashSet<Carte> melangeFinal = new HashSet<Carte>();
-		melangeFinal.addAll(cartesTri.get(Couleur.CARREAU));
-		melangeFinal.addAll(cartesTri.get(Couleur.PIQUE));
-		melangeFinal.addAll(cartesTri.get(Couleur.TREFLE));
+		melangeFinal.addAll(this.cartesTri.get(Couleur.CARREAU));
+		melangeFinal.addAll(this.cartesTri.get(Couleur.PIQUE));
+		melangeFinal.addAll(this.cartesTri.get(Couleur.TREFLE));
 		
 		//Addition des points finales
 		score += addFaceValues(melangeFinal);

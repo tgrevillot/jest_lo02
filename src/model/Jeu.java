@@ -181,10 +181,12 @@ public class Jeu {
 	
 	private void attribuerTrophee() {
 		Joueur j;
-		/*
-		}*/
-		j = Condition.attribution(this.trophees[0].getCarte().getCondition(), this.joueurs);
-		j.ajouterDansJest(this.trophees[0].getCarte());
+		for(int i = 0; i < this.trophees.length; i++) {
+			if(this.trophees[i] != null) {
+				j = Condition.attribution(this.trophees[0].getCondition(), this.joueurs);
+				j.ajouterDansJest(this.trophees[0].getCarte());
+			}
+		}
 	}
 
 	
@@ -192,11 +194,8 @@ public class Jeu {
 		//On va utiliser un annuaire pour associer à chaque joueur son nombre de points
 		HashMap<Joueur, Integer> tabPoints = new HashMap<Joueur, Integer>();
 		//Pour chaque joueur on compte le nombre de points
-		for(Joueur j : this.joueurs) {
-			j.generateSortJest();
-			attribuerTrophee();
+		for(Joueur j : this.joueurs)
 			tabPoints.put(j, j.compterPointsCarte());
-		}
 		return tabPoints;
 	}
 	
@@ -251,8 +250,17 @@ public class Jeu {
 	}
 
 	private Joueur determinerGagnant() {
-		//attribuerTrophee();
+		//Pour chaque joueur on va générer les listes triées de cartes
+		for(Joueur j : this.joueurs)
+			j.generateSortJest();
+		
+		//Attribution des trophées
+		attribuerTrophee();
+		
+		//Récupération des scores sous forme de HashMap
 		HashMap<Joueur, Integer> resultats = compterPoints();
+		
+		//Affichage des résultats
 		for(Joueur j : resultats.keySet())
 			System.out.println("Le joueur " + j.getNom() + " a obtenu " + resultats.get(j) + " points");
 		return null;

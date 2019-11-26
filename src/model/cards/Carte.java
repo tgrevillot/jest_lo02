@@ -14,12 +14,6 @@ public abstract class Carte {
 	private boolean cache;
 	
 	/**
-	 * C'est l'attribut qui indique quelle est la condition pour obtenir cette carte
-	 * Il sera a null pour toute carte n'étant pas un trophée
-	 */
-	private Condition condition;
-	
-	/**
 	 * Attribut permettant de déterminer l'ordre de la couleur de la carte.
 	 * Utile lors de la selection de la carte lorsque les face values ont la meme valeur 
 	 */
@@ -84,9 +78,6 @@ public abstract class Carte {
 		return priority;
 	}
 
-	public Condition getCondition() {
-		return this.condition;
-	}
 	public String toString() {
 		return afficher();
 	}
