@@ -49,68 +49,102 @@ public class Jeu {
 	 * inclus : les demandes a l'utilisateur, la création d'un deck mélangé, le choix du [des] trophé[s]  
 	 */
 	public void initialiser() {
-		//On Lance la partie 
-		Scanner scan = new Scanner(System.in);
-		String lineSeparator = System.getProperty("line.separator");
-		
-
+		//On Lance la partie
 		System.out.println("Bienvenue dans le Jest !");
-		System.out.println("Suivez les instructions suivantes pour configurer la partie et pouvoir jouer" + lineSeparator);
-		
+		System.out.println("Suivez les instructions suivantes pour configurer la partie et pouvoir jouer "+"\n");
 		//choix du nombre de joueurs	
-			System.out.println("Veuillez entrer le nombre de joueurs (3 ou 4) : ");
-			int nbJoueurs = scan.nextInt();
-			//on vérifie que le nombre entré est bien 3 ou 4 
-			while ( (nbJoueurs != 4) && (nbJoueurs != 3)  ){
-				System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
-				nbJoueurs = scan.nextInt();
-			}
-			System.out.println("Vous avez choisi "+nbJoueurs+" joueurs " + lineSeparator);
-		
+		System.out.println("Veuillez entrer le nombre de joueurs (3 ou 4) : ");
+		int nbJoueurs=initNBJoueurs();
 		//choix du nombre de joueur humains
-			System.out.println("Veuillez entrer le nombre de joueurs humains (entre 1 et "+nbJoueurs+" inclus) : ");
-			int nbHumains = scan.nextInt();
-			//on vérifie que le nombre entré est bien compatible 
-			while ( (nbHumains < 1) || (nbHumains > nbJoueurs)  ){
-				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
-				nbHumains = scan.nextInt();
-			}
-			System.out.println("Il y aura donc "+nbHumains+" joueurs humains " + lineSeparator);
-		
-		int difficulte = 0;
-		//Choix de la difficulté 	
-			//seulement si tous les joueurs ne sont pas humains
-			if (nbJoueurs > nbHumains) {
-				System.out.println("Veuillez choisir le niveau des IA (1 ou 2): ");
-				difficulte = scan.nextInt();
-				//on vérifie que le nombre entré est bien compatible 
-				while ( (difficulte < 1) || (difficulte > 2)  ){
-					System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
-					difficulte = scan.nextInt();
-				}
-				System.out.println("Le niveau est donc reglé sur "+difficulte+ lineSeparator);
-			} else {
-				System.out.println("Il n'y a pas d'IA dans cette partie");
-			}
-		//On demande le(s) pseudo(s) a l'utilisateur 
-			String[] tableauPseudos = {"J1","J2","J3","J4"};
-			//on regarde le nombre d'humains
-			if (nbHumains==1) {
-				System.out.println("Vous allez maintenant devoir entrer votre pseudo");
-			} else {
-				System.out.println("Vous allez maintenant devoir entrer les pseudos des joueurs humains");
-			}
-			//on demande nbHumains pseudos
-			for (int i=0; i<nbHumains;i++) {
-				System.out.println("Veuillez entrer le pseudo du joueur "+ (i+1));
-				tableauPseudos[i]= scan.next();
-			}
-			System.out.println("");
+		System.out.println("Veuillez entrer le nombre de joueurs humains (entre 1 et "+nbJoueurs+" inclus) : ");
+		int nbHumains=initNBHumains(nbJoueurs);
+		//Choix de la difficulté 
+		int difficulte=0;
+		if (nbJoueurs > nbHumains) { //seulement si tous les joueurs ne sont pas humains
+			System.out.println("Veuillez choisir le niveau des IA (1 ou 2): ");
+			difficulte=initDifficulte(nbJoueurs,nbHumains);
+		} else {
+			System.out.println("Il n'y a pas d'IA dans cette partie");
+		}
+		//choix des pseudos des joueurs 
+		String[] tableauPseudos = initPseudos(nbHumains);
+
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
 		creerTrophees();
 	}
+	private int initNBJoueurs() {
+		Scanner scan = new Scanner(System.in);
+		String nbJoueurs = scan.next();
+		try {
+			if ((Integer.parseInt(nbJoueurs) != 4) && (Integer.parseInt(nbJoueurs) != 3)) {
+				System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
+				return initNBJoueurs();
+			}else {
+				System.out.println("Vous avez choisi "+nbJoueurs+" joueurs \n");
+				return Integer.parseInt(nbJoueurs);
+			}
+		}catch (Exception e) {
+			System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
+			return initNBJoueurs();
+		}
+	}
+	private int initNBHumains(int nbJoueurs) {
+		Scanner scan = new Scanner(System.in);
+		String lineSeparator = System.getProperty("line.separator");
+		String nbHumains = scan.next();
+		//on vérifie que le nombre entré est bien compatible 
+		try {
+			Integer.parseInt(nbHumains);
+			if ((Integer.parseInt(nbHumains) < 1) || (Integer.parseInt(nbHumains) > nbJoueurs)) {
+				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
+				return initNBHumains(nbJoueurs);
+			} else {
+				System.out.println("Il y aura donc "+nbHumains+" joueurs humains " + lineSeparator);
+				return Integer.parseInt(nbHumains);
+			}
+		} catch (Exception e) {
+			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
+			return initNBHumains(nbJoueurs);
+		}
+	}
 	
+	private int initDifficulte(int nbJoueurs, int nbHumains) {
+		Scanner scan = new Scanner(System.in);
+		String difficulte = scan.next();
+		try {//on vérifie que le nombre entré est bien compatible 
+			if ((Integer.parseInt(difficulte) < 1) || (Integer.parseInt(difficulte) > 2)) {
+				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
+				return initDifficulte(nbJoueurs, nbHumains);
+			}else {
+				System.out.println("Le niveau est donc reglé sur "+difficulte+ "\n");
+				return Integer.parseInt(difficulte);
+			}
+		} catch (Exception e) {
+			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
+			return initDifficulte(nbJoueurs, nbHumains);
+		}
+	}
+	
+	private String[] initPseudos(int nbHumains) {
+		Scanner scan = new Scanner(System.in);
+		String lineSeparator = System.getProperty("line.separator");
+		//On demande le(s) pseudo(s) a l'utilisateur 
+		String[] tableauPseudos = {"J1","J2","J3","J4"};
+		//on regarde le nombre d'humains
+		if (nbHumains==1) {
+			System.out.println("Vous allez maintenant devoir entrer votre pseudo");
+		} else {
+			System.out.println("Vous allez maintenant devoir entrer les pseudos des joueurs humains");
+		}
+		//on demande nbHumains pseudos
+		for (int i=0; i<nbHumains;i++) {
+			System.out.println("Veuillez entrer le pseudo du joueur "+ (i+1));
+			tableauPseudos[i]= scan.next();
+		}
+		System.out.println("");
+		return tableauPseudos;
+	}
 	
 	/**
 	 * Cree les cartes et remplis le paquet avec

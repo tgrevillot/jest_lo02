@@ -37,6 +37,13 @@ public class Basique implements IAStrategie {
 		}else {
 			cartePrise = joueurAPrendre.prendreCarte(true); //on recupere la carte cachee du joueur choisi
 		}
+		String stringCarte = "";
+		if (cartePrise.isCacher()) {
+			stringCarte = "[carte cachée]";
+		} else {
+			stringCarte = cartePrise.afficher();
+		}
+		System.out.println("\n Le joueur "+joueurJouant.getNom()+" a pris la carte "+ stringCarte + "\n");
 		joueurJouant.ajouterDansJest(cartePrise);
 		return joueurAPrendre;
 	}
