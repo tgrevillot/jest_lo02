@@ -1,5 +1,5 @@
 package model.joueur;
 
 public interface Compteur {
-	public void compterPointsCarte();
+	public int compterPointsCarte();
 }

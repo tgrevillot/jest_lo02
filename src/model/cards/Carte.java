@@ -84,6 +84,9 @@ public abstract class Carte {
 		return priority;
 	}
 
+	public Condition getCondition() {
+		return this.condition;
+	}
 	public String toString() {
 		return afficher();
 	}
