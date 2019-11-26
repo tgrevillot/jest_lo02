@@ -324,6 +324,7 @@ public class Joueur implements Compteur {
 	 * @param carte
 	 */
 	public void ajouterDansJest(Carte carte) {
+		carte.antiCacherCarte();
 		this.jest.add(carte);
 	}
 	
