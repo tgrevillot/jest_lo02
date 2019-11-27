@@ -61,7 +61,8 @@ public class Reel implements IAStrategie {
 			System.out.println("Joueur "+joueurJouant.getNom()+", les cartes disponibles sont : ");
 			int i = 1 ; //initialisation
 			for (Joueur j : joueurs) { // on affiche toutes les cartes disponibles (les cachées ne sont pas dévoilées)
-				System.out.println("Cartes de l'offre du joueur : "+j.getNom());
+				String lineSeparator = System.getProperty("line.separator");
+				System.out.println(lineSeparator + "Cartes de l'offre du joueur : "+j.getNom());
 				System.out.println(i +"- "+ (j.getVisibleCard()).afficher());
 				i++;
 				System.out.println(i +"- Carte cachée");

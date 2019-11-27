@@ -42,7 +42,10 @@ public class Jeu {
 	private Jeu() {
 		initialiser();
 		faireUnTour(new LinkedList<Carte>());
-		determinerGagnant();
+		Joueur gagnant = determinerGagnant();
+		
+		System.out.println(System.getProperty("line.separator"));
+		System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
 	}
 	
 	/**
@@ -199,7 +202,7 @@ public class Jeu {
 		
 		Carte carteTrophee1 =  this.deck.pop();
 		Trophee trophee1= new Trophee(carteTrophee1);
-		// s'il y a 3 joueurs on rajoute un deuxièeme trophée
+		// s'il y a 3 joueurs on rajoute un deuxième trophée
 		if (this.joueurs.size()==3) {
 			Carte carteTrophee2 =  this.deck.pop();
 			Trophee trophee2= new Trophee(carteTrophee2);
@@ -210,7 +213,14 @@ public class Jeu {
 			this.trophees = trophee;
 		}
 		
+		//On affiche quelles cartes sont les trophées
+		System.out.println("Le(s) trophée(s) a/ont été choisis ! Le(s) voici :");
+		for(int i = 0; i < this.trophees.length; i++) {
+			if(this.trophees[i] != null)
+				System.out.println(this.trophees[i].getCarte() + " avec la condition " + this.trophees[i].getCondition());
+		}
 		
+		System.out.println(System.getProperty("line.separator"));		
 	}
 	
 	private void attribuerTrophee() {
@@ -218,9 +228,12 @@ public class Jeu {
 		for(int i = 0; i < this.trophees.length; i++) {
 			if(this.trophees[i] != null) {
 				j = Condition.attribution(this.trophees[0].getCondition(), this.joueurs);
-				j.ajouterDansJest(this.trophees[0].getCarte());
+				j.ajouterDansJest(this.trophees[i].getCarte());
+				System.out.println("Le trophée " + this.trophees[i].getCarte() + " a été attribué à "
+						+ j.getNom() + " !");
 			}
 		}
+		System.out.println();
 	}
 
 	
@@ -384,6 +397,12 @@ public class Jeu {
 		if(!this.deck.isEmpty())
 			//Si c'est le cas on repart pour un nouveau tour
 			faireUnTour(recupererCartesRestantes());
+		else {
+			//Sinon c'est la fin de la partie donc on doit répartir les cartes en jeu
+			//dans les decks de chacun
+			for(Joueur jo : this.joueurs)
+				jo.ajouterCartesRestantesJest();
+		}
 		
 	}
 	

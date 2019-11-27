@@ -114,18 +114,8 @@ public class Joueur implements Compteur {
 		this.strat.offrir(this.main, this);
 	}
 	
-	
-	public void montrer2emeCarte() {
-		throw new Error("A COMPLETER");
-	}
-	
-	
-	public HashSet<Carte> consulterJest() {
-		throw new Error("A COMPLETER");
-	}
-	
 	public void ajouterCartesRestantesJest() {
-		throw new Error("A COMPLETER");
+		this.jest.add(this.getCarteRestante());
 	}
 	
 	public void accepterCarte(Carte c) {
