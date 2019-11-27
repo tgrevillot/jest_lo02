@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -128,7 +129,6 @@ public class Jeu {
 	
 	private String[] initPseudos(int nbHumains) {
 		Scanner scan = new Scanner(System.in);
-		String lineSeparator = System.getProperty("line.separator");
 		//On demande le(s) pseudo(s) a l'utilisateur 
 		String[] tableauPseudos = {"J1","J2","J3","J4"};
 		//on regarde le nombre d'humains
@@ -284,6 +284,11 @@ public class Jeu {
 	}
 
 	private Joueur determinerGagnant() {
+		String lineSeparator = System.getProperty("line.separator");
+		
+		//On annonce que c'est la fin de la partie
+		System.out.println(lineSeparator + lineSeparator);
+		System.out.println("La partie est terminée ! Faisons le point sur les scores : ");
 		//Pour chaque joueur on va générer les listes triées de cartes
 		for(Joueur j : this.joueurs)
 			j.generateSortJest();
@@ -294,10 +299,20 @@ public class Jeu {
 		//Récupération des scores sous forme de HashMap
 		HashMap<Joueur, Integer> resultats = compterPoints();
 		
-		//Affichage des résultats
-		for(Joueur j : resultats.keySet())
-			System.out.println("Le joueur " + j.getNom() + " a obtenu " + resultats.get(j) + " points");
-		return null;
+		//Affichage des résultats et détermination du gagnant
+		Joueur gagnant = this.joueurs.get(0);
+		int scoreActu;
+		int scoreMax = resultats.get(this.joueurs.get(0));
+		for(Joueur j : resultats.keySet()) {
+			scoreActu = resultats.get(j);
+			if(scoreActu > scoreMax) {
+				scoreMax = scoreActu;
+				gagnant = j;
+			}
+			//On affiche le score de chaque joueur également
+			System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
+		}
+		return gagnant;
 	}
 	
 	private void faireUnTour(LinkedList<Carte> cartesRestantes) {

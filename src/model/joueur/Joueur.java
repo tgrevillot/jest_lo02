@@ -46,7 +46,7 @@ public class Joueur implements Compteur {
 		this.aJoue=false;
 		this.main = new ArrayList<Carte>(2);
 		this.jest = new HashSet<Carte>();
-		this.cartesTri = new HashMap<Couleur, HashSet<Carte>>();
+		this.cartesTri = new HashMap<Couleur, HashSet<Carte>>(4);
 		
 		//on associe le type de comportement selon l'entier iaType
 		// De même on associe pseudo aux reel et strategie_pseudo (ou pseudo est un chiffre) aux IA 
@@ -195,9 +195,7 @@ public class Joueur implements Compteur {
 	
 	public void generateSortJest() {
 		//Si les listes n'ont pas été déjà générées
-		if(!this.cartesTri.isEmpty()) {
-			//On crée une Map qui va contenir l'ensemble des paquets de cartes triées
-			this.cartesTri = new HashMap<Couleur, HashSet<Carte>>(4);
+		if(this.cartesTri.isEmpty()) {
 	
 			//On crée une liste de cartes par couleur 
 			HashSet<Carte> carreau = new HashSet<Carte>();

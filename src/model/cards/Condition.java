@@ -120,8 +120,8 @@ public enum Condition {
 		Joueur jJoker = null;
 		for(int i = 0; i < joueurs.size(); i++)
 			if(joueurs.get(i).hasJoker()) {
-				i = joueurs.size();
 				jJoker = joueurs.get(i);
+				i = joueurs.size();
 			}
 		
 		Carte joker = jJoker.removeJoker();
@@ -159,7 +159,8 @@ public enum Condition {
 		int cMin = 6, cActu;
 		//Pour chaque joueur si on trouve une meilleure carte que la sienne on met à jour
 		for(Joueur jo : joueurs) {
-			cActu = rechercheCartePlusPetite(jo.getCartesTriJest(coul));
+			HashSet<Carte> c = jo.getCartesTriJest(coul);
+			cActu = rechercheCartePlusPetite(c);
 			if(cActu < cMin) {
 				cMin = cActu;
 				jCherche = jo;
