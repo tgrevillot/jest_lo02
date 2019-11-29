@@ -407,6 +407,8 @@ public class Jeu {
 	}
 	
 	private LinkedList<Carte> recupererCartesRestantes() {
+		//Récupère à la fin de chaque tour les différentes cartes restantes après le
+		//choix des offres
 		LinkedList<Carte> cartes = new LinkedList<Carte>();
 		for(Joueur j : this.joueurs)
 			cartes.add(j.getCarteRestante());

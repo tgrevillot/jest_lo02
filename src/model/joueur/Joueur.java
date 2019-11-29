@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 import model.cards.Carte;
 import model.cards.Couleur;
-import model.cards.Joker;
 
 public class Joueur implements Compteur {
 	/**
@@ -81,6 +80,9 @@ public class Joueur implements Compteur {
 		//On repère ensuite les paires de cartes noires et pour chacune d'elles on ajoute 2 points
 		score += scorePairesNoires(this.cartesTri.get(Couleur.PIQUE), this.cartesTri.get(Couleur.TREFLE));
 		
+		//On prend en compte le fait qu'un As soit tout seul
+		score += asToutSeul();
+		
 		//Pour le reste des cartes on se contente d'aller chercher les faces values 
 		//et de les ajouter au score.
 		//On va lier les autres paquets de carte dans une même collection pour boucler plus facilement
@@ -94,6 +96,7 @@ public class Joueur implements Compteur {
 		
 		return score;
 	}
+	
 	/**
 	 * Cette fonction définie le choix de l'offre pour chaque joueur 
 	 * S'il est reel : un choix entre les cartes des autres joueurs (qui n'ont pas déja donné une offre)
@@ -125,8 +128,9 @@ public class Joueur implements Compteur {
 	
 	private int addFaceValues(HashSet<Carte> cartes) {
 		int score = 0;
-		for(Carte c : cartes)
+		for(Carte c : cartes) {
 			score += c.envoyerPoints();
+		}
 		return score;
 	}
 	
@@ -162,6 +166,27 @@ public class Joueur implements Compteur {
 						for(Carte c : coeur)
 							score += c.getFaceValue();
 				}
+		return score;
+	}
+	
+	private int asToutSeul() {
+		int score = 0;
+		
+		//On va parcourir chaque liste triée et regarder s'il n'y a qu'une seule carte
+		for(Couleur coul : this.cartesTri.keySet()) {
+			HashSet<Carte> listeT = this.cartesTri.get(coul);
+			
+			//S'il y a qu'une seule carte 
+			if(listeT.size() == 1) {
+				//et que c'est un As on ajoute 5 points
+				Carte c = listeT.iterator().next();
+				if(c.getFaceValue() == 1) {
+					score += 5;
+					//On enlève l'as de la collection pour ne pas compter les points 2 fois
+					listeT.remove(c);
+				}
+			}
+		}	
 		return score;
 	}
 	

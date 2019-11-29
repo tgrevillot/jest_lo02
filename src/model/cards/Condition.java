@@ -123,7 +123,7 @@ public enum Condition {
 				jJoker = joueurs.get(i);
 				i = joueurs.size();
 			}
-		
+		//TODO Bizarre : on génère bien un Joker à chaque fois ?
 		Carte joker = jJoker.removeJoker();
 				
 		//Ensuite on va calculer les points
