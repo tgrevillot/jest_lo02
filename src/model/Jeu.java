@@ -38,6 +38,17 @@ public class Jeu {
 	 */
 	private Trophee[] trophees;
 	
+	/**
+	 * Le compteur de point à utiliser
+	 * Pour l'instant il n'existe qu'une seule manière de compter les points
+	 */
+	private Visiteur compteur;
+	
+	/**
+	 * Cet objet va servir à déterminer à quel joueur donner le trophée.
+	 * Pour le moment, il n'existe qu'un seul moyen de répartir les trophées
+	 */
+	private RepartiteurTrophee repartiteur;
 
 	private Jeu() {
 		initialiser();
@@ -73,6 +84,12 @@ public class Jeu {
 		//choix des pseudos des joueurs 
 		String[] tableauPseudos = initPseudos(nbHumains);
 
+		//On crée le compteur de point
+		this.compteur = new CompteurClassique();
+		
+		//On crée le répartiteur de trophée
+		this.repartiteur = new RepartiteurTropheeClassique(this.compteur);
+		
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
 		creerTrophees();
@@ -227,7 +244,7 @@ public class Jeu {
 		Joueur j;
 		for(int i = 0; i < this.trophees.length; i++) {
 			if(this.trophees[i] != null) {
-				j = Condition.attribution(this.trophees[0].getCondition(), this.joueurs);
+				j = this.repartiteur.attribuer(this.trophees[0].getCondition(), this.joueurs);
 				j.ajouterDansJest(this.trophees[i].getCarte());
 				System.out.println("Le trophée " + this.trophees[i].getCarte() + " a été attribué à "
 						+ j.getNom() + " !");
@@ -242,7 +259,7 @@ public class Jeu {
 		HashMap<Joueur, Integer> tabPoints = new HashMap<Joueur, Integer>();
 		//Pour chaque joueur on compte le nombre de points
 		for(Joueur j : this.joueurs)
-			tabPoints.put(j, j.compterPointsCarte());
+			tabPoints.put(j, j.accept(this.compteur));
 		return tabPoints;
 	}
 	
@@ -302,9 +319,6 @@ public class Jeu {
 		//On annonce que c'est la fin de la partie
 		System.out.println(lineSeparator + lineSeparator);
 		System.out.println("La partie est terminée ! Faisons le point sur les scores : ");
-		//Pour chaque joueur on va générer les listes triées de cartes
-		for(Joueur j : this.joueurs)
-			j.generateSortJest();
 		
 		//Attribution des trophées
 		attribuerTrophee();

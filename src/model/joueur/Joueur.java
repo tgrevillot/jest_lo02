@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import model.Visiteur;
 import model.cards.Carte;
 import model.cards.Couleur;
 
-public class Joueur implements Compteur {
+public class Joueur implements Visitable {
 	/**
 	 * Indique si le joueur a déja joué pendant ce tour
 	 * par défaut a false 
@@ -32,14 +33,14 @@ public class Joueur implements Compteur {
 	 */
 	private IAStrategie strat;
 	
+	private HashMap<Couleur, HashSet<Carte>> cartesTri;
+	
 	
 	/** 
 	 * Chaîne de caractère représentant le pseudonyme du joueur affiché en jeu.
 	 * Les Ia seront nommées de la sorte : strategie_id (où l'id est unique de 1 jusqu'à 3)
 	 */
 	private String nom;
-	
-	private HashMap<Couleur, HashSet<Carte>> cartesTri;
 	
 	public Joueur(String pseudo, int iaType) {
 		this.aJoue=false;
@@ -71,9 +72,13 @@ public class Joueur implements Compteur {
 	}
 	
 	@Override
-	public int compterPointsCarte() {
-		int score = 0;
+	public int accept(Visiteur visiteur) {
 		
+		
+		//On envoie au visiteur le joueur actuel pour qu'il puisse avoir accès aux différentes méthodes
+		return visiteur.visit(this);
+		
+		/*
 		//On ajoute les points obtenues avec les cartes coeur
 		score += scoreCoeur(this.cartesTri.get(Couleur.COEUR));
 		
@@ -94,7 +99,7 @@ public class Joueur implements Compteur {
 		//Addition des points finales
 		score += addFaceValues(melangeFinal);
 		
-		return score;
+		return score;*/
 	}
 	
 	/**
@@ -126,70 +131,6 @@ public class Joueur implements Compteur {
 			this.main.add(c);
 	}
 	
-	private int addFaceValues(HashSet<Carte> cartes) {
-		int score = 0;
-		for(Carte c : cartes) {
-			score += c.envoyerPoints();
-		}
-		return score;
-	}
-	
-	private int scorePairesNoires(HashSet<Carte> pique, HashSet<Carte> trefle) {
-		int score = 0;
-		
-		//On va tout boucler sur l'ensemble des cartes des deux collections et vérifier s'il y en a
-		//possédant la même face value. Si c'est le cas on ajoute 2 points.
-		for(Carte carteP : pique)
-			for(Carte carteT : trefle)
-				if(carteP.getFaceValue() == carteT.getFaceValue())
-					score += 2;
-		
-		return score;
-	}
-	
-	private int scoreCoeur(HashSet<Carte> coeur) {
-		int score = 0;
-		//On commencera par vérifier si le jest comporte le Joker
-				if(hasJoker()) {
-				//Si on a le Joker alors on recuperera le nombre de carte Coeur
-					int nbCartesCoeur = coeur.size();
-					
-					//Si on a 0 coeur, alors on ajoute 4 points
-					if(nbCartesCoeur == 0)
-						score += 4;
-					
-					//Si on a 4 coeur, on incrémente le score de 10
-					else if(nbCartesCoeur == 4)
-						score += 10;
-					else	
-						//Sinon on incrémente des faces Values de chacun
-						for(Carte c : coeur)
-							score += c.getFaceValue();
-				}
-		return score;
-	}
-	
-	private int asToutSeul() {
-		int score = 0;
-		
-		//On va parcourir chaque liste triée et regarder s'il n'y a qu'une seule carte
-		for(Couleur coul : this.cartesTri.keySet()) {
-			HashSet<Carte> listeT = this.cartesTri.get(coul);
-			
-			//S'il y a qu'une seule carte 
-			if(listeT.size() == 1) {
-				//et que c'est un As on ajoute 5 points
-				Carte c = listeT.iterator().next();
-				if(c.getFaceValue() == 1) {
-					score += 5;
-					//On enlève l'as de la collection pour ne pas compter les points 2 fois
-					listeT.remove(c);
-				}
-			}
-		}	
-		return score;
-	}
-	
 	public boolean hasJoker() {
 		for(Carte c : this.jest) 
 			if(c.donnerCouleur().equals("Joker"))
@@ -208,7 +149,8 @@ public class Joueur implements Compteur {
 		return null;
 	}
 	
-	public void generateSortJest() {
+	private void generateSortJest() {
+		
 		//Si les listes n'ont pas été déjà générées
 		if(this.cartesTri.isEmpty()) {
 	
@@ -261,7 +203,17 @@ public class Joueur implements Compteur {
 		return this.main.size();
 	}
 	
+	public HashMap<Couleur, HashSet<Carte>> getCartesTri() {
+		if(this.cartesTri.isEmpty())
+			generateSortJest();
+		
+		return this.cartesTri;
+	}
 	
+	public HashSet<Carte> getCartesParCouleur(Couleur coul) {
+		return this.cartesTri.get(coul);
+	}
+
 	public boolean aJoue() {
 		return aJoue;
 	}
@@ -306,11 +258,6 @@ public class Joueur implements Compteur {
 			if(c.getFaceValue() > faceValue)
 				faceValue = c.getFaceValue();
 		return faceValue;
-	}
-	
-	
-	public HashSet<Carte> getCartesTriJest(Couleur coul) {
-		return this.cartesTri.get(coul);
 	}
 	
 	/**
