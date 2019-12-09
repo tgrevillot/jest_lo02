@@ -63,6 +63,7 @@ public class CompteurClassique implements Visiteur {
 				//et que c'est un As on ajoute 5 points
 				Carte c = listeT.iterator().next();
 				if(c.getFaceValue() == 1) {
+					//TODO CE N'EST PAS AUSSI SIMPLE, préfere plutôt changer la face value de l'as a 5 et le traiter plus tard !
 					score += 5;
 					//On enlève l'as de la collection pour ne pas compter les points 2 fois
 					listeT.remove(c);
@@ -114,9 +115,9 @@ public class CompteurClassique implements Visiteur {
 					else if(nbCartesCoeur == 4)
 						score += 10;
 					else	
-						//Sinon on incrémente des faces Values de chacun
+						//Sinon on cécrémente des faces Values de chacun
 						for(Carte c : coeur)
-							score += c.getFaceValue();
+							score -= c.getFaceValue(); 
 				}
 		return score;
 	}
