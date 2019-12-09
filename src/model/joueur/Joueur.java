@@ -211,6 +211,9 @@ public class Joueur implements Visitable {
 	}
 	
 	public HashSet<Carte> getCartesParCouleur(Couleur coul) {
+		if(this.cartesTri.isEmpty())
+			generateSortJest();
+		
 		return this.cartesTri.get(coul);
 	}
 

@@ -40,7 +40,14 @@ public class CompteurClassique implements Visiteur {
 	
 	@Override
 	public int visit(Visitable visitable) {
-		throw new Error("Not yet implemented");
+		int score = 0;
+		
+		if(visitable instanceof Joueur)
+			score = visit((Joueur) visitable);
+		else
+			throw new Error("Unknow Visitable");
+		
+		return score;
 	}
 	
 	//Ci-dessous vont se trouver les méthodes privées de calcul de points

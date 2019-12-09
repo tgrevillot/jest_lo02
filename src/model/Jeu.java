@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -15,7 +14,6 @@ import model.cards.Joker;
 import model.cards.Pique;
 import model.cards.Trefle;
 import model.cards.Trophee;
-import model.cards.Condition;
 import model.joueur.Joueur;
 
 public class Jeu {
@@ -434,8 +432,5 @@ public class Jeu {
 		new Jeu();
 
 	}
-	
-	
-	
 	
 }
