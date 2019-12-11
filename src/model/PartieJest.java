@@ -7,16 +7,12 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
-import model.cards.Carreau;
 import model.cards.Carte;
-import model.cards.Coeur;
-import model.cards.Joker;
-import model.cards.Pique;
-import model.cards.Trefle;
+import model.cards.Couleur;
 import model.cards.Trophee;
 import model.joueur.Joueur;
 
-public class Jeu {
+public class PartieJest {
 	
 	/** 
 	 * Le deck est l'ensemble des cartes jouables du jeu. Il comporte 17 cartes différentes au départ. 
@@ -48,7 +44,7 @@ public class Jeu {
 	 */
 	private RepartiteurTrophee repartiteur;
 
-	private Jeu() {
+	private PartieJest() {
 		initialiser();
 		faireUnTour(new LinkedList<Carte>());
 		Joueur gagnant = determinerGagnant();
@@ -172,12 +168,12 @@ public class Jeu {
 		this.deck = new LinkedList<Carte>();
 		
 		for (int i = 1; i<5; i++) {
-			this.deck.add(new Carreau(i));
-			this.deck.add(new Coeur(i));
-			this.deck.add(new Pique(i));
-			this.deck.add(new Trefle(i));
+			this.deck.add(new Carte(i, Couleur.CARREAU));
+			this.deck.add(new Carte(i, Couleur.COEUR));
+			this.deck.add(new Carte(i, Couleur.TREFLE));
+			this.deck.add(new Carte(i, Couleur.PIQUE));
 		}
-		this.deck.add(new Joker());
+		this.deck.add(new Carte(0, Couleur.JOKER));
 		//on mélange le deck
 		Collections.shuffle(this.deck);	
 		
@@ -429,7 +425,7 @@ public class Jeu {
 	
 	public static void main(String[] args) {
 
-		new Jeu();
+		new PartieJest();
 
 	}
 	

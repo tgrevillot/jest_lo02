@@ -1,6 +1,6 @@
 package model.cards;
 
-public abstract class Carte {
+public class Carte {
 	/**
 	 * La valeur de la carte est le chiffre qui lui est associé
 	 * Les valeurs vont de 1 à 5. Par défaut les As valent 1 et le Joker 4 
@@ -19,34 +19,55 @@ public abstract class Carte {
 	 */
 	private int priority;
 	
+	/**
+	 * Couleur de la carte : Pique, Trefle, Carreau, Coeur, Joker
+	 */
+	private Couleur couleur;
 	
 	/**Constructeur des Carte
 	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
 	 * 		Ce paramètre permet de donner la valeu souhaitée a la carte 
 	 */
-	public Carte(int val, int ordre) {
+	public Carte(int val, Couleur couleur) {
 		this.valeur=val;
 		this.cache= false;
-		if(ordre < 1)
-			ordre = 1;
-		this.priority = ordre;
+		this.couleur = couleur;
+		
+		this.priority = couleur.getPriority();
 	}
 	
-	public abstract int envoyerPoints();
+	public int envoyerPoints() {
+		return this.valeur;
+	}
 	
-	public abstract String donnerCouleur();
+	public String donnerCouleur() {
+		return couleur.getName();
+	}
+	
+	public Couleur getCouleur() {
+		return this.couleur;
+	}
+	
 	/**
-	 * afficher sert a afficher les cartes sous une jolie forme
+	 * Affiche les cartes sous une jolie forme
 	 * @return
 	 * Cela renvois un String expliquant en Français quelle est la carte en question
 	 */
 	public String afficher() {
 		String str = "";
-		if(this.valeur == 1)
-			str += "As de ";
+		
+		//On affiche le Joker différemment, sans valeur.
+		if(this.couleur == Couleur.JOKER)
+			str += "Joker";
+		else if(this.valeur == 1)
+			str += "As de " + this.couleur.getName();
 		else
-			str += String.valueOf(this.valeur) + " de ";
+			str += String.valueOf(this.valeur) + " de "  + this.couleur.getName();
+		//Si la carte est cachée, on indique qu'elle l'est dans le toString
+		if(this.cache)
+			str += " [cache] ";
+		
 		return str;
 	}
 	

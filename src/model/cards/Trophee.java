@@ -16,27 +16,31 @@ public class Trophee {
 	public Trophee(Carte carte) {
 		
 		this.carte=carte;
-		if (this.carte instanceof Coeur) {
-			this.condition = Condition.detenteurJoker;
-		} else {
-			if (this.carte instanceof Carreau) {
+		switch(this.carte.getCouleur()) {
+			case COEUR:
+				this.condition = Condition.detenteurJoker;
+				break;
+				
+			case CARREAU:
 				this.conditionCarreau();
-			} else {
-				if (this.carte instanceof Trefle) {
-					this.conditionTrefle();
-				} else {
-					if (this.carte instanceof Pique) {
-						this.conditionPique();
-					} else {
-						if (this.carte instanceof Joker) {
-							this.condition=Condition.bestJest;
-						} else {
-							throw new Error("La carte en argument n'est pas instanciée en un sous-type de carte");
-						}
-					}
-				}
-			}
+				break;
+				
+			case TREFLE:
+				this.conditionTrefle();
+				break;
+				
+			case PIQUE:
+				this.conditionPique();
+				break;
+				
+			case JOKER:
+				this.condition=Condition.bestJest;
+				break;
+				
+			default:
+				throw new Error("La carte en argument n'est pas instanciée en un sous-type de carte");
 		}
+
 	}
 	
 	
