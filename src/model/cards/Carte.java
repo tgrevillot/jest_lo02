@@ -71,6 +71,14 @@ public class Carte {
 		return str;
 	}
 	
+	public void changeAsFaceValue() {
+		//Dans le cas, où l'as est tout seul, il peut valoir 5 points.
+		//C'est pourquoi, nous allons vérifier qu'il s'agisse bien d'un As avant de changer effectivement 
+		//Sa faceValue
+		if(this.valeur == 1)
+			this.valeur = 5;
+	}
+	
 	
 	/**
 	 * Setter pour cacher une carte

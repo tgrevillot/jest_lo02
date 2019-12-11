@@ -240,7 +240,7 @@ public class PartieJest {
 			if(this.trophees[i] != null) {
 				j = this.repartiteur.attribuer(this.trophees[0].getCondition(), this.joueurs);
 				j.ajouterDansJest(this.trophees[i].getCarte());
-				System.out.println("Le trophée " + this.trophees[i].getCarte() + " a été attribué à "
+				System.out.println("Le trophée " + this.trophees[i].getCondition() + " a été attribué à "
 						+ j.getNom() + " !");
 			}
 		}

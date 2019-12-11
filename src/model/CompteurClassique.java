@@ -62,12 +62,8 @@ public class CompteurClassique implements Visiteur {
 			if(listeT.size() == 1) {
 				//et que c'est un As on ajoute 5 points
 				Carte c = listeT.iterator().next();
-				if(c.getFaceValue() == 1) {
-					//TODO CE N'EST PAS AUSSI SIMPLE, préfere plutôt changer la face value de l'as a 5 et le traiter plus tard !
-					score += 5;
-					//On enlève l'as de la collection pour ne pas compter les points 2 fois
-					listeT.remove(c);
-				}
+				if(c.getFaceValue() == 1)
+					c.changeAsFaceValue();
 			}
 		}	
 		return score;
