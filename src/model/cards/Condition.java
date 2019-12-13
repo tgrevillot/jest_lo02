@@ -15,7 +15,6 @@ public enum Condition {
 	plusDeCartes2("maximumDeCartes2"),
 	plusDeCartes3("maximumDeCartes3"),
 	plusDeCartes4("maximumDeCartes4");	
-	
 	private String nomCondi;
 	
 	private Condition(String nom) {

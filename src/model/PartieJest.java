@@ -203,7 +203,6 @@ public class PartieJest {
 					joueurs.add(new Joueur(""+k,difficulte));
 				}
 				this.joueurs= joueurs;
-				//on choisi le(s) trophé(s)
 	}
 	
 	/**
@@ -224,7 +223,18 @@ public class PartieJest {
 			this.trophees = trophee;
 		}
 		
-		//On affiche quelles cartes sont les trophées
+		//S'il existe 2 trophées et que le celui dans la deuxième case du tableau est le Joker,
+		//On va le replacer dans la première case du tableau pour éviter les problèmes du type :
+		//Aucun Joker dans le jeu
+		if(this.trophees.length == 2)
+			if(this.trophees[1].getCarte().getCouleur() == Couleur.JOKER) {
+				//On inverse la position des 2 trophées
+				Trophee t = this.trophees[0];
+				this.trophees[0] = this.trophees[1];
+				this.trophees[1] = t;
+			}
+		
+		//On indique à l'utilisateur quelles sont les trophées
 		System.out.println("Le(s) trophée(s) a/ont été choisis ! Le(s) voici :");
 		for(int i = 0; i < this.trophees.length; i++) {
 			if(this.trophees[i] != null)
@@ -235,15 +245,22 @@ public class PartieJest {
 	}
 	
 	private void attribuerTrophee() {
-		Joueur j;
-		for(int i = 0; i < this.trophees.length; i++) {
-			if(this.trophees[i] != null) {
-				j = this.repartiteur.attribuer(this.trophees[0].getCondition(), this.joueurs);
-				j.ajouterDansJest(this.trophees[i].getCarte());
+		Joueur[] j = new Joueur[2];
+		//On va entrer dans le tableau les joueurs à qui distribuer les cartes
+		for(int i = 0; i < this.trophees.length; i++) 
+			if(this.trophees[i] != null) 
+				j[i] = this.repartiteur.attribuer(this.trophees[i].getCondition(), this.joueurs);
+		
+		//On attribue ensuite les trophées aux joueurs correspondant
+		for(int i = 0; i < j.length; i++) {
+			if(j[i] != null) {
+				j[i].ajouterDansJest(this.trophees[i].getCarte());
 				System.out.println("Le trophée " + this.trophees[i].getCondition() + " a été attribué à "
-						+ j.getNom() + " !");
-			}
+						+ j[i].getNom() + " !");
+			} else
+				System.out.println("Le trophée " + this.trophees[i].getCondition() + " n'a pas été attribué.");
 		}
+				
 		System.out.println();
 	}
 
@@ -418,8 +435,12 @@ public class PartieJest {
 		//Récupère à la fin de chaque tour les différentes cartes restantes après le
 		//choix des offres
 		LinkedList<Carte> cartes = new LinkedList<Carte>();
-		for(Joueur j : this.joueurs)
-			cartes.add(j.getCarteRestante());
+		Carte c;
+		for(Joueur j : this.joueurs) {
+			c = j.getCarteRestante();
+			c.antiCacherCarte();
+			cartes.add(c);
+		}
 		return cartes;
 	}
 	

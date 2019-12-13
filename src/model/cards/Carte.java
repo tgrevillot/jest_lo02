@@ -37,11 +37,28 @@ public class Carte {
 		this.priority = couleur.getPriority();
 	}
 	
+	public Carte(Carte c) {
+		this.valeur = c.getFaceValue();
+		this.cache = false;
+		this.couleur = c.getCouleur();
+		this.priority = this.couleur.getPriority();
+	}
+	
+	@Override
+	public boolean equals(Object c) {
+		if(c != null) 
+			if(c instanceof Carte) {
+				return ((Carte) c).getFaceValue() == this.valeur 
+						&& ((Carte) c).getCouleur() == this.couleur;
+			}
+		return true;
+	}
+	
 	public int envoyerPoints() {
 		return this.valeur;
 	}
 	
-	public String donnerCouleur() {
+	public String donnerCouleurString() {
 		return couleur.getName();
 	}
 	

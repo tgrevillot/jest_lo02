@@ -73,33 +73,8 @@ public class Joueur implements Visitable {
 	
 	@Override
 	public int accept(Visiteur visiteur) {
-		
-		
 		//On envoie au visiteur le joueur actuel pour qu'il puisse avoir accès aux différentes méthodes
 		return visiteur.visit(this);
-		
-		/*
-		//On ajoute les points obtenues avec les cartes coeur
-		score += scoreCoeur(this.cartesTri.get(Couleur.COEUR));
-		
-		//On repère ensuite les paires de cartes noires et pour chacune d'elles on ajoute 2 points
-		score += scorePairesNoires(this.cartesTri.get(Couleur.PIQUE), this.cartesTri.get(Couleur.TREFLE));
-		
-		//On prend en compte le fait qu'un As soit tout seul
-		score += asToutSeul();
-		
-		//Pour le reste des cartes on se contente d'aller chercher les faces values 
-		//et de les ajouter au score.
-		//On va lier les autres paquets de carte dans une même collection pour boucler plus facilement
-		HashSet<Carte> melangeFinal = new HashSet<Carte>();
-		melangeFinal.addAll(this.cartesTri.get(Couleur.CARREAU));
-		melangeFinal.addAll(this.cartesTri.get(Couleur.PIQUE));
-		melangeFinal.addAll(this.cartesTri.get(Couleur.TREFLE));
-		
-		//Addition des points finales
-		score += addFaceValues(melangeFinal);
-		
-		return score;*/
 	}
 	
 	/**
@@ -123,7 +98,9 @@ public class Joueur implements Visitable {
 	}
 	
 	public void ajouterCartesRestantesJest() {
-		this.jest.add(this.getCarteRestante());
+		Carte c = this.getCarteRestante();
+		c.antiCacherCarte();
+		this.jest.add(c);
 	}
 	
 	public void accepterCarte(Carte c) {
@@ -133,7 +110,7 @@ public class Joueur implements Visitable {
 	
 	public boolean hasJoker() {
 		for(Carte c : this.jest) 
-			if(c.donnerCouleur().equals("Joker"))
+			if(c.getCouleur() == Couleur.JOKER)
 				return true;
 		return false;
 	}
@@ -141,8 +118,9 @@ public class Joueur implements Visitable {
 	public Carte removeJoker() {
 		Carte joker;
 		for(Carte c : this.jest)
-			if(c.donnerCouleur().equals("Joker")) {
-				joker = c;
+			if(c.getCouleur() == Couleur.JOKER) {
+				//On fait pointer la référence vers un autre objet, celui-ci allant être détruit
+				joker = new Carte(c);
 				this.jest.remove(c);
 				return joker;
 			}
@@ -162,7 +140,7 @@ public class Joueur implements Visitable {
 			
 			//En fonction de la couleur de chaque carte on range dans le bon paquet
 			for(Carte c : this.jest) {
-				switch(c.donnerCouleur()) {
+				switch(c.donnerCouleurString()) {
 					case "Carreau":
 						carreau.add(c);
 						break;

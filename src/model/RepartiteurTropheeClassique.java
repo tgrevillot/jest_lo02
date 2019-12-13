@@ -128,7 +128,7 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		Joueur bestJest = bestJest(joueurs);
 		//Le meilleur Jest remportera le trophée
 		//Puis nous allons remettre le joker dans le jest du joueur
-		jJoker.accepterCarte(joker);
+		jJoker.ajouterDansJest(joker);
 		return bestJest;
 	}
 	
