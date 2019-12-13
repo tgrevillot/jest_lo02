@@ -6,13 +6,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Observable;
 
 import model.cards.Carte;
 import model.cards.Couleur;
 import model.cards.Trophee;
 import model.joueur.Joueur;
 
-public class PartieJest {
+
+public class PartieJest extends Observable {
 	
 	/** 
 	 * Le deck est l'ensemble des cartes jouables du jeu. Il comporte 17 cartes différentes au départ. 
