@@ -5,7 +5,8 @@ public enum Couleur {
 	COEUR(1, "Coeur"),
 	CARREAU(2, "Carreau"),
 	TREFLE(3, "Trefle"),
-	PIQUE(4, "Pique");
+	PIQUE(4, "Pique"),
+	EXTENSION(0,"Extension"); //pour les cartes bonus de la fin
 	
 	private int priority;
 	private String name;

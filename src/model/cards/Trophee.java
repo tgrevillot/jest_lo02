@@ -37,6 +37,10 @@ public class Trophee {
 				this.condition=Condition.bestJest;
 				break;
 				
+			case EXTENSION : 
+				this.conditionVariante();
+				break;
+				
 			default:
 				throw new Error("La carte en argument n'est pas instanciée en un sous-type de carte");
 		}
@@ -81,6 +85,13 @@ public class Trophee {
 			this.condition= Condition.plusPetitTrefle;
 		}
 		
+	}
+	
+	private void conditionVariante() {
+		switch(this.carte.getFaceValue()) {
+		case 0 :
+			this.condition= Condition.variantePireJest;
+		}
 	}
 
 	

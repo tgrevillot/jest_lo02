@@ -20,7 +20,7 @@ public class Carte {
 	private int priority;
 	
 	/**
-	 * Couleur de la carte : Pique, Trefle, Carreau, Coeur, Joker
+	 * Couleur de la carte : Pique, Trefle, Carreau, Coeur, Joker , EXTENSION
 	 */
 	private Couleur couleur;
 	

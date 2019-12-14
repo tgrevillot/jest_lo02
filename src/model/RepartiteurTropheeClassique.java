@@ -1,8 +1,10 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 
 import model.cards.Carte;
 import model.cards.Condition;
@@ -64,6 +66,10 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 				break;
 			case plusDeCartes4:
 				j = plusDeCartes(joueurs, 4);
+				break;
+			case variantePireJest:
+				j = pireJest(joueurs);
+				nullifierCarte(joueurs,j);
 				break;
 		}
 		return j;
@@ -225,4 +231,72 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		}
 		return jMax;
 	}
+	
+	private Joueur pireJest(ArrayList<Joueur> joueurs) {
+		Joueur jMin = joueurs.get(0);
+		Joueur jActu;
+		int scoreMax = joueurs.get(0).accept(this.compteur);
+		int scoreActu;
+		
+		for(int i = 1; i < joueurs.size(); i++) {
+			jActu = joueurs.get(i);
+			scoreActu = jActu.accept(this.compteur);
+			//Si le joueur a un pire score (sans appel)
+			if(scoreActu < scoreMax) {
+				//Alors il est celui qui a pour l'instant le pire jest
+				scoreMax = scoreActu;
+				jMin = jActu;				
+			} else if(scoreActu == scoreMax) {
+				//Dans le cas d'une égalité, on va tout d'abord checker la plus grande faceValue dans le Jest
+				int fvActu = jActu.plusGrandeFaceValue();
+				int fvMin = jMin.plusGrandeFaceValue();
+				
+				//Puis si on a encore une égalité
+				if(fvActu == fvMin) {
+					//on va comparer les couleurs
+					if(jActu.meilleurCartePlusDe(fvActu).getOrdre() < jMin.meilleurCartePlusDe(fvMin).getOrdre()) {
+						jMin = jActu;
+					}
+						
+				}
+				//Si on obtient une faceValueMax moins important que Min alors on remplace le joueur
+				//directement
+				else if(fvActu < fvMin) {
+					jMin = jActu;
+				}
+			}
+		}
+		return jMin;
+	}
+	
+	
+	private void nullifierCarte (ArrayList<Joueur> joueurs,Joueur j) {
+		System.out.println("Joueur : "+j.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
+		System.out.println("Veuillez choisir une carte du meilleur jest que vous voulez retirer");
+		System.out.println("0- Aucunes");
+		Joueur bestJoueur = bestJest(joueurs);
+		bestJoueur.afficherJest();
+		demanderCarteANullifier(bestJoueur); //on appelle la jolie fonction pour retirer la carte en question
+		
+	}
+	public void demanderCarteANullifier(Joueur joueur) {
+		Scanner scan = new Scanner(System.in);
+		String choixJoueur= scan.next();
+		int i =  joueur.nombreCartesJest();
+		Carte cartePrise; //la carte que l'on prend
+		try { // en cas d'erreur de parseInt
+			if (Integer.parseInt(choixJoueur) < 0 || Integer.parseInt(choixJoueur) > i) { //s'il est dans le bon intervalle
+				System.out.println("/!\\ Vous devez choisir entre 0 et "+i);
+				demanderCarteANullifier(joueur);
+			}else {
+				joueur.jestRemoveCarte(Integer.parseInt(choixJoueur));
+			}
+		} catch (Exception e) {
+			System.out.println(" /!\\ Vous devez choisir entre 1 et "+i+" (ou les commandes : "+(i+1)+"- voirJest, "+(i+2)+"- voirMain)");
+			demanderCarteANullifier(joueur);
+		}
+		
+	}
+	
+	
 }

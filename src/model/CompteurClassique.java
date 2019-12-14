@@ -60,7 +60,7 @@ public class CompteurClassique implements Visiteur {
 			
 			//S'il y a qu'une seule carte 
 			if(listeT.size() == 1) {
-				//et que c'est un As on ajoute 5 points
+				//et que c'est un As on met sa face value a 5
 				Carte c = listeT.iterator().next();
 				if(c.getFaceValue() == 1)
 					c.changeAsFaceValue();
@@ -74,11 +74,18 @@ public class CompteurClassique implements Visiteur {
 		
 		//On va déterminer la boucle à utiliser en fonction de la couleur
 		if(coul == Couleur.COEUR)
-			for(Carte c : cartes)
-				score -= c.envoyerPoints();
-		else
-			for(Carte c : cartes)
-				score += c.envoyerPoints();
+			// on ne fait rien car le cas est déja traité
+			score = score;
+		else {// si ce n'est pas du coeur
+			if(coul == Couleur.CARREAU) // carreau : on enlève
+				for(Carte c : cartes)
+					score -= c.envoyerPoints();
+			else { // noir : on ajoute ! 
+				for(Carte c : cartes)
+					score += c.envoyerPoints();
+			}
+		}
+			
 		
 		return score;
 	}
@@ -90,7 +97,9 @@ public class CompteurClassique implements Visiteur {
 		//possédant la même face value. Si c'est le cas on ajoute 2 points.
 		for(Carte carteP : pique)
 			for(Carte carteT : trefle)
-				if(carteP.getFaceValue() == carteT.getFaceValue())
+				if(carteP.getFaceValue() == carteT.getFaceValue() 
+				||(carteP.getFaceValue() ==5 && carteT.getFaceValue()==1) // on regarde aussi le cas
+				||(carteP.getFaceValue() ==1 && carteT.getFaceValue()==5))
 					score += 2;
 		
 		return score;
@@ -111,7 +120,7 @@ public class CompteurClassique implements Visiteur {
 					else if(nbCartesCoeur == 4)
 						score += 10;
 					else	
-						//Sinon on cécrémente des faces Values de chacun
+						//Sinon on décrémente des faces Values de chacun
 						for(Carte c : coeur)
 							score -= c.getFaceValue(); 
 				}

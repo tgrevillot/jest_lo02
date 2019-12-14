@@ -108,6 +108,22 @@ public class Joueur implements Visitable {
 			this.main.add(c);
 	}
 	
+	public void jestRemoveCarte(int i) {
+		int j = 1; //on initialise un compteur (il n'y en a pas dans les hashset ...)
+		for(Carte c : this.jest) { //on parcoure toutes les cartes du jest
+			if (j==i) { // si l'indice est le bon 
+				System.out.println("Vous avez retiré la carte : "+ c.afficher());
+				this.jest.remove(c); //on enlève la carte indiquée
+				break;
+			}
+			j++; //on incremente j
+		}
+	}
+	
+	public int nombreCartesJest() {
+		return this.jest.size(); 
+	}
+	
 	public boolean hasJoker() {
 		for(Carte c : this.jest) 
 			if(c.getCouleur() == Couleur.JOKER)
@@ -284,11 +300,14 @@ public class Joueur implements Visitable {
 	
 	public void afficherJest() {
 		System.out.println("<======>");
+		int ite = 1;
 		if (this.jest.size()==0) {
 			System.out.println("Votre jest est vide");
 		}else {
 			for (Carte c : this.jest) {
-				System.out.println(c.toString());
+				
+				System.out.println(ite +"- "+ c.toString());
+				ite++;
 			}
 		}
 		System.out.println("<======>");

@@ -14,7 +14,9 @@ public enum Condition {
 	bestJestWithoutJoker("bestJestWithoutJoker"),
 	plusDeCartes2("maximumDeCartes2"),
 	plusDeCartes3("maximumDeCartes3"),
-	plusDeCartes4("maximumDeCartes4");	
+	plusDeCartes4("maximumDeCartes4"),
+	//les regles pour les extensions / regles en plus 
+	variantePireJest("pireJest");
 	private String nomCondi;
 	
 	private Condition(String nom) {

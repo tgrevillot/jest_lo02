@@ -77,9 +77,16 @@ public class PartieJest extends Observable {
 		} else {
 			System.out.println("Il n'y a pas d'IA dans cette partie");
 		}
+		
+		
 		//choix des pseudos des joueurs 
 		String[] tableauPseudos = initPseudos(nbHumains);
-
+		
+		//Choix des règles
+		System.out.println("Veuillez choisir les règles que vous voulez utiliser : \n0- Les règles de base \n1- Extension nullifieur");
+		int regles = initRegles();
+		
+		
 		//On crée le compteur de point
 		this.compteur = new CompteurClassique();
 		
@@ -88,7 +95,7 @@ public class PartieJest extends Observable {
 		
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
-		creerTrophees();
+		creerTrophees(regles);
 	}
 	private int initNBJoueurs() {
 		Scanner scan = new Scanner(System.in);
@@ -162,6 +169,28 @@ public class PartieJest extends Observable {
 		return tableauPseudos;
 	}
 	
+	private int initRegles() {
+		Scanner scan = new Scanner(System.in);
+		String choix = scan.next();
+		try {//on vérifie que le nombre entré est bien compatible 
+			switch (choix) {
+			case "0" : 
+				System.out.println("Vous allez jouer avec les règles de base !");
+				return 0;
+			case "1" :
+				System.out.println("Vous allez jouer avec l'extension : \"nullifieur\" ");
+				return 1;
+			default : 
+				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+				return initRegles();
+			}
+		} catch (Exception e) {
+			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+			return initRegles();
+		}
+	}
+	
+	
 	/**
 	 * Cree les cartes et remplis le paquet avec
 	 */
@@ -210,25 +239,40 @@ public class PartieJest extends Observable {
 	/**
 	 * Cree le trophee a utiliser durant la partie
 	 */
-	private void creerTrophees() {
-		
+	private void creerTrophees(int regle) {
 		Carte carteTrophee1 =  this.deck.pop();
 		Trophee trophee1= new Trophee(carteTrophee1);
-		// s'il y a 3 joueurs on rajoute un deuxième trophée
-		if (this.joueurs.size()==3) {
-			Carte carteTrophee2 =  this.deck.pop();
-			Trophee trophee2= new Trophee(carteTrophee2);
-			Trophee[] trophees = {trophee1,trophee2};
-			this.trophees = trophees; 
-		}else { //il y a 4 joueurs donc 1 seul trophee 
-			Trophee[] trophee = {trophee1};
-			this.trophees = trophee;
+		switch (regle) {
+		case 0 :
+			// s'il y a 3 joueurs on rajoute un deuxième trophée
+			if (this.joueurs.size()==3) {
+				Carte carteTrophee2 =  this.deck.pop();
+				Trophee trophee2= new Trophee(carteTrophee2);
+				Trophee[] trophees = {trophee1,trophee2};
+				this.trophees = trophees; 
+			}else { //il y a 4 joueurs donc 1 seul trophee 
+				Trophee[] trophee = {trophee1};
+				this.trophees = trophee;
+			}
+		case 1 :
+			//dans ce cas ci il y a aussi le trophée nullifieur ! 
+			Trophee tropheenullifieur = new Trophee(new Carte(0, Couleur.EXTENSION));
+			// s'il y a 3 joueurs on rajoute un deuxième trophée
+			if (this.joueurs.size()==3) {
+				Carte carteTrophee2 =  this.deck.pop();
+				Trophee trophee2= new Trophee(carteTrophee2);
+				Trophee[] trophees = {trophee1,trophee2,tropheenullifieur};
+				this.trophees = trophees; 
+			}else { //il y a 4 joueurs donc 1 seul trophee 
+				Trophee[] trophee = {trophee1,tropheenullifieur};
+				this.trophees = trophee;
+			}
+			
 		}
-		
 		//S'il existe 2 trophées et que le celui dans la deuxième case du tableau est le Joker,
 		//On va le replacer dans la première case du tableau pour éviter les problèmes du type :
 		//Aucun Joker dans le jeu
-		if(this.trophees.length == 2)
+		if(this.trophees.length >= 2)
 			if(this.trophees[1].getCarte().getCouleur() == Couleur.JOKER) {
 				//On inverse la position des 2 trophées
 				Trophee t = this.trophees[0];
@@ -237,7 +281,7 @@ public class PartieJest extends Observable {
 			}
 		
 		//On indique à l'utilisateur quelles sont les trophées
-		System.out.println("Le(s) trophée(s) a/ont été choisis ! Le(s) voici :");
+		System.out.println("\n Le(s) trophée(s) a/ont été choisis ! Le(s) voici :");
 		for(int i = 0; i < this.trophees.length; i++) {
 			if(this.trophees[i] != null)
 				System.out.println(this.trophees[i].getCarte() + " avec la condition " + this.trophees[i].getCondition());
@@ -247,20 +291,27 @@ public class PartieJest extends Observable {
 	}
 	
 	private void attribuerTrophee() {
-		Joueur[] j = new Joueur[2];
+		Joueur[] j = new Joueur[this.trophees.length];
 		//On va entrer dans le tableau les joueurs à qui distribuer les cartes
 		for(int i = 0; i < this.trophees.length; i++) 
 			if(this.trophees[i] != null) 
 				j[i] = this.repartiteur.attribuer(this.trophees[i].getCondition(), this.joueurs);
 		
 		//On attribue ensuite les trophées aux joueurs correspondant
+		
+		
+		
 		for(int i = 0; i < j.length; i++) {
 			if(j[i] != null) {
 				j[i].ajouterDansJest(this.trophees[i].getCarte());
 				System.out.println("Le trophée " + this.trophees[i].getCondition() + " a été attribué à "
 						+ j[i].getNom() + " !");
-			} else
-				System.out.println("Le trophée " + this.trophees[i].getCondition() + " n'a pas été attribué.");
+			} else {
+				if (!(i==1 && this.trophees.length==1)) { //si on ne cherche pas de 2eme trophée alors qu'il n'y en a qu'un seul 
+					System.out.println("Le trophée " + this.trophees[i].getCondition() + " n'a pas été attribué.");
+				}
+			}
+				
 		}
 				
 		System.out.println();
@@ -352,6 +403,14 @@ public class PartieJest extends Observable {
 			//On affiche le score de chaque joueur également
 			System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
 		}
+		/* pour checker les jest a la fin de la game 
+		for(Joueur j : this.joueurs) {
+			System.out.println(j.getNom());
+			j.afficherJest();
+			System.out.println("\n");
+			
+		}
+		*/
 		return gagnant;
 	}
 	
