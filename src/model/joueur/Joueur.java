@@ -112,7 +112,7 @@ public class Joueur implements Visitable {
 		int j = 1; //on initialise un compteur (il n'y en a pas dans les hashset ...)
 		for(Carte c : this.jest) { //on parcoure toutes les cartes du jest
 			if (j==i) { // si l'indice est le bon 
-				System.out.println("Vous avez retiré la carte : "+ c.afficher());
+				System.out.println("a choisi de nullifier la carte : "+ c.afficher()+ " du jest du joueur "+this.nom +" !");
 				this.jest.remove(c); //on enlève la carte indiquée
 				break;
 			}
@@ -191,6 +191,10 @@ public class Joueur implements Visitable {
 				return c;
 		
 		return null;
+	}
+	
+	public IAStrategie getStrat() {
+		return this.strat;
 	}
 	
 	public int tailleMain() {

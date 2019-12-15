@@ -1,6 +1,8 @@
 package model.joueur;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import model.cards.Carte;
 
 
@@ -48,5 +50,19 @@ public class Random implements IAStrategie {
 		System.out.println("\n Le joueur "+joueurJouant.getNom()+" a pris la carte "+ stringCarte + "\n");
 		joueurJouant.ajouterDansJest(cartePrise);
 		return joueurAPrendre;
+	}
+	
+	
+	public void nullifierCarte (ArrayList<Joueur> joueurs,Joueur pireJ,Joueur bestJ) {
+		System.out.println("Joueur : "+pireJ.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
+		int i =  bestJ.nombreCartesJest();
+		int choixJoueur = (int) ((Math.random())*(i));
+		System.out.print(pireJ.getNom()+" ");
+		if (choixJoueur!=0) { //si le choix n'est pas "aucunes cartes"
+			bestJ.jestRemoveCarte(choixJoueur);//on l'enlève
+		} else {
+			System.out.println("a choisi de ne nullifier aucune carte ! ");
+		}
+		
 	}
 }

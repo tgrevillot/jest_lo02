@@ -69,7 +69,8 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 				break;
 			case variantePireJest:
 				j = pireJest(joueurs);
-				nullifierCarte(joueurs,j);
+				Joueur j2 = bestJest(joueurs);
+				j.getStrat().nullifierCarte(joueurs,j,j2);
 				break;
 		}
 		return j;
@@ -128,14 +129,22 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 				i = joueurs.size();
 			}
 		//TODO Bizarre : on génère bien un Joker à chaque fois ?
-		Carte joker = jJoker.removeJoker();
+		if (jJoker !=null){
+			Carte joker = jJoker.removeJoker();
+			//Ensuite on va calculer les points
+			Joueur bestJest = bestJest(joueurs);
+			//Le meilleur Jest remportera le trophée
+			//Puis nous allons remettre le joker dans le jest du joueur
+			jJoker.ajouterDansJest(joker);
+			return bestJest;
+		} else {
+			Joueur bestJest = bestJest(joueurs);
+			//Le meilleur Jest remportera le trophée
+			return bestJest;
+		}
+		
 				
-		//Ensuite on va calculer les points
-		Joueur bestJest = bestJest(joueurs);
-		//Le meilleur Jest remportera le trophée
-		//Puis nous allons remettre le joker dans le jest du joueur
-		jJoker.ajouterDansJest(joker);
-		return bestJest;
+		
 	}
 	
 	private Joueur rechercheJoueurPlusGrand(ArrayList<Joueur> joueurs, Couleur coul) {
@@ -270,33 +279,7 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 	}
 	
 	
-	private void nullifierCarte (ArrayList<Joueur> joueurs,Joueur j) {
-		System.out.println("Joueur : "+j.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
-		System.out.println("Veuillez choisir une carte du meilleur jest que vous voulez retirer");
-		System.out.println("0- Aucunes");
-		Joueur bestJoueur = bestJest(joueurs);
-		bestJoueur.afficherJest();
-		demanderCarteANullifier(bestJoueur); //on appelle la jolie fonction pour retirer la carte en question
-		
-	}
-	public void demanderCarteANullifier(Joueur joueur) {
-		Scanner scan = new Scanner(System.in);
-		String choixJoueur= scan.next();
-		int i =  joueur.nombreCartesJest();
-		Carte cartePrise; //la carte que l'on prend
-		try { // en cas d'erreur de parseInt
-			if (Integer.parseInt(choixJoueur) < 0 || Integer.parseInt(choixJoueur) > i) { //s'il est dans le bon intervalle
-				System.out.println("/!\\ Vous devez choisir entre 0 et "+i);
-				demanderCarteANullifier(joueur);
-			}else {
-				joueur.jestRemoveCarte(Integer.parseInt(choixJoueur));
-			}
-		} catch (Exception e) {
-			System.out.println(" /!\\ Vous devez choisir entre 1 et "+i+" (ou les commandes : "+(i+1)+"- voirJest, "+(i+2)+"- voirMain)");
-			demanderCarteANullifier(joueur);
-		}
-		
-	}
+	
 	
 	
 }

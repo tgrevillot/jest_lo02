@@ -302,12 +302,12 @@ public class PartieJest extends Observable {
 		
 		
 		for(int i = 0; i < j.length; i++) {
-			if(j[i] != null) {
+			if(j[i] != null && i<(5-this.joueurs.size())) {
 				j[i].ajouterDansJest(this.trophees[i].getCarte());
 				System.out.println("Le trophée " + this.trophees[i].getCondition() + " a été attribué à "
 						+ j[i].getNom() + " !");
 			} else {
-				if (!(i==1 && this.trophees.length==1)) { //si on ne cherche pas de 2eme trophée alors qu'il n'y en a qu'un seul 
+				if (!(i==1 && this.trophees.length==1) && i<(5-this.joueurs.size())) { //si on ne cherche pas de 2eme trophée alors qu'il n'y en a qu'un seul 
 					System.out.println("Le trophée " + this.trophees[i].getCondition() + " n'a pas été attribué.");
 				}
 			}

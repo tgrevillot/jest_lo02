@@ -143,6 +143,40 @@ public class Reel implements IAStrategie {
 		}
 		
 	}
+	
+	
+	public void nullifierCarte (ArrayList<Joueur> joueurs,Joueur pireJ,Joueur bestJ) {
+		System.out.println("Joueur "+pireJ.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
+		System.out.println("Veuillez choisir une carte du meilleur jest que vous voulez retirer");
+		System.out.println("0- Aucunes");
+		bestJ.afficherJest();
+		demanderCarteANullifier(pireJ,bestJ); //on appelle la jolie fonction pour retirer la carte en question
+		
+	}
+	private void demanderCarteANullifier(Joueur pireJ,Joueur bestJ) {
+		Scanner scan = new Scanner(System.in);
+		String choixJoueur= scan.next();
+		int i =  bestJ.nombreCartesJest();
+		Carte cartePrise; //la carte que l'on prend
+		try { // en cas d'erreur de parseInt
+			if (Integer.parseInt(choixJoueur) < 0 || Integer.parseInt(choixJoueur) > i) { //s'il est dans le bon intervalle
+				System.out.println("/!\\ Vous devez choisir entre 0 et "+i);
+				demanderCarteANullifier(pireJ,bestJ);
+			}else {
+				System.out.print(pireJ.getNom()+" ");
+				if (Integer.parseInt(choixJoueur)!=0) {
+					bestJ.jestRemoveCarte(Integer.parseInt(choixJoueur));
+				}else {
+					System.out.println("a choisi de ne nullifier aucune carte !");
+				}
+				
+			}
+		} catch (Exception e) {
+			System.out.println("/!\\ Vous devez choisir entre 0 et "+i);
+			demanderCarteANullifier(pireJ,bestJ);
+		}
+		
+	}
 }
 	
 
