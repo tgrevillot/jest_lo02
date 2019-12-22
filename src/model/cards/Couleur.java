@@ -14,7 +14,7 @@ public enum Couleur {
 	private Couleur(int prio, String name) {
 		if(prio < 0)
 			prio = 0;
-		if(name.equals("") || name.contentEquals(" "))
+		if(name.equals("") || name.equals(" "))
 			name = "Unknow";
 		
 		this.priority = prio;

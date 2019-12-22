@@ -45,6 +45,8 @@ public class PartieJest extends Observable {
 	 * Pour le moment, il n'existe qu'un seul moyen de répartir les trophées
 	 */
 	private RepartiteurTrophee repartiteur;
+	
+	private int conditionsVictoire;
 
 	private PartieJest() {
 		initialiser();
@@ -82,10 +84,16 @@ public class PartieJest extends Observable {
 		//choix des pseudos des joueurs 
 		String[] tableauPseudos = initPseudos(nbHumains);
 		
-		//Choix des règles
-		System.out.println("Veuillez choisir les règles que vous voulez utiliser : \n0- Les règles de base \n1- Extension nullifieur");
-		int regles = initRegles();
+		//Choix des trophées additionnels
+		String lineSeparator = System.getProperty("line.separator");
+		System.out.println("Veuillez choisir les trophées additionnels que vous souhaitez utiliser : " + lineSeparator 
+				+ "0- Aucun " + lineSeparator +"1- Trophée nullifieur");
+		int tropheeAdd = initChoixTropheeAdd();
 		
+		//Choix des conditions de victoire additionnelle
+		System.out.println("Veuillez choisir les règles additionnelles que vous souhaitez utiliser : " + lineSeparator
+				+ "0- Aucun " + lineSeparator + "1- A coeur ouvert");
+		this.conditionsVictoire = initChoixCondiVictoire();
 		
 		//On crée le compteur de point
 		this.compteur = new CompteurClassique();
@@ -95,7 +103,7 @@ public class PartieJest extends Observable {
 		
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
-		creerTrophees(regles);
+		creerTrophees(tropheeAdd);
 	}
 	private int initNBJoueurs() {
 		Scanner scan = new Scanner(System.in);
@@ -169,7 +177,28 @@ public class PartieJest extends Observable {
 		return tableauPseudos;
 	}
 	
-	private int initRegles() {
+	private int initChoixTropheeAdd() {
+		Scanner scan = new Scanner(System.in);
+		String choix = scan.next();
+		try {//on vérifie que le nombre entré est bien compatible 
+			switch (choix) {
+			case "0" : 
+				System.out.println("Vous allez jouer Trophée additionnels !");
+				return 0;
+			case "1" :
+				System.out.println("Vous allez maintenant jouer avec le trophée : \"nullifieur\" ");
+				return 1;
+			default : 
+				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+				return initChoixTropheeAdd();
+			}
+		} catch (Exception e) {
+			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+			return initChoixTropheeAdd();
+		}
+	}
+	
+	private int initChoixCondiVictoire() {
 		Scanner scan = new Scanner(System.in);
 		String choix = scan.next();
 		try {//on vérifie que le nombre entré est bien compatible 
@@ -178,15 +207,15 @@ public class PartieJest extends Observable {
 				System.out.println("Vous allez jouer avec les règles de base !");
 				return 0;
 			case "1" :
-				System.out.println("Vous allez jouer avec l'extension : \"nullifieur\" ");
+				System.out.println("Vous allez jouer avec l'extension : \"A coeur ouvert\" ");
 				return 1;
 			default : 
 				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-				return initRegles();
+				return initChoixCondiVictoire();
 			}
 		} catch (Exception e) {
 			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-			return initRegles();
+			return initChoixCondiVictoire();
 		}
 	}
 	
@@ -298,9 +327,6 @@ public class PartieJest extends Observable {
 				j[i] = this.repartiteur.attribuer(this.trophees[i].getCondition(), this.joueurs);
 		
 		//On attribue ensuite les trophées aux joueurs correspondant
-		
-		
-		
 		for(int i = 0; i < j.length; i++) {
 			if(j[i] != null && i<(5-this.joueurs.size())) {
 				j[i].ajouterDansJest(this.trophees[i].getCarte());
@@ -387,30 +413,35 @@ public class PartieJest extends Observable {
 		//Attribution des trophées
 		attribuerTrophee();
 		
-		//Récupération des scores sous forme de HashMap
-		HashMap<Joueur, Integer> resultats = compterPoints();
-		
-		//Affichage des résultats et détermination du gagnant
-		Joueur gagnant = this.joueurs.get(0);
-		int scoreActu;
-		int scoreMax = resultats.get(this.joueurs.get(0));
-		for(Joueur j : resultats.keySet()) {
-			scoreActu = resultats.get(j);
-			if(scoreActu > scoreMax) {
-				scoreMax = scoreActu;
-				gagnant = j;
-			}
-			//On affiche le score de chaque joueur également
-			System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
+		//On applique les différentes règles à ajouter éventuellement
+		Joueur gagnant = null;
+		switch(this.conditionsVictoire) {
+			case 1:
+				gagnant = ConditionsVictoire.aCoeurOuvert(this.joueurs);
+				
+				break;
 		}
-		/* pour checker les jest a la fin de la game 
-		for(Joueur j : this.joueurs) {
-			System.out.println(j.getNom());
-			j.afficherJest();
-			System.out.println("\n");
+		//Si le gagnant n'a pas encore été déterminé, alors on applique la méthode classique de comptage des
+		//points
+		if(gagnant == null) {
+			//Récupération des scores sous forme de HashMap
+			HashMap<Joueur, Integer> resultats = compterPoints();
 			
+			//Affichage des résultats et détermination du gagnant
+			gagnant = this.joueurs.get(0);
+			int scoreActu;
+			int scoreMax = resultats.get(this.joueurs.get(0));
+			for(Joueur j : resultats.keySet()) {
+				scoreActu = resultats.get(j);
+				if(scoreActu > scoreMax) {
+					scoreMax = scoreActu;
+					gagnant = j;
+				}
+				//On affiche le score de chaque joueur également
+				System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
+			}
+			//Utilise plutôt le debugger pour vérifier ça ;)
 		}
-		*/
 		return gagnant;
 	}
 	

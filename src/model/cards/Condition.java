@@ -17,6 +17,7 @@ public enum Condition {
 	plusDeCartes4("maximumDeCartes4"),
 	//les regles pour les extensions / regles en plus 
 	variantePireJest("pireJest");
+	
 	private String nomCondi;
 	
 	private Condition(String nom) {
