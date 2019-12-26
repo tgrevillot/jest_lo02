@@ -105,6 +105,7 @@ public class PartieJest extends Observable {
 		remplirPaquet();
 		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
 		creerTrophees(regles);
+		
 	}
 	private int initNBJoueurs() {
 		Scanner scan = new Scanner(System.in);
@@ -270,10 +271,11 @@ public class PartieJest extends Observable {
 	 * Cree le trophee a utiliser durant la partie
 	 */
 	private void creerTrophees(int regle) {
+		
 		Carte carteTrophee1 =  this.deck.pop();
 		Trophee trophee1= new Trophee(carteTrophee1);
 		switch (regle) {
-		case 0 :
+		case 0 : //regles du jeu de base 
 			// s'il y a 3 joueurs on rajoute un deuxième trophée
 			if (this.joueurs.size()==3) {
 				Carte carteTrophee2 =  this.deck.pop();
@@ -284,7 +286,8 @@ public class PartieJest extends Observable {
 				Trophee[] trophee = {trophee1};
 				this.trophees = trophee;
 			}
-		case 1 :
+			break;
+		case 1 : //regle du jeu avec le nullifieur
 			//dans ce cas ci il y a aussi le trophée nullifieur ! 
 			Trophee tropheenullifieur = new Trophee(new Carte(0, Couleur.EXTENSION));
 			// s'il y a 3 joueurs on rajoute un deuxième trophée
@@ -297,6 +300,7 @@ public class PartieJest extends Observable {
 				Trophee[] trophee = {trophee1,tropheenullifieur};
 				this.trophees = trophee;
 			}
+			break;
 			
 		}
 		//S'il existe 2 trophées et que le celui dans la deuxième case du tableau est le Joker,
@@ -318,6 +322,8 @@ public class PartieJest extends Observable {
 		}
 		
 		System.out.println(System.getProperty("line.separator"));		
+
+		
 	}
 	
 	private void attribuerTrophee() {
@@ -465,6 +471,7 @@ public class PartieJest extends Observable {
 		//On commence par ajouter 3 ou 4 cartes depuis le deck dans le buffer 
 		//(suivant le nombre de joueur)
 		for(int i = 0; i < this.joueurs.size(); i++)
+			
 			buffer.add(this.deck.removeFirst());
 		
 		//Si les cartes ne sont pas vides
