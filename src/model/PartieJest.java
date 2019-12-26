@@ -41,10 +41,16 @@ public class PartieJest extends Observable {
 	private Visiteur compteur;
 	
 	/**
-	 * Cet objet va servir à déterminer à quel joueur donner le trophée.
-	 * Pour le moment, il n'existe qu'un seul moyen de répartir les trophées
+	 * Cet objet va servir a déterminer a quel joueur donner le trophee.
+	 * Pour le moment, il n'existe qu'un seul moyen de répartir les trophees
 	 */
 	private RepartiteurTrophee repartiteur;
+	
+	/**
+	 * Identifiant permettant de detecter la regle additionnelle choisie par l'utilisateur
+	 * 0 = Aucune regle additionnelle utilisee
+	 */
+	private int conditionsVictoire;
 
 	private PartieJest() {
 		initialiser();
@@ -82,10 +88,13 @@ public class PartieJest extends Observable {
 		//choix des pseudos des joueurs 
 		String[] tableauPseudos = initPseudos(nbHumains);
 		
-		//Choix des règles
-		System.out.println("Veuillez choisir les règles que vous voulez utiliser : \n0- Les règles de base \n1- Extension nullifieur");
+		//Choix des trophées add
+		System.out.println("Veuillez choisir le trophée additionnel que vous voulez utiliser : \n0- Aucun \n1- Trophée Nullifieur");
 		int regles = initRegles();
 		
+		//Choix des conditions de victoires add
+		System.out.println("Veuillez choisir la règle additionnelle que vous voulez utiliser : \n0- Aucune \n1- A Coeur Ouvert");
+		this.conditionsVictoire = initCondiVictoires();
 		
 		//On crée le compteur de point
 		this.compteur = new CompteurClassique();
@@ -175,10 +184,10 @@ public class PartieJest extends Observable {
 		try {//on vérifie que le nombre entré est bien compatible 
 			switch (choix) {
 			case "0" : 
-				System.out.println("Vous allez jouer avec les règles de base !");
+				System.out.println("Vous allez jouer avec les trophées de base !");
 				return 0;
 			case "1" :
-				System.out.println("Vous allez jouer avec l'extension : \"nullifieur\" ");
+				System.out.println("Vous allez jouer avec le trophée : \"nullifieur\" ");
 				return 1;
 			default : 
 				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
@@ -187,6 +196,27 @@ public class PartieJest extends Observable {
 		} catch (Exception e) {
 			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
 			return initRegles();
+		}
+	}
+	
+	private int initCondiVictoires() {
+		Scanner scan = new Scanner(System.in);
+		String choix = scan.next();
+		try {//on vérifie que le nombre entré est bien compatible 
+			switch (choix) {
+			case "0" : 
+				System.out.println("Vous allez jouer avec les règles de base !");
+				return 0;
+			case "1" :
+				System.out.println("Vous allez jouer avec l'extension : \"A Coeur Ouvert\" ");
+				return 1;
+			default : 
+				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+				return initCondiVictoires();
+			}
+		} catch (Exception e) {
+			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+			return initCondiVictoires();
 		}
 	}
 	
@@ -386,32 +416,46 @@ public class PartieJest extends Observable {
 		
 		//Attribution des trophées
 		attribuerTrophee();
-		
-		//Récupération des scores sous forme de HashMap
-		HashMap<Joueur, Integer> resultats = compterPoints();
-		
+	
 		//Affichage des résultats et détermination du gagnant
-		Joueur gagnant = this.joueurs.get(0);
-		int scoreActu;
-		int scoreMax = resultats.get(this.joueurs.get(0));
-		for(Joueur j : resultats.keySet()) {
-			scoreActu = resultats.get(j);
-			if(scoreActu > scoreMax) {
-				scoreMax = scoreActu;
-				gagnant = j;
-			}
-			//On affiche le score de chaque joueur également
-			System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
+		
+		//On applique les règles additionnelles choisies précédemment
+		Joueur jGagnant = null;
+		switch(this.conditionsVictoire) {
+			case 1:
+				jGagnant = ConditionsVictoire.aCoeurOuvert(this.joueurs);
 		}
-		/* pour checker les jest a la fin de la game 
-		for(Joueur j : this.joueurs) {
-			System.out.println(j.getNom());
-			j.afficherJest();
-			System.out.println("\n");
+		
+		//Si la règle n'a pas renvoyé de vainqueur ou si aucune règle additionnelle n'a été
+		//sélectionnée, on utilise la méthode de calcul des points traditionnelle
+		if(jGagnant != null) 
+			System.out.println("La règle additionnelle s'applique, nous avons un gagnant !");
+		else {
+			//Récupération des scores sous forme de HashMap
+			HashMap<Joueur, Integer> resultats = compterPoints();
 			
+			jGagnant = this.joueurs.get(0);
+			int scoreActu;
+			int scoreMax = resultats.get(this.joueurs.get(0));
+			for(Joueur j : resultats.keySet()) {
+				scoreActu = resultats.get(j);
+				if(scoreActu > scoreMax) {
+					scoreMax = scoreActu;
+					jGagnant = j;
+				}
+				//On affiche le score de chaque joueur également
+				System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
+			}
+			/* pour checker les jest a la fin de la game 
+			for(Joueur j : this.joueurs) {
+				System.out.println(j.getNom());
+				j.afficherJest();
+				System.out.println("\n");
+				
+			}
+			*/
 		}
-		*/
-		return gagnant;
+		return jGagnant;
 	}
 	
 	private void faireUnTour(LinkedList<Carte> cartesRestantes) {
