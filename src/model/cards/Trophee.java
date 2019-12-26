@@ -91,9 +91,6 @@ public class Trophee {
 		switch(this.carte.getFaceValue()) {
 		case 0 :
 			this.condition= Condition.variantePireJest;
-			break;
-		default:
-			throw new Error("NOT YET IMPLEMENTED");
 		}
 	}
 

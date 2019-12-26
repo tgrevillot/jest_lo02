@@ -73,13 +73,20 @@ public class CompteurClassique implements Visiteur {
 		int score = 0;
 		
 		//On va déterminer la boucle à utiliser en fonction de la couleur
+		if(coul == Couleur.COEUR)
+			// on ne fait rien car le cas est déja traité
+			score = score;
+		else {// si ce n'est pas du coeur
 			if(coul == Couleur.CARREAU) // carreau : on enlève
 				for(Carte c : cartes)
 					score -= c.envoyerPoints();
-			else // noir : on ajoute ! 
+			else { // noir : on ajoute ! 
 				for(Carte c : cartes)
 					score += c.envoyerPoints();
+			}
+		}
 			
+		
 		return score;
 	}
 	
