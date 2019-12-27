@@ -107,6 +107,12 @@ public class PartieJest extends Observable {
 		creerTrophees(regles);
 		
 	}
+	
+	public void notifier() {
+		this.setChanged();
+		this.notifyObservers();
+	}
+	
 	private int initNBJoueurs() {
 		Scanner scan = new Scanner(System.in);
 		String nbJoueurs = scan.next();
