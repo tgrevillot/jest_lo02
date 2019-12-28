@@ -1,4 +1,4 @@
-package model.controllers;
+package controllers;
 
 import java.util.Scanner;
 

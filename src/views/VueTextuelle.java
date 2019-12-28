@@ -3,7 +3,7 @@ package views;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.controllers.ControllerText;
+import controllers.ControllerText;
 
 public class VueTextuelle implements Observer, Runnable {
 	
