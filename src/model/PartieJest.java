@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.Stack;
 import java.util.Observable;
 
@@ -46,6 +45,14 @@ public class PartieJest extends Observable {
 	 */
 	private RepartiteurTrophee repartiteur;
 	
+	private int nbJoueurs;
+	
+	private int nbJoueursReels;
+	
+	private int difficulte;
+	
+	private int regle;
+	
 	/**
 	 * Identifiant permettant de detecter la regle additionnelle choisie par l'utilisateur
 	 * 0 = Aucune regle additionnelle utilisee
@@ -53,48 +60,6 @@ public class PartieJest extends Observable {
 	private int conditionsVictoire;
 
 	private PartieJest() {
-		initialiser();
-		faireUnTour(new LinkedList<Carte>());
-		Joueur gagnant = determinerGagnant();
-		
-		System.out.println(System.getProperty("line.separator"));
-		System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
-	}
-	
-	/**
-	 * fonction d'initialisation des parametres de base pour la création du jeu 
-	 * inclus : les demandes a l'utilisateur, la création d'un deck mélangé, le choix du [des] trophé[s]  
-	 */
-	public void initialiser() {
-		//On Lance la partie
-		System.out.println("Bienvenue dans le Jest !");
-		System.out.println("Suivez les instructions suivantes pour configurer la partie et pouvoir jouer "+"\n");
-		//choix du nombre de joueurs	
-		System.out.println("Veuillez entrer le nombre de joueurs (3 ou 4) : ");
-		int nbJoueurs=initNBJoueurs();
-		//choix du nombre de joueur humains
-		System.out.println("Veuillez entrer le nombre de joueurs humains (entre 1 et "+nbJoueurs+" inclus) : ");
-		int nbHumains=initNBHumains(nbJoueurs);
-		//Choix de la difficulté 
-		int difficulte=0;
-		if (nbJoueurs > nbHumains) { //seulement si tous les joueurs ne sont pas humains
-			System.out.println("Veuillez choisir le niveau des IA (1 ou 2): ");
-			difficulte=initDifficulte(nbJoueurs,nbHumains);
-		} else {
-			System.out.println("Il n'y a pas d'IA dans cette partie");
-		}
-		
-		
-		//choix des pseudos des joueurs 
-		String[] tableauPseudos = initPseudos(nbHumains);
-		
-		//Choix des trophées add
-		System.out.println("Veuillez choisir le trophée additionnel que vous voulez utiliser : \n0- Aucun \n1- Trophée Nullifieur");
-		int regles = initRegles();
-		
-		//Choix des conditions de victoires add
-		System.out.println("Veuillez choisir la règle additionnelle que vous voulez utiliser : \n0- Aucune \n1- A Coeur Ouvert");
-		this.conditionsVictoire = initCondiVictoires();
 		
 		//On crée le compteur de point
 		this.compteur = new CompteurClassique();
@@ -102,131 +67,19 @@ public class PartieJest extends Observable {
 		//On crée le répartiteur de trophée
 		this.repartiteur = new RepartiteurTropheeClassique(this.compteur);
 		
-		remplirPaquet();
-		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
-		creerTrophees(regles);
+		remplirPaquet();	
 		
+		faireUnTour(new LinkedList<Carte>());
+		Joueur gagnant = determinerGagnant();
+		
+		System.out.println(System.getProperty("line.separator"));
+		System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
 	}
 	
 	public void notifier() {
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
-	private int initNBJoueurs() {
-		Scanner scan = new Scanner(System.in);
-		String nbJoueurs = scan.next();
-		try {
-			if ((Integer.parseInt(nbJoueurs) != 4) && (Integer.parseInt(nbJoueurs) != 3)) {
-				System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
-				return initNBJoueurs();
-			}else {
-				System.out.println("Vous avez choisi "+nbJoueurs+" joueurs \n");
-				return Integer.parseInt(nbJoueurs);
-			}
-		}catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
-			return initNBJoueurs();
-		}
-	}
-	private int initNBHumains(int nbJoueurs) {
-		Scanner scan = new Scanner(System.in);
-		String lineSeparator = System.getProperty("line.separator");
-		String nbHumains = scan.next();
-		//on vérifie que le nombre entré est bien compatible 
-		try {
-			Integer.parseInt(nbHumains);
-			if ((Integer.parseInt(nbHumains) < 1) || (Integer.parseInt(nbHumains) > nbJoueurs)) {
-				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
-				return initNBHumains(nbJoueurs);
-			} else {
-				System.out.println("Il y aura donc "+nbHumains+" joueurs humains " + lineSeparator);
-				return Integer.parseInt(nbHumains);
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
-			return initNBHumains(nbJoueurs);
-		}
-	}
-	
-	private int initDifficulte(int nbJoueurs, int nbHumains) {
-		Scanner scan = new Scanner(System.in);
-		String difficulte = scan.next();
-		try {//on vérifie que le nombre entré est bien compatible 
-			if ((Integer.parseInt(difficulte) < 1) || (Integer.parseInt(difficulte) > 2)) {
-				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
-				return initDifficulte(nbJoueurs, nbHumains);
-			}else {
-				System.out.println("Le niveau est donc reglé sur "+difficulte+ "\n");
-				return Integer.parseInt(difficulte);
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
-			return initDifficulte(nbJoueurs, nbHumains);
-		}
-	}
-	
-	private String[] initPseudos(int nbHumains) {
-		Scanner scan = new Scanner(System.in);
-		//On demande le(s) pseudo(s) a l'utilisateur 
-		String[] tableauPseudos = {"J1","J2","J3","J4"};
-		//on regarde le nombre d'humains
-		if (nbHumains==1) {
-			System.out.println("Vous allez maintenant devoir entrer votre pseudo");
-		} else {
-			System.out.println("Vous allez maintenant devoir entrer les pseudos des joueurs humains");
-		}
-		//on demande nbHumains pseudos
-		for (int i=0; i<nbHumains;i++) {
-			System.out.println("Veuillez entrer le pseudo du joueur "+ (i+1));
-			tableauPseudos[i]= scan.next();
-		}
-		System.out.println("");
-		return tableauPseudos;
-	}
-	
-	private int initRegles() {
-		Scanner scan = new Scanner(System.in);
-		String choix = scan.next();
-		try {//on vérifie que le nombre entré est bien compatible 
-			switch (choix) {
-			case "0" : 
-				System.out.println("Vous allez jouer avec les trophées de base !");
-				return 0;
-			case "1" :
-				System.out.println("Vous allez jouer avec le trophée : \"nullifieur\" ");
-				return 1;
-			default : 
-				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-				return initRegles();
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-			return initRegles();
-		}
-	}
-	
-	private int initCondiVictoires() {
-		Scanner scan = new Scanner(System.in);
-		String choix = scan.next();
-		try {//on vérifie que le nombre entré est bien compatible 
-			switch (choix) {
-			case "0" : 
-				System.out.println("Vous allez jouer avec les règles de base !");
-				return 0;
-			case "1" :
-				System.out.println("Vous allez jouer avec l'extension : \"A Coeur Ouvert\" ");
-				return 1;
-			default : 
-				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-				return initCondiVictoires();
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-			return initCondiVictoires();
-		}
-	}
-	
 	
 	/**
 	 * Cree les cartes et remplis le paquet avec
@@ -258,16 +111,16 @@ public class PartieJest extends Observable {
 	 * @param difficulte
 	 * 		Franchement je sais pas pourquoi t'as mis une difficulte
 	 */
-	private void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte) {
+	public void ajouterJoueurs(String[] tabPseudos) {
 		//On initialise maintenant les joueurs 
 				ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 				//on ajoute nbJoueurs joueurs
 				// on ajoute d'abbord nbHumains Humains
-				for (int j=0 ; j<nbHumains ; j++) {
+				for (int j=0 ; j<this.nbJoueursReels ; j++) {
 					joueurs.add(new Joueur(tabPseudos[j],0));
 				}
 				//les joueurs restants sont des IA
-				for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
+				for (int k=0 ; k<(this.nbJoueurs - this.nbJoueursReels) ; k++) {
 					joueurs.add(new Joueur(""+k,difficulte));
 				}
 				this.joueurs= joueurs;
@@ -276,11 +129,11 @@ public class PartieJest extends Observable {
 	/**
 	 * Cree le trophee a utiliser durant la partie
 	 */
-	private void creerTrophees(int regle) {
+	private void creerTrophees() {
 		
 		Carte carteTrophee1 =  this.deck.pop();
 		Trophee trophee1= new Trophee(carteTrophee1);
-		switch (regle) {
+		switch (this.regle) {
 		case 0 : //regles du jeu de base 
 			// s'il y a 3 joueurs on rajoute un deuxième trophée
 			if (this.joueurs.size()==3) {
@@ -458,14 +311,6 @@ public class PartieJest extends Observable {
 				//On affiche le score de chaque joueur également
 				System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
 			}
-			/* pour checker les jest a la fin de la game 
-			for(Joueur j : this.joueurs) {
-				System.out.println(j.getNom());
-				j.afficherJest();
-				System.out.println("\n");
-				
-			}
-			*/
 		}
 		return jGagnant;
 	}
@@ -562,6 +407,40 @@ public class PartieJest extends Observable {
 		return cartes;
 	}
 	
+	public void setNbJoueur(int nbJoueur) {
+		this.nbJoueurs = nbJoueur;
+		this.notifier();
+	}
+
+	public void setNbJoueurReel(int nbJoueurReel) {
+		this.nbJoueursReels = nbJoueurReel;
+		this.notifier();
+	}
+
+	public void setDifficulte(int difficulte) {
+		this.difficulte = difficulte;
+		this.notifier();
+	}
+
+	
+	public void setRegle(int regle) {
+		this.regle = regle;
+		this.notifier();
+	}
+
+	public void setConditionsVictoire(int conditionsVictoire) {
+		this.conditionsVictoire = conditionsVictoire;
+		this.notifier();
+	}
+
+	public int getNbJoueurs() {
+		return nbJoueurs;
+	}
+	
+	public int getNbJoueursReels() {
+		return nbJoueursReels;
+	}
+
 	public static void main(String[] args) {
 
 		new PartieJest();
