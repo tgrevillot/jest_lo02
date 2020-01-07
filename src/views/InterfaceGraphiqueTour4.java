@@ -6,6 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
+import javafx.scene.paint.Color;
+
+import javax.swing.ImageIcon;
+
 public class InterfaceGraphiqueTour4 {
 
 	private JFrame frame;
@@ -38,6 +42,7 @@ public class InterfaceGraphiqueTour4 {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new java.awt.Color(0, 100, 0));
 		frame.setBounds(100, 100, 735, 539);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -53,6 +58,7 @@ public class InterfaceGraphiqueTour4 {
 		frame.getContentPane().add(button_1);
 		
 		JButton button_2 = new JButton("");
+		button_2.setIcon(null);
 		button_2.setEnabled(false);
 		button_2.setBounds(248, 370, 75, 109);
 		frame.getContentPane().add(button_2);
@@ -122,12 +128,7 @@ public class InterfaceGraphiqueTour4 {
 		
 		JButton button_10 = new JButton("");
 		button_10.setEnabled(false);
-		button_10.setBounds(330, 181, 75, 109);
+		button_10.setBounds(287, 187, 75, 109);
 		frame.getContentPane().add(button_10);
-		
-		JButton button_11 = new JButton("");
-		button_11.setEnabled(false);
-		button_11.setBounds(250, 181, 75, 109);
-		frame.getContentPane().add(button_11);
 	}
 }

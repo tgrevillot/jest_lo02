@@ -44,10 +44,12 @@ public class InterfaceGraphiqueEcranFinal {
 		frame.getContentPane().setLayout(null);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
 		textArea.setBounds(12, 13, 563, 249);
 		frame.getContentPane().add(textArea);
 		
 		JTextArea txtrFlicitationJoueur = new JTextArea();
+		txtrFlicitationJoueur.setEditable(false);
 		txtrFlicitationJoueur.setText("F\u00E9licitation joueur  : ");
 		txtrFlicitationJoueur.setBounds(157, 329, 362, 30);
 		frame.getContentPane().add(txtrFlicitationJoueur);

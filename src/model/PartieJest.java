@@ -58,8 +58,8 @@ public class PartieJest extends Observable {
 	 * 0 = Aucune regle additionnelle utilisee
 	 */
 	private int conditionsVictoire;
-
-	private PartieJest() {
+	
+	public PartieJest() {
 		
 		//On crée le compteur de point
 		this.compteur = new CompteurClassique();
@@ -84,7 +84,7 @@ public class PartieJest extends Observable {
 	/**
 	 * Cree les cartes et remplis le paquet avec
 	 */
-	private void remplirPaquet() {
+	public void remplirPaquet() {
 		//on créé et on remplit le deck de cartes
 		this.deck = new LinkedList<Carte>();
 		
@@ -102,14 +102,8 @@ public class PartieJest extends Observable {
 	
 	/**
 	 * Cree les joueurs en fonction des parametres d'entrees
-	 * @param nbHumains
-	 * 		Nombre de joueurs reels allant s'affronter
-	 * @param nbJoueurs
-	 * 		Nombre de joueurs total, bots compris
 	 * @param tabPseudos
 	 * 		Tableaux contenant l'ensemble des pseudos
-	 * @param difficulte
-	 * 		Franchement je sais pas pourquoi t'as mis une difficulte
 	 */
 	public void ajouterJoueurs(String[] tabPseudos) {
 		//On initialise maintenant les joueurs 
@@ -124,6 +118,7 @@ public class PartieJest extends Observable {
 					joueurs.add(new Joueur(""+k,difficulte));
 				}
 				this.joueurs= joueurs;
+				creerTrophees();
 	}
 	
 	/**
