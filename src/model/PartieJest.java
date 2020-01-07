@@ -93,15 +93,17 @@ public class PartieJest extends Observable {
 		
 		faireUnTour(new LinkedList<Carte>());
 		Joueur gagnant = determinerGagnant();
-		
-		System.out.println(System.getProperty("line.separator"));
-		System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
 	}
 	
 	public void notifier() {
 		this.setChanged();
 		this.notifyObservers();
-	}	
+	}
+	
+	public void notifier(Object object) {
+		this.setChanged();
+		this.notifyObservers(object);
+	}
 	
 	/**
 	 * Cree les cartes et remplis le paquet avec les cartes de base 
@@ -349,9 +351,9 @@ public class PartieJest extends Observable {
 					scoreMax = scoreActu;
 					jGagnant = j;
 				}
-				//On affiche le score de chaque joueur également
-				System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
 			}
+			//On notifie pour afficher les résultats définitifs
+			this.notifier(resultats);
 		}
 		return jGagnant;
 	}
@@ -516,6 +518,7 @@ public class PartieJest extends Observable {
 	public int getNbJoueursReels() {
 		return nbJoueursReels;
 	}
+
 	/**
 	 * fonction main 
 	 * @param args

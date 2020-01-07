@@ -1,10 +1,12 @@
 package views;
 
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 import controllers.ControllerText;
 import model.PartieJest;
+import model.joueur.Joueur;
 /**
  * Vue textuelle
  */
@@ -25,10 +27,13 @@ public class VueTextuelle implements Observer, Runnable {
 		//A VOIR PAR LA SUITE
 		new Thread(this).start();
 	}
-	
+	 
+	@SuppressWarnings("unchecked")
 	public void update(Observable obs, Object arg) {
 		int nbJoueurs;
 		int nbJoueursReels;
+		String lineSeparator = System.getProperty("line.separator");
+		
 		switch(this.avancement) {
 			case NBJOUEURS:
 				//Initialisation du jeu, on affiche le début de partie
@@ -89,18 +94,37 @@ public class VueTextuelle implements Observer, Runnable {
 				this.model.setConditionsVictoire(conditionsVictoire);
 				
 				//On fait avancer l'initialisation
-				this.avancement = TextViewStep.TOURDEJEU;
+				this.avancement = TextViewStep.AFFICHESCORE;
 				break; 
-			case TOURDEJEU:
-				//TODO A COMPLETER
+			case AFFICHESCORE:
+				HashMap<Joueur, Integer> resultat = null;
+				if(arg != null)
+					if(arg instanceof HashMap<?, ?>)
+						resultat = (HashMap<Joueur, Integer>) arg;
+					
+				//On annonce que c'est la fin de la partie
+				System.out.println(lineSeparator + lineSeparator);
+				System.out.println("La partie est terminée ! Faisons le point sur les scores : ");
+				
+				//On boucle sur les résultats des joueurs
+				for(Joueur j : resultat.keySet())
+					System.out.println("Le joueur " + j.getNom() + " a obtenu " + resultat.get(j) + " points.");
 				break;
-			case DETERGAGNANT:
+			case ANNONCEGAGNANT:
+				//On annonce le gagnant
+				Joueur gagnant = null;
+				if(arg != null && arg instanceof Joueur)
+					gagnant = (Joueur) arg;
+				
+				System.out.println(System.getProperty("line.separator"));
+				System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
+					
 				break;
 		}
 	}
 	
 	/**
-	 * sous-méthode pour determiner les pseudos des joueurs humains une interface textuelle
+	 * Sous-méthode pour determiner les pseudos des joueurs humains une interface textuelle
 	 *  @return String[] tableauPseudos
 	 *  	les pseudos des joueurs humains 
 	 */

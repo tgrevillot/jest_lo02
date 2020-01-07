@@ -78,8 +78,10 @@ public class ControllerText implements Runnable {
 		if(line.equals(ARRET))
 			System.exit(0);
 		//Si on attend une valeur on la traite sinon on ne fait rien
-		else if(this.waitEntry)
+		else if(this.waitEntry) {
 			this.valeurLue = line;
+			this.valueDispo = true;
+		}
 		//On relance le Thread à chaque fois que la lecture se fasse en continue
 		new Thread(this).start();
 	}
