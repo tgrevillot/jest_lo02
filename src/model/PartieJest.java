@@ -13,7 +13,12 @@ import model.cards.Couleur;
 import model.cards.Trophee;
 import model.joueur.Joueur;
 
-
+/**
+ * La classe regroupant toutes les methodes et attributs pour faire une partie de jest 
+ * La classe principale jusqu'à la phase 3
+ * @author moras
+ *
+ */
 public class PartieJest extends Observable {
 	
 	/** 
@@ -51,7 +56,11 @@ public class PartieJest extends Observable {
 	 * 0 = Aucune regle additionnelle utilisee
 	 */
 	private int conditionsVictoire;
-
+	
+	/**
+	 * Le constructeur de PartieJest
+	 * l'endroit ou toute la partie se déroule
+	 */
 	public PartieJest() {
 		initialiser();
 		faireUnTour(new LinkedList<Carte>());
@@ -112,7 +121,11 @@ public class PartieJest extends Observable {
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
+	/**
+	 * sous-méthode pour determiner le nombre de joueurs via une interface textuelle
+	 * @return int nbJoueurs
+	 * 		le nombre de joueurs compatibles choisi
+	 */
 	private int initNBJoueurs() {
 		Scanner scan = new Scanner(System.in);
 		String nbJoueurs = scan.next();
@@ -129,6 +142,11 @@ public class PartieJest extends Observable {
 			return initNBJoueurs();
 		}
 	}
+	/**
+	 * sous-méthode pour determiner le nombre de joueurs humains via une interface textuelle
+	 * @return int nbHumains
+	 * 		le nombre de joueurs humains compatibles choisi
+	 */
 	private int initNBHumains(int nbJoueurs) {
 		Scanner scan = new Scanner(System.in);
 		String lineSeparator = System.getProperty("line.separator");
@@ -148,7 +166,11 @@ public class PartieJest extends Observable {
 			return initNBHumains(nbJoueurs);
 		}
 	}
-	
+	/**
+	 * sous-méthode pour determiner le niveau des IA via une interface textuelle
+	 * @return int difficulte
+	 * 		le niveau des IA compatibles choisi
+	 */
 	private int initDifficulte(int nbJoueurs, int nbHumains) {
 		Scanner scan = new Scanner(System.in);
 		String difficulte = scan.next();
@@ -166,6 +188,11 @@ public class PartieJest extends Observable {
 		}
 	}
 	
+	/**
+	 * sous-méthode pour determiner les pseudos des joueurs humains une interface textuelle
+	 *  @return String[] tableauPseudos
+	 *  	les pseudos des joueurs humains 
+	 */
 	private String[] initPseudos(int nbHumains) {
 		Scanner scan = new Scanner(System.in);
 		//On demande le(s) pseudo(s) a l'utilisateur 
@@ -184,7 +211,12 @@ public class PartieJest extends Observable {
 		System.out.println("");
 		return tableauPseudos;
 	}
-	
+	/**
+	 * sous-méthode pour determiner quelles règles utiliser pour la partie
+	 * @return int choix
+	 * 		0 pour les regles de base 
+	 * 		1 pour la variante trophé nullifieur
+	 */
 	private int initRegles() {
 		Scanner scan = new Scanner(System.in);
 		String choix = scan.next();
@@ -205,7 +237,12 @@ public class PartieJest extends Observable {
 			return initRegles();
 		}
 	}
-	
+	/**
+	 * sous-méthode pour determiner quelles règles utiliser pour la partie
+	 * @return int choix
+	 * 		0 pour les regles de base 
+	 * 		1 pour la variante "a coeur ouvert"
+	 */
 	private int initCondiVictoires() {
 		Scanner scan = new Scanner(System.in);
 		String choix = scan.next();
@@ -229,7 +266,7 @@ public class PartieJest extends Observable {
 	
 	
 	/**
-	 * Cree les cartes et remplis le paquet avec
+	 * Cree les cartes et remplis le paquet avec les cartes de base 
 	 */
 	public void remplirPaquet() {
 		//on créé et on remplit le deck de cartes
@@ -256,7 +293,7 @@ public class PartieJest extends Observable {
 	 * @param tabPseudos
 	 * 		Tableaux contenant l'ensemble des pseudos
 	 * @param difficulte
-	 * 		Franchement je sais pas pourquoi t'as mis une difficulte
+	 * 		niveau de difficulté des IA, ici les deux disponibles sont identiques
 	 */
 	public void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte, int condi) {
 		//On initialise maintenant les joueurs 
@@ -276,7 +313,8 @@ public class PartieJest extends Observable {
 	}
 	
 	/**
-	 * Cree le trophee a utiliser durant la partie
+	 * Cree le(s) trophee(s) a utiliser durant la partie
+	 * ceci dépend du nombre de joueur et des variantes
 	 */
 	public void creerTrophees(int regle) {
 		
@@ -333,7 +371,9 @@ public class PartieJest extends Observable {
 
 		
 	}
-	
+	/**
+	 * methode qui ajoute les trophées au jest de ceux qui remplissent les conditions
+	 */
 	private void attribuerTrophee() {
 		Joueur[] j = new Joueur[this.trophees.length];
 		//On va entrer dans le tableau les joueurs à qui distribuer les cartes
@@ -361,7 +401,11 @@ public class PartieJest extends Observable {
 		System.out.println();
 	}
 
-	
+	/**
+	 * fonction qui compte les points de tous les joueurs de la partie
+	 * @return HashMap<Joueur, Integer> tabPoints 
+	 * 		Map des points des joueurs comptés selon les règles choisies au départ
+	 */
 	private HashMap<Joueur, Integer> compterPoints() {
 		//On va utiliser un annuaire pour associer à chaque joueur son nombre de points
 		HashMap<Joueur, Integer> tabPoints = new HashMap<Joueur, Integer>();
@@ -371,6 +415,14 @@ public class PartieJest extends Observable {
 		return tabPoints;
 	}
 	
+	/**
+	 * méthode permettant de déterminer quel est le joueur qui dois jouer juste après
+	 * @param j 
+	 * 		peut être null dans le cas du premier joueur a jouer dans ce tour
+	 * 		sinon, si le joueur donné en paramètre n'as pas joué ce sera lui le prochain 
+	 * @return Joueur joueur
+	 * 		le joueur qui dois jouer le prochain 
+	 */
 	private Joueur determinerTour(Joueur j) {
 		//Joueur à faire jouer
 		Joueur joueur;
@@ -384,7 +436,11 @@ public class PartieJest extends Observable {
 		
 		return joueur;
 	}
-	
+	/**
+	 * Determine le joueur avec la carte la plus grande visible dans sa main
+	 * @return Joueur j
+	 * 		le joueur avec la plus grande carte visible dans sa min 
+	 */
 	private Joueur determinerPlusGrand() {
 		//On crée notre tampon contenant les joueurs n'ayant pas encore joué
 		Stack<Joueur> buffer = new Stack<Joueur>();
@@ -420,7 +476,12 @@ public class PartieJest extends Observable {
 		
 		return joueurMax;
 	}
-
+	
+	/**
+	 * méthode qui renvois le gagnant de la partie (celui avec le plus de points)
+	 * @return Joueur jGagnant
+	 * 		le joueur désigné comme gagnant de la partie
+	 */
 	private Joueur determinerGagnant() {
 		String lineSeparator = System.getProperty("line.separator");
 		
@@ -471,7 +532,11 @@ public class PartieJest extends Observable {
 		}
 		return jGagnant;
 	}
-	
+	/**
+	 * pour faireun tour de jeu 
+	 * @param cartesRestantes
+	 * 		les cartes qui n'ont pas été prises au tour d'avant et qui seront donc redistribuées
+	 */
 	private void faireUnTour(LinkedList<Carte> cartesRestantes) {
 		//On mélange les cartes restantes avec les cartes du deck
 		LinkedList<Carte> buffer = new LinkedList<Carte>();
@@ -550,7 +615,11 @@ public class PartieJest extends Observable {
 		}
 		
 	}
-	
+	/**
+	 * On remet les cartes non prises dans une LinkedList
+	 * @return LinkedList<Carte> cartes
+	 * 		les cartes non prise et qui restent sur le plateau a la fin du tour 
+	 */
 	private LinkedList<Carte> recupererCartesRestantes() {
 		//Récupère à la fin de chaque tour les différentes cartes restantes après le
 		//choix des offres
@@ -564,6 +633,10 @@ public class PartieJest extends Observable {
 		return cartes;
 	}
 	
+	/**
+	 * le main du programme
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		new PartieJest();

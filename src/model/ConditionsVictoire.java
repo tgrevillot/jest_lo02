@@ -6,7 +6,11 @@ import model.cards.Carte;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.HashSet;
-
+/**
+ * La classe qui regroupe toutes les règles additionnelles 
+ * @author moras
+ *
+ */
 public class ConditionsVictoire {
 
 	/**

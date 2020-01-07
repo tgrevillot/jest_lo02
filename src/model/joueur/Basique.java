@@ -4,9 +4,17 @@ import java.util.ArrayList;
 
 import model.cards.Carte;
 import model.cards.*;
+
+/**
+ * La classe de l'ia BAsique (c'est en fait une IA random pour l'instant)
+ * @author moras
+ *
+ */
 public class Basique implements IAStrategie {
 
-	
+	/**
+	 * méthode qui permet à cette IA de cacher l'une de ses deux cartes
+	 */
 	public void offrir(ArrayList<Carte> main, Joueur joueurJouant) {
 		//on utilise une décision random pour ce choix 
 		if (Math.random()<0.5) {
@@ -18,9 +26,10 @@ public class Basique implements IAStrategie {
 	/**
 	 * Cette méthode prend une liste de joueur dont on peut prendre des cartes 
 	 * et elle choisis une carte aléatoirement parmis celles-ci pour la renvoyer
-	 * note : pour l'instant la même methode qu epou random
 	 * @param joueurs 
-	 * la liste des joueurs disponibles
+	 * 		la liste des joueurs disponibles
+	 * @param joueurJouant
+	 * 		le joueur en train de jouer actuellement (utile car il n'y a pas de moyen de le trouver sinon)
 	 */
 	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
 		Carte cartePrise;

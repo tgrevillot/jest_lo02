@@ -11,17 +11,36 @@ import model.cards.Condition;
 import model.cards.Couleur;
 import model.joueur.Joueur;
 
+/**
+ * Classe servant a repartir chaque trophée a un joueur
+ * @author moras
+ *
+ */
 public class RepartiteurTropheeClassique implements RepartiteurTrophee {
-	
+
 	private Visiteur compteur;
 	
+	/**
+	 * le constructeur 
+	 * @param v
+	 * 		pour le design patern visiteur
+	 */
 	public RepartiteurTropheeClassique(Visiteur v) {
 		if(v == null)
 			throw new Error("Le comptur de points n'est pas instancié");
 		this.compteur = v;
 	}
 	
-	@Override
+
+	/**
+	 * Determine quel joueur doit recevoir le trophé donné via les fonctions auxiliaires
+	 * @param cond 
+	 * 		la condition pour obtenir le trophé
+	 * @param joueurs 
+	 * 		la liste complète des joueurs
+	 * @return j
+	 * 		le joueur auquel on attribuera le trophée
+	 */
 	public Joueur attribuer(Condition cond, ArrayList<Joueur> joueurs) {
 		Joueur j = null;
 		switch (cond) {
@@ -76,6 +95,13 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		return j;
 	}
 	
+	/**
+	 * trouve le joueur qui possède le Joker
+	 * @param joueurs
+	 * 		la List de tous les joueurs
+	 * @return Joueur j
+	 * 		le joueur possedant le joker
+	 */
 	private Joueur detenteurJoker(ArrayList<Joueur> joueurs) {
 		for(Joueur j : joueurs)
 			if(j.hasJoker())
@@ -83,6 +109,13 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		throw new Error("Aucune Carte Joker n'a été trouvée");
 	}
 	
+	/**
+	 * trouve le joueur qui possède le jest avec le plus de score
+	 * @param joueurs 
+	 * 		la liste de tous les joueurs
+	 * @return Joueur jMax
+	 * 		le joueur qui a le meilleur score du jest
+	 */
 	private Joueur bestJest(ArrayList<Joueur> joueurs) {
 		Joueur jMax = joueurs.get(0);
 		Joueur jActu;
@@ -119,7 +152,13 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		}
 		return jMax;
 	}
-	
+	/**
+	 * Trouve le meilleur jest sans considérer le joker
+	 * @param joueurs
+	 * 		la list des joueurs a considerer
+	 * @return Joueur bestJest
+	 * 		le joueur avec le meilleur jest sans compter le joker
+	 */
 	private Joueur bestJestWithoutJoker(ArrayList<Joueur> joueurs) {
 		//On va tout d'abord enlever le Joker du joueur incriminé
 		Joueur jJoker = null;
@@ -146,7 +185,15 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 				
 		
 	}
-	
+	/**
+	 * Cherche le joueur qui a la carte la plus grande de la couleur donnée
+	 * @param joueurs
+	 * 		la liste des joueurs considérés
+	 * @param coul
+	 * 		la couleur considérée
+	 * @return Joueur jCherche
+	 * 		le joueur qui possède cette carte
+	 */
 	private Joueur rechercheJoueurPlusGrand(ArrayList<Joueur> joueurs, Couleur coul) {
 		//Pour les conditions de recherche des plus grands [insérer couleur] on boucle sur l'ensemble des
 		//joueurs et dès qu'on trouve une meilleure carte on la met à jour
@@ -163,7 +210,15 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		}
 		return jCherche;
 	}
-	
+	/**
+	 * Cherche le joueur qui a la carte la plus petite de la couleur donnée
+	 * @param joueurs
+	 * 		la liste des joueurs considérés
+	 * @param coul
+	 * 		la couleur considérée
+	 * @return Joueur jCherche
+	 * 		le joueur qui possède cette carte
+	 */
 	private Joueur rechercheJoueurPlusPetit(ArrayList<Joueur> joueurs, Couleur coul) {
 		//Pour les conditions de recherche des plus petit [insérer couleur] on boucle sur l'ensemble des
 		//joueurs et dès qu'on trouve une face value plus petite on met cMax à jour
@@ -182,6 +237,13 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		return jCherche;
 	}
 	
+	/**
+	 * cherche la plus grande carte dans le set donné
+	 * @param cartes
+	 * 		le set de cartes dans lequel on recherche
+	 * @return int
+	 * 		retourne la face value de la plus grande carte
+	 */
 	private int rechercheCartePlusGrande(HashSet<Carte> cartes) {
 		if(cartes.isEmpty())
 			return -1;
@@ -196,7 +258,13 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		}
 		return cMax.getFaceValue();
 	}
-	
+	/**
+	 * cherche la plus petite carte dans le set donné
+	 * @param cartes
+	 * 		le set de cartes dans lequel on recherche
+	 * @return int
+	 * 		retourne la face value de la plus petite carte
+	 */
 	private int rechercheCartePlusPetite(HashSet<Carte> cartes) {
 		//La valeur des face values s'arrêtant à 4 pour le moment, il sera impossible de monter au-dessus de
 		//6
@@ -213,7 +281,15 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		}
 		return cMax.getFaceValue();
 	}
-	
+	/**
+	 * recherche le joueur qui a le plus de cartes de la face value donnée
+	 * @param joueurs
+	 * 		la liste des joueurs concernés
+	 * @param faceValueToSearch
+	 * 		la valeur que l'on cherche
+	 * @return Joueur
+	 * 		le joueur qui correspond 
+	 */
 	private Joueur plusDeCartes(ArrayList<Joueur> joueurs, int faceValueToSearch) {
 		Joueur jMax = null;
 		int valueMax = 0;
@@ -240,7 +316,12 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		}
 		return jMax;
 	}
-	
+	/**
+	 * renvois le joueur avec le pire jest
+	 * @param joueurs
+	 * 		la liste des joueurs concernés
+	 * @return Joueur
+	 */
 	private Joueur pireJest(ArrayList<Joueur> joueurs) {
 		Joueur jMin = joueurs.get(0);
 		Joueur jActu;

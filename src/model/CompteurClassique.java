@@ -7,15 +7,34 @@ import model.cards.Carte;
 import model.cards.Couleur;
 import model.joueur.Joueur;
 import model.joueur.Visitable;
-
+/**
+ * classe correspondant au comptage des points dans la version initiale du jest
+ * @author moras
+ *
+ */
 public class CompteurClassique implements Visiteur {
 	
+	/**
+	 * Deck trié de cartes par couleur 
+	 * il va d'une map vide jusqu'à un deck complet
+	 */
 	private HashMap<Couleur, HashSet<Carte>> cartesTri;
 	
+	/**
+	 * Constructeur de la classe
+	 */
 	public CompteurClassique() {
 		this.cartesTri = new HashMap<Couleur, HashSet<Carte>>();
 	}
 	
+	/**
+	 * Methode du patron de conception visiteur
+	 * compte le score d'un joueur mis en paramètre selon les cartes de son jest et suivant les regles classiques
+	 * @param joueur 
+	 * 		Le joueur auquel on veut compter le score
+	 * @return int score 
+	 * 		renvois le score, un entier correspondant au score du joueur 
+	 */
 	public int visit(Joueur joueur) {
 		int score = 0;
 		
@@ -51,6 +70,12 @@ public class CompteurClassique implements Visiteur {
 	}
 	
 	//Ci-dessous vont se trouver les méthodes privées de calcul de points
+	
+	/**
+	 * Methode qui change les valeurs des AS s'ils sont les seuls de leur couleur dans le jest
+	 * @return int score 
+	 * 		le score des As
+	 */
 	private int asToutSeul() {
 		int score = 0;
 		
@@ -69,6 +94,16 @@ public class CompteurClassique implements Visiteur {
 		return score;
 	}
 	
+	/**
+	 * on ajoute tous les points concernant les cas normaux 
+	 * via les points sur les cartes
+	 * @param cartes 
+	 * 		un HashSet des cartes du Jest regardée 
+	 * @param coul 
+	 * 		la couleur des cartes données en paramètre
+	 * @return int score
+	 * 		 correspondant a tous les points recoltés par ses cartes
+	 */
 	private int addFaceValues(HashSet<Carte> cartes, Couleur coul) {
 		int score = 0;
 		
@@ -90,6 +125,15 @@ public class CompteurClassique implements Visiteur {
 		return score;
 	}
 	
+	/**
+	 * Rajoute tous les points correspondant a la règle des paires noires
+	 * @param pique 
+	 * 		le hashset des cartes du Jest qui sont de la couleur PIQUE
+	 * @param trefle 
+	 * 		le hashset des cartes du Jest qui sont de la couleur TREFLE
+	 * @return int score 
+	 * 		le score cumulé des paires que l'on va ajouter
+	 */
 	private int scorePairesNoires(HashSet<Carte> pique, HashSet<Carte> trefle) {
 		int score = 0;
 		
@@ -104,7 +148,15 @@ public class CompteurClassique implements Visiteur {
 		
 		return score;
 	}
-	
+	/**
+	 * Pour traiter le cas special des cartes COEUR
+	 * @param j 
+	 * 		le joueur concerné
+	 * @param coeur 
+	 * 		le hashset des cartes de coeur du jest du joueur concerné
+	 * @return int score
+	 * 		le score obtenu par la liste en parametre
+	 */
 	private int scoreCoeur(Joueur j, HashSet<Carte> coeur) {
 		int score = 0;
 		//On commencera par vérifier si le jest comporte le Joker

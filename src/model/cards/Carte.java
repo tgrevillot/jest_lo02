@@ -1,5 +1,9 @@
 package model.cards;
-
+/**
+ * La classe qui permet de faire toutes les cartes du jeu
+ * @author moras
+ *
+ */
 public class Carte {
 	/**
 	 * La valeur de la carte est le chiffre qui lui est associé
@@ -36,14 +40,19 @@ public class Carte {
 		
 		this.priority = couleur.getPriority();
 	}
-	
+	/**
+	 * Un autre constructeur pour créer une copie d'une carte existante 
+	 * @param c
+	 */
 	public Carte(Carte c) {
 		this.valeur = c.getFaceValue();
 		this.cache = false;
 		this.couleur = c.getCouleur();
 		this.priority = this.couleur.getPriority();
 	}
-	
+	/**
+	 * méthode qui retourne true si les deux cartes ont les mêmes attributs
+	 */
 	@Override
 	public boolean equals(Object c) {
 		if(c != null) 
@@ -53,15 +62,24 @@ public class Carte {
 			}
 		return true;
 	}
-	
+	/**
+	 * donne la valeur de la carte
+	 * @return int
+	 */
 	public int envoyerPoints() {
 		return this.valeur;
 	}
-	
+	/**
+	 * donne un string correspondant a la couleur de la carte
+	 * @return String
+	 */
 	public String donnerCouleurString() {
 		return couleur.getName();
 	}
-	
+	/**
+	 * donne la couleur de la carte selon l'énumeration
+	 * @return Couleur
+	 */
 	public Couleur getCouleur() {
 		return this.couleur;
 	}
@@ -88,6 +106,9 @@ public class Carte {
 		return str;
 	}
 	
+	/**
+	 * méthode qui change la valeur d'un as de 1 à 5 
+	 */
 	public void changeAsFaceValue() {
 		//Dans le cas, où l'as est tout seul, il peut valoir 5 points.
 		//C'est pourquoi, nous allons vérifier qu'il s'agisse bien d'un As avant de changer effectivement 
@@ -111,19 +132,30 @@ public class Carte {
 	public void antiCacherCarte() {
 		this.cache = false;
 	}
-	
+	/**
+	 * donne le staut de la carte (correspondant a sa visibilité)
+	 */
 	public boolean isCacher() {
 		return this.cache;
 	}
-	
+	/**
+	 * retrourne la valeur d'une carte
+	 * @return
+	 */
 	public int getFaceValue() {
 		return this.valeur;
 	}
-	
+	/**
+	 * renvois la priorité de la carte
+	 * @return int
+	 */
 	public int getOrdre() {
 		return priority;
 	}
 
+	/**
+	 * affiche le String correspondant a la carte 
+	 */
 	public String toString() {
 		return afficher();
 	}

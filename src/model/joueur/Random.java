@@ -1,13 +1,20 @@
 package model.joueur;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import model.cards.Carte;
+import model.cards.*;
 
-
+/**
+ * La classe de l'ia BAsique (c'est en fait une IA random pour l'instant)
+ * @author moras
+ *
+ */
 public class Random implements IAStrategie {
-	
+
+	/**
+	 * méthode qui permet à cette IA de cacher l'une de ses deux cartes
+	 */
 	public void offrir(ArrayList<Carte> main, Joueur joueurJouant) {
 		//on utilise une décision random pour ce choix 
 		if (Math.random()<0.5) {
@@ -16,14 +23,13 @@ public class Random implements IAStrategie {
 			main.get(1).cacherCarte();
 		}
 	}
-	
-	
-	
 	/**
 	 * Cette méthode prend une liste de joueur dont on peut prendre des cartes 
 	 * et elle choisis une carte aléatoirement parmis celles-ci pour la renvoyer
 	 * @param joueurs 
-	 * la liste des joueurs disponibles
+	 * 		la liste des joueurs disponibles
+	 * @param joueurJouant
+	 * 		le joueur en train de jouer actuellement (utile car il n'y a pas de moyen de le trouver sinon)
 	 */
 	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
 		Carte cartePrise;
@@ -40,7 +46,6 @@ public class Random implements IAStrategie {
 		}else {
 			cartePrise = joueurAPrendre.prendreCarte(true); //on recupere la carte cachee du joueur choisi
 		}
-		
 		String stringCarte = "";
 		if (cartePrise.isCacher()) {
 			stringCarte = "[carte cachée]";
@@ -52,7 +57,7 @@ public class Random implements IAStrategie {
 		return joueurAPrendre;
 	}
 	
-	
+	//meme que random
 	public void nullifierCarte (ArrayList<Joueur> joueurs,Joueur pireJ,Joueur bestJ) {
 		System.out.println("Joueur : "+pireJ.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
 		int i =  bestJ.nombreCartesJest();

@@ -1,5 +1,10 @@
 package model.cards;
 
+/**
+ * la classe correspondant aux trophées du jeu 
+ * @author moras
+ *
+ */
 public class Trophee {
 	/**
 	 * La condition a remplir pour obtenir le trophee
@@ -12,7 +17,11 @@ public class Trophee {
 	 */
 	private Carte carte;
 	
-	
+	/**
+	 * le constructeur de Trophee
+	 * @param carte
+	 * 		la carte a utiliser pour les parametres et la condition
+	 */
 	public Trophee(Carte carte) {
 		
 		this.carte=carte;
@@ -47,7 +56,9 @@ public class Trophee {
 
 	}
 	
-	
+	/**
+	 * la méthode qui gère les conditions relatives aux cartes de carreau
+	 */
 	private void conditionCarreau() {
 		switch(this.carte.getFaceValue()) {
 		case 1 :
@@ -60,6 +71,9 @@ public class Trophee {
 			this.condition= Condition.bestJestWithoutJoker;
 		}
 	}
+	/**
+	 * la méthode qui gère les conditions relatives aux cartes de trefle
+	 */
 	private void conditionTrefle() {
 		switch(this.carte.getFaceValue()) {
 		case 1 :
@@ -73,6 +87,9 @@ public class Trophee {
 		}
 		
 	}
+	/**
+	 * la méthode qui gère les conditions relatives aux cartes de pique
+	 */
 	private void conditionPique() {
 		switch(this.carte.getFaceValue()) {
 		case 1 :
@@ -86,7 +103,9 @@ public class Trophee {
 		}
 		
 	}
-	
+	/**
+	 * la méthode qui gère les conditions relatives aux cartes Variantes 
+	 */
 	private void conditionVariante() {
 		switch(this.carte.getFaceValue()) {
 		case 0 :
@@ -94,15 +113,24 @@ public class Trophee {
 		}
 	}
 
-	
+	/**
+	 * getteur sur la condition d'attribution du trophée
+	 * @return Condition
+	 */
 	public Condition getCondition() {
 		return this.condition;
 	}
-	
+	/**
+	 * getteur sur la carte utilisée pour faire le trophée
+	 * @return
+	 */
 	public Carte getCarte() {
 		return this.carte;
 	}
-	
+	/**
+	 * methode de conversion du trophée en un strin lui correspondant
+	 * @return String
+	 */
 	public String afficher() {
 		return "Trophee de type : " +this.carte.afficher() + " ; condition : " +this.condition;
 	}
