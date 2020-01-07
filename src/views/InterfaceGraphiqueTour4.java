@@ -9,7 +9,11 @@ import javax.swing.JTextArea;
 import javafx.scene.paint.Color;
 
 import javax.swing.ImageIcon;
-
+/**
+ * l'interface graphique pour un tour a 4 joueurs
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueTour4 {
 
 	private JFrame frame;

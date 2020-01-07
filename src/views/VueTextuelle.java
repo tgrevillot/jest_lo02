@@ -5,7 +5,9 @@ import java.util.Observer;
 
 import controllers.ControllerText;
 import model.PartieJest;
-
+/**
+ * Vue textuelle
+ */
 public class VueTextuelle implements Observer, Runnable {
 	
 	private ControllerText controller;

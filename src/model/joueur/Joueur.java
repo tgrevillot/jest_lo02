@@ -283,19 +283,32 @@ public class Joueur implements Visitable {
 	public boolean aJoue() {
 		return aJoue;
 	}
-	
+	/**
+	 * getteur du pseudo du joueur
+	 * @return String
+	 */
 	public String getNom() {
 		return this.nom;
 	}
-
+	/**
+	 * Indique que le joueur a joué pendant ce tour
+	 */
 	public void vientDeJouer() {
 		this.aJoue = true;
 	}
-	
+	/**
+	 * indique que le joueur peut de nouveau jouer
+	 */
 	public void peutJouer() {
 		this.aJoue = false;
 	}
 	
+	/**
+	 * trouve la carte avec le meilleur ordre avec une certaine valeur
+	 * @param faceValueToCheck
+	 * 		la valeur a trouver
+	 * @return Carte
+	 */
 	public Carte meilleurCartePlusDe(int faceValueToCheck) {
 		Iterator<Carte> ite = this.jest.iterator();
 		Carte cMax = ite.next();
@@ -308,7 +321,12 @@ public class Joueur implements Visitable {
 		}
 		return cMax;
 	}
-	
+	/**
+	 * on compte el nombre de cartes portant la valeur donnée dans le jest
+	 * @param faceValueToSearch
+	 * 		la valeur a chercher
+	 * @return int
+	 */
 	public int compterNbCartesMemeValue(int faceValueToSearch) {
 		int compteur = 0;
 		for(Carte c : this.jest) {
@@ -317,7 +335,10 @@ public class Joueur implements Visitable {
 		}
 		return compteur;
 	}
-	
+	/**
+	 * on prend la plus grande valeur individuelle d'une carte dans le jest du joueur
+	 * @return int
+	 */
 	public int plusGrandeFaceValue() {
 		int faceValue = -1;
 		for(Carte c : this.jest) 
@@ -329,9 +350,9 @@ public class Joueur implements Visitable {
 	/**
 	 * Cette methode renvoie la carte (cachée ou non) après l'avoir enlevé 
 	 * @param cache
-	 * signifie que l'on veut la carte cachée ou visible 
+	 * 		signifie que l'on veut la carte cachée ou visible 
 	 * @return 
-	 * renvois la carte que l'on a enlevé de la main
+	 * 		renvois la carte que l'on a enlevé de la main
 	 */
 	public Carte prendreCarte(boolean cache) {
 		
@@ -348,12 +369,16 @@ public class Joueur implements Visitable {
 	/**
 	 * Cette fonction ajoute la crte en parametre dans le jest
 	 * @param carte
+	 * 		la carte à ajouter dans le jest
 	 */
 	public void ajouterDansJest(Carte carte) {
 		carte.antiCacherCarte();
 		this.jest.add(carte);
 	}
-	
+	/**
+	 * donne une vue textuele de la main du joueur 
+	 * Si vide affiche "Votre main est vide"
+	 */
 	public void afficherMain() {
 		System.out.println("<======>");
 		System.out.println("Voici les cartes de votre main");
@@ -366,7 +391,10 @@ public class Joueur implements Visitable {
 		}
 		System.out.println("<======>");
 	}
-	
+	/**
+	 * Donne une vue textuelle du joueur
+	 * Si vide affiche :"Votre jest est vide"
+	 */
 	public void afficherJest() {
 		System.out.println("<======>");
 		int ite = 1;

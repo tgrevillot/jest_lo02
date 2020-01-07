@@ -21,18 +21,49 @@ import model.RepartiteurTropheeClassique;
 import javax.swing.JTextArea;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
+/**
+ * interface graphique recoltant les paramètres géneraux de la partie
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueParamètres implements Observer {
 
 	private JFrame frame;
+	/**
+	 * checkbox pour definir qu'il y aura 3 joueurs
+	 */
 	private JCheckBox check3;
+	/**
+	 * checkbox pour definir qu'il y aura 4 joueurs
+	 */
 	private JCheckBox check4;
+	/**
+	 * checkbox pour definir qu'il y aura 1 joueur humain
+	 */
 	private JCheckBox checkH1;
+	/**
+	 * checkbox pour definir qu'il y aura 2 joueur humain
+	 */
 	private JCheckBox checkH2;
+	/**
+	 * checkbox pour definir qu'il y aura 3 joueur humain
+	 */
 	private JCheckBox checkH3;
+	/**
+	 * checkbox pour definir qu'il y aura 4 joueur humain
+	 */
 	private JCheckBox checkH4;
+	/**
+	 * checkbox pour definir si on utilise le trophée bonus nulifieur
+	 */
 	private JCheckBox checkNuli;
+	/**
+	 * checkbox pour definir si on utilise la variante a coeur ouvert
+	 */
 	private JCheckBox checkCoeur;
+	/**
+	 * Bouton pour passer a la fenetre suivante
+	 */
 	private JButton term;
 	private InterfaceGraphiqueNomJoueurs interfacenom;
 	/**

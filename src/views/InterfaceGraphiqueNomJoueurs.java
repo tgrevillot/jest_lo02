@@ -10,12 +10,29 @@ import java.util.Observable;
 
 import javax.swing.JButton;
 
+/**
+ * l'interface graphique qui récupère les noms des joueurs humains
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueNomJoueurs extends Observable {
 
 	private JFrame frame;
+	/**
+	 * l'endroit pour écrire le pseudo du joueur 1
+	 */
 	private JTextField textField;
+	/**
+	 * l'endroit pour écrire le pseudo du joueur 2
+	 */
 	private JTextField textField_1;
+	/**
+	 * l'endroit pour écrire le pseudo du joueur 3
+	 */
 	private JTextField textField_2;
+	/**
+	 * l'endroit pour écrire le pseudo du joueur 4
+	 */
 	private JTextField textField_3;
 
 	/**

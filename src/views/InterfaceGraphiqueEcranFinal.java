@@ -6,7 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import java.awt.Canvas;
 import javax.swing.JButton;
-
+/**
+ * l'interface graphique concernant le derner ecran
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueEcranFinal {
 
 	private JFrame frame;

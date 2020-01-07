@@ -586,40 +586,70 @@ public class PartieJest extends Observable {
 		return cartes;
 	}
 	
+	/**
+	 * setteur du nombre de joueurs total
+	 * @param nbJoueur
+	 * 		le nombre de joueur a avoir
+	 */
 	public void setNbJoueur(int nbJoueur) {
 		this.nbJoueurs = nbJoueur;
 		this.notifier();
 	}
-
+	/**
+	 * setteur du nombre de joueurs humains dans la partie
+	 * @param nbJoueurReel
+	 * 		le nombre de joueur humains 
+	 */
 	public void setNbJoueurReel(int nbJoueurReel) {
 		this.nbJoueursReels = nbJoueurReel;
 		this.notifier();
 	}
-
+	/**
+	 * setteur de la difficulté du jeu
+	 * @param difficulte
+	 * 		la difficultée choisie
+	 */
 	public void setDifficulte(int difficulte) {
 		this.difficulte = difficulte;
 		this.notifier();
 	}
 
-	
+	/**
+	 * setteur des regles a utiliser
+	 * @param regle
+	 * 		la regle a utiliser
+	 */
 	public void setRegle(int regle) {
 		this.regle = regle;
 		this.notifier();
 	}
-
+	/**
+	 * setteur des conditions de victoires que l'on choisi
+	 * @param conditionsVictoire
+	 * 		la condition pour choisir un gagnant
+	 */
 	public void setConditionsVictoire(int conditionsVictoire) {
 		this.conditionsVictoire = conditionsVictoire;
 		this.notifier();
 	}
-
+	/**
+	 * getteur du nombre de joueurs
+	 * @return int
+	 */
 	public int getNbJoueurs() {
 		return nbJoueurs;
 	}
-	
+	/**
+	 * getteur du nombre de joueurs réels
+	 * @return int
+	 */
 	public int getNbJoueursReels() {
 		return nbJoueursReels;
 	}
-
+	/**
+	 * fonction main 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		new PartieJest();

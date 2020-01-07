@@ -5,9 +5,20 @@ import java.util.Scanner;
 
 import model.cards.Carte;
 
+/**
+ * classe stratégie reel : pour les joueurs humains dans la vue textuelle
+ * @author moras
+ *
+ */
 public class Reel implements IAStrategie {
 
-	
+	/**
+	 * méthode qui effectue la proposition d'offre
+	 * @param main
+	 * 		la main du joueur concerné
+	 * @param joueurJouant 
+	 * 		le joueur en train de choisir
+	 */
 	public void offrir(ArrayList<Carte> main, Joueur joueurJouant) {
 		System.out.println("Joueur "+ joueurJouant.getNom() +" voici votre main : ");
 		System.out.println((main.get(0)).afficher() + " ET " + (main.get(1)).afficher()  );
@@ -17,7 +28,13 @@ public class Reel implements IAStrategie {
 		
 	}
 	
-	
+	/**
+	 * méthode qui demande le choix d'offre du joueur humain
+	 * @param main
+	 * 		la main du joueur concerné
+	 * @param joueurJouant 
+	 * 		le joueur en train de choisir
+	 */
 	public void demanderOffre(ArrayList<Carte> main, Joueur joueurJouant) {
 		Scanner scan = new Scanner(System.in);
 		String carteARetourner= scan.next();
@@ -48,7 +65,16 @@ public class Reel implements IAStrategie {
 		}
 	}
 	
-	
+	/**
+	 * la méthode qui régule le choix de la carte a mettre dans le jest
+	 * @param joueurs
+	 * 		la liste des joueurs 
+	 * @param joueurJouant
+	 * 		le joueur en train de choisir
+	 * @return Joueur
+	 * 		renvoit le joueur a qui on a pris une carte 
+	 * 		utile pour la succession dans le tour 
+	 */
 	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
 		if (joueurs.size()==0) { //CAS ou le joueur est le dernier et doit prendre ses propres cartes
 			System.out.println("Joueur "+joueurJouant.getNom()+", il ne reste plus que vos carte : ");
@@ -75,6 +101,16 @@ public class Reel implements IAStrategie {
 		}
 	}
 	
+	/**
+	 * méthode de demande de choix de carte lorsque le joueur dois prendre dans sa propre main
+	 * @param joueurs
+	 * 		la liste des joueurs
+	 * @param joueurJouant
+	 * 		le joueur en train de jouer
+	 * @return Joueur
+	 * 		renvoit le joueur a qui on a pris une carte 
+	 * 		utile pour la succession dans le tour
+	 */
 	public Joueur demanderChoixSeul(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
 		Scanner scan = new Scanner(System.in);
 		String choixJoueur= scan.next();
@@ -107,7 +143,18 @@ public class Reel implements IAStrategie {
 			return demanderChoixSeul(joueurs,joueurJouant);
 		}
 	}
-	
+	/**
+	 * méthode de demande de choix de carte lorsque le joueur dois choisir parmis les offres d'autres joueurs
+	 * @param joueurs
+	 * 		la liste des joueurs
+	 * @param joueurJouant
+	 * 		le joueur en train de jouer
+	 * @param i 
+	 * 		le nombre de cartes disponibles en tout 
+	 * @return Joueur
+	 * 		renvoit le joueur a qui on a pris une carte 
+	 * 		utile pour la succession dans le tour
+	 */
 	public Joueur demanderChoixPlusieurs(ArrayList<Joueur> joueurs,Joueur joueurJouant, int i) {
 		Scanner scan = new Scanner(System.in);
 		String choixJoueur= scan.next();
@@ -144,7 +191,16 @@ public class Reel implements IAStrategie {
 		
 	}
 	
-	
+	/**
+	 * méthode du trophée nullifieur 
+	 * @param joueurs
+	 * 		la liste des joueurs
+	 * @param pireJ
+	 * 		le joueur avec le plus petit score de jest
+	 * @param bestJ
+	 * 		le joueur avec le plus grand score de jest
+	 * 
+	 */
 	public void nullifierCarte (ArrayList<Joueur> joueurs,Joueur pireJ,Joueur bestJ) {
 		System.out.println("Joueur "+pireJ.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
 		System.out.println("Veuillez choisir une carte du meilleur jest que vous voulez retirer");
@@ -153,6 +209,14 @@ public class Reel implements IAStrategie {
 		demanderCarteANullifier(pireJ,bestJ); //on appelle la jolie fonction pour retirer la carte en question
 		
 	}
+	/**
+	 * demande au joueur la carte qu'il veut nullifier 
+	 * @param pireJ
+	 * 		le joueur avec le plus petit score de jest
+	 * @param bestJ
+	 * 		le joueur avec le plus grand score de jest
+	 * 
+	 */
 	private void demanderCarteANullifier(Joueur pireJ,Joueur bestJ) {
 		Scanner scan = new Scanner(System.in);
 		String choixJoueur= scan.next();
