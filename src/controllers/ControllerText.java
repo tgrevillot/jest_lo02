@@ -2,8 +2,6 @@ package controllers;
 
 import java.util.Scanner;
 
-import model.PartieJest;
-
 public class ControllerText implements Runnable {
 	/**
 	 * Attribut nous servant a recuperer les entrees clavier utilisateur.
@@ -13,27 +11,34 @@ public class ControllerText implements Runnable {
 	 * Permet d'identifier la situation ou l'utilisateur souhaite arreter de jouer.
 	 */
 	private final static String ARRET = "QUIT";
+	
 	/**
-	 * Booleen indiquant si le modele attend une modification. 
-	 * S'il est vrai, alors on accepte la modification, sinon rien ne se passe.
+	 * Booleen indiquant si on attend une entree utilisateur. 
+	 * S'il est vrai, alors on enregistre la valeur utilisateur, sinon rien ne se passe.
 	 */
-	private boolean modifModel;
+	private boolean waitEntry;
+	
 	/**
-	 * Partie de Jest en cours nous servant de modele dans le patron MVC
+	 * Indique aux classe si une nouvelle valeur est disponible
 	 */
-	private PartieJest model;
+	private boolean valueDispo;
+	
+	/**
+	 * Chaine lue au clavier. Elle sera recuperee par le controllerText 
+	 * pour les prises de décisions utilisateur.
+	 */
+	private String valeurLue;
 	
 	/**
 	 * Constructeur instanciant tous les attributs et lancant le Thread de ce controller
 	 * @param model
 	 * 		La partie de Jest en cours, si le parametre est null on renvoie une erreur
 	 */
-	public ControllerText(PartieJest model) {
+	public ControllerText() {
 		this.sc = new Scanner(System.in);
-		this.modifModel = false;
-		if(model == null)
-			throw new Error("Le modele fournie est NULL (ControlleurTexte)");
-		this.model = model;
+		this.waitEntry = false;
+		this.valueDispo = false;
+		this.valeurLue = "";
 		new Thread(this).start();
 	}
 	
@@ -43,7 +48,21 @@ public class ControllerText implements Runnable {
 	 * Plus techniquement, il met l'attribut modifModele a vrai.
 	 */
 	public synchronized void enableModifModele() {
-		this.modifModel = true;
+		this.waitEntry = true;
+	}
+	
+	/**
+	 * Indique si l'utilisateur a terminé sa saisie
+	 * @return valueDispo
+	 * 		Vrai si une valeur a ete saisie par l'utilisateur
+	 */
+	public synchronized boolean isValueDispo() {
+		return this.valueDispo;
+	}
+	
+	public String getEntree() {
+		this.waitEntry = false;
+		return this.valeurLue;
 	}
 	
 	/**
@@ -53,16 +72,15 @@ public class ControllerText implements Runnable {
 	 */
 	@Override
 	public void run() {
-		String line;
-		//Pour chaque ligne lue au clavier, on vérifie si l'utilisateur souhaite quitter le programme
-		while((line = sc.nextLine()).equals(ARRET))
-			//Si ce n'est pas le cas on vérifie qu'une modification du modèle est attendue
-			if(this.modifModel) {
-				System.out.println(line);
-				//TODO : FAIRE LES MODIFS SUR LE MODELE
-				this.model.notifier();
-				this.modifModel = false;
-			}
-		System.exit(0);
+		//On récupère l'entrée utilisateur
+		String line = sc.nextLine();
+		//S'il souhaite arrêter la partie on arrête tout
+		if(line.equals(ARRET))
+			System.exit(0);
+		//Si on attend une valeur on la traite sinon on ne fait rien
+		else if(this.waitEntry)
+			this.valeurLue = line;
+		//On relance le Thread à chaque fois que la lecture se fasse en continue
+		new Thread(this).start();
 	}
 }

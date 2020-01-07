@@ -9,6 +9,11 @@ import model.Visiteur;
 import model.cards.Carte;
 import model.cards.Couleur;
 
+/**
+ * La classe correspondant au joueur
+ * @author moras
+ *
+ */
 public class Joueur implements Visitable {
 	/**
 	 * Indique si le joueur a déja joué pendant ce tour
@@ -29,10 +34,14 @@ public class Joueur implements Visitable {
 	private HashSet<Carte> jest;
 	
 	/**
-	 * 
+	 * La stratégie suivie par ce joueur 
+	 * Réel,Random,Basique
 	 */
 	private IAStrategie strat;
 	
+	/**
+	 * les cartes triées du jest de ce joueur
+	 */
 	private HashMap<Couleur, HashSet<Carte>> cartesTri;
 	
 	
@@ -41,7 +50,13 @@ public class Joueur implements Visitable {
 	 * Les Ia seront nommées de la sorte : strategie_id (où l'id est unique de 1 jusqu'à 3)
 	 */
 	private String nom;
-	
+	/**
+	 * le constructeur
+	 * @param pseudo
+	 * 		le nom du joueur
+	 * @param iaType
+	 * 		le type de stratégie 
+	 */
 	public Joueur(String pseudo, int iaType) {
 		this.aJoue=false;
 		this.main = new ArrayList<Carte>(2);
@@ -82,7 +97,7 @@ public class Joueur implements Visitable {
 	 * S'il est reel : un choix entre les cartes des autres joueurs (qui n'ont pas déja donné une offre)
 	 * S'il est une IA : une décision random parmis ces mêmes personnes
 	 * @param lJoueurs
-	 * lJoueurs est la liste des joueurs qui peuvent donner une carte (i.e qui en ont encore 2)
+	 * 		lJoueurs est la liste des joueurs qui peuvent donner une carte (i.e qui en ont encore 2)
 	 */
 	public Joueur prendreOffre(ArrayList<Joueur> lJoueurs) {
 		return this.strat.choisir(lJoueurs, this);
@@ -96,18 +111,28 @@ public class Joueur implements Visitable {
 	public void choisirFaceCachee() {
 		this.strat.offrir(this.main, this);
 	}
-	
+	/**
+	 * on récupère les cartes qui restes et on les ajoute dans le jest
+	 */
 	public void ajouterCartesRestantesJest() {
 		Carte c = this.getCarteRestante();
 		c.antiCacherCarte();
 		this.jest.add(c);
 	}
-	
+	/**
+	 * on prend la carte et on l'ajoute dans notre jest
+	 * @param c
+	 * 		la carte a ajouter
+	 */
 	public void accepterCarte(Carte c) {
 		if(c != null)
 			this.main.add(c);
 	}
-	
+	/**
+	 * On retire la carte d'indice i 
+	 * @param i
+	 * 		l'indice de l'élement a retirer
+	 */
 	public void jestRemoveCarte(int i) {
 		int j = 1; //on initialise un compteur (il n'y en a pas dans les hashset ...)
 		for(Carte c : this.jest) { //on parcoure toutes les cartes du jest
@@ -119,11 +144,17 @@ public class Joueur implements Visitable {
 			j++; //on incremente j
 		}
 	}
-	
+	/**
+	 * renvois le nombre de cartes dans le jest
+	 * @return int
+	 */
 	public int nombreCartesJest() {
 		return this.jest.size(); 
 	}
-	
+	/**
+	 * dit si le jest possède le joker ou non 
+	 * @return boolean
+	 */
 	public boolean hasJoker() {
 		for(Carte c : this.jest) 
 			if(c.getCouleur() == Couleur.JOKER)
@@ -131,6 +162,11 @@ public class Joueur implements Visitable {
 		return false;
 	}
 	
+	/**
+	 * retire le joker et le renvois si il est dans le jest
+	 * @return Carte
+	 * 		renvois null si il n'est pas dans le jest 
+	 */
 	public Carte removeJoker() {
 		Carte joker;
 		for(Carte c : this.jest)
@@ -143,6 +179,9 @@ public class Joueur implements Visitable {
 		return null;
 	}
 	
+	/**
+	 * trie toutes les cartes du jest du joueur 
+	 */
 	private void generateSortJest() {
 		
 		//Si les listes n'ont pas été déjà générées
@@ -178,13 +217,20 @@ public class Joueur implements Visitable {
 			this.cartesTri.put(Couleur.COEUR, coeur);
 		}
 	}
-	
+	/**
+	 * on récupère la carte restante sur le plateau
+	 * @return Carte
+	 */
 	public Carte getCarteRestante() {
 		if(this.main.size() == 1)
 			return this.main.remove(0);
 		return null;
 	}
-
+	/**
+	 * Getteur sur LA carte qui n'est pas cachée de la main
+	 * note:  s'il y en a deux on prend la première trouvée
+	 * @return Carte
+	 */
 	public Carte getVisibleCard() {
 		for(Carte c : this.main)
 			if(!c.isCacher())
@@ -192,15 +238,25 @@ public class Joueur implements Visitable {
 		
 		return null;
 	}
-	
+	/**
+	 * getteur sur la stratégie du joueur
+	 * @return IAStrategie
+	 */
 	public IAStrategie getStrat() {
 		return this.strat;
 	}
-	
+	/**
+	 * renvois la taille de la main du joueur
+	 * @return
+	 */
 	public int tailleMain() {
 		return this.main.size();
 	}
 	
+	/**
+	 * recupere les cartes du jest triées
+	 * @return HashMap<Couleur, HashSet<Carte>>
+	 */
 	public HashMap<Couleur, HashSet<Carte>> getCartesTri() {
 		if(this.cartesTri.isEmpty())
 			generateSortJest();
@@ -208,13 +264,22 @@ public class Joueur implements Visitable {
 		return this.cartesTri;
 	}
 	
+	/**
+	 * getteur des cartes triées dans la couleur donnée du jest du joueur
+	 * @param coul
+	 * 		la couleur choisie
+	 * @return HashSet<Carte>
+	 */
 	public HashSet<Carte> getCartesParCouleur(Couleur coul) {
 		if(this.cartesTri.isEmpty())
 			generateSortJest();
 		
 		return this.cartesTri.get(coul);
 	}
-
+	/**
+	 * Pour savoir si le joueur a deja joué durant ce tour
+	 * @return
+	 */
 	public boolean aJoue() {
 		return aJoue;
 	}

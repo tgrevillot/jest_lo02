@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.Stack;
 import java.util.Observable;
+import java.util.Scanner;
 
 import model.cards.Carte;
 import model.cards.Couleur;
@@ -51,59 +51,24 @@ public class PartieJest extends Observable {
 	 */
 	private RepartiteurTrophee repartiteur;
 	
+	private int nbJoueurs;
+	
+	private int nbJoueursReels;
+	
+	private int difficulte;
+	
+	private int regle;
+	
 	/**
 	 * Identifiant permettant de detecter la regle additionnelle choisie par l'utilisateur
 	 * 0 = Aucune regle additionnelle utilisee
 	 */
 	private int conditionsVictoire;
-	
+
 	/**
 	 * Le constructeur de PartieJest
-	 * l'endroit ou toute la partie se déroule
 	 */
 	public PartieJest() {
-		initialiser();
-		faireUnTour(new LinkedList<Carte>());
-		Joueur gagnant = determinerGagnant();
-		
-		System.out.println(System.getProperty("line.separator"));
-		System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
-	}
-	
-	/**
-	 * fonction d'initialisation des parametres de base pour la création du jeu 
-	 * inclus : les demandes a l'utilisateur, la création d'un deck mélangé, le choix du [des] trophé[s]  
-	 */
-	public void initialiser() {
-		//On Lance la partie
-		System.out.println("Bienvenue dans le Jest !");
-		System.out.println("Suivez les instructions suivantes pour configurer la partie et pouvoir jouer "+"\n");
-		//choix du nombre de joueurs	
-		System.out.println("Veuillez entrer le nombre de joueurs (3 ou 4) : ");
-		int nbJoueurs=initNBJoueurs();
-		//choix du nombre de joueur humains
-		System.out.println("Veuillez entrer le nombre de joueurs humains (entre 1 et "+nbJoueurs+" inclus) : ");
-		int nbHumains=initNBHumains(nbJoueurs);
-		//Choix de la difficulté 
-		int difficulte=0;
-		if (nbJoueurs > nbHumains) { //seulement si tous les joueurs ne sont pas humains
-			System.out.println("Veuillez choisir le niveau des IA (1 ou 2): ");
-			difficulte=initDifficulte(nbJoueurs,nbHumains);
-		} else {
-			System.out.println("Il n'y a pas d'IA dans cette partie");
-		}
-		
-		
-		//choix des pseudos des joueurs 
-		String[] tableauPseudos = initPseudos(nbHumains);
-		
-		//Choix des trophées add
-		System.out.println("Veuillez choisir le trophée additionnel que vous voulez utiliser : \n0- Aucun \n1- Trophée Nullifieur");
-		int regles = initRegles();
-		
-		//Choix des conditions de victoires add
-		System.out.println("Veuillez choisir la règle additionnelle que vous voulez utiliser : \n0- Aucune \n1- A Coeur Ouvert");
-		int condi = initCondiVictoires();
 		
 		//On crée le compteur de point
 		this.compteur = new CompteurClassique();
@@ -111,10 +76,13 @@ public class PartieJest extends Observable {
 		//On crée le répartiteur de trophée
 		this.repartiteur = new RepartiteurTropheeClassique(this.compteur);
 		
-		remplirPaquet();
-		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte,condi );		
-		creerTrophees(regles);
+		remplirPaquet();	
 		
+		faireUnTour(new LinkedList<Carte>());
+		Joueur gagnant = determinerGagnant();
+		
+		System.out.println(System.getProperty("line.separator"));
+		System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
 	}
 	
 	public void notifier() {
@@ -286,41 +254,34 @@ public class PartieJest extends Observable {
 	
 	/**
 	 * Cree les joueurs en fonction des parametres d'entrees
-	 * @param nbHumains
-	 * 		Nombre de joueurs reels allant s'affronter
-	 * @param nbJoueurs
-	 * 		Nombre de joueurs total, bots compris
 	 * @param tabPseudos
 	 * 		Tableaux contenant l'ensemble des pseudos
-	 * @param difficulte
-	 * 		niveau de difficulté des IA, ici les deux disponibles sont identiques
 	 */
-	public void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte, int condi) {
+	public void ajouterJoueurs(String[] tabPseudos) {
 		//On initialise maintenant les joueurs 
-		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
-		//on ajoute nbJoueurs joueurs
-		// on ajoute d'abbord nbHumains Humains
-		for (int j=0 ; j<nbHumains ; j++) {
-			joueurs.add(new Joueur(tabPseudos[j],0));
-		}
-		//les joueurs restants sont des IA
-		for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
-			joueurs.add(new Joueur(""+k,difficulte));
-		}
-		this.joueurs= joueurs;
-		this.conditionsVictoire=condi;
-		
+				ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+				//on ajoute nbJoueurs joueurs
+				// on ajoute d'abbord nbHumains Humains
+				for (int j=0 ; j<this.nbJoueursReels ; j++) {
+					joueurs.add(new Joueur(tabPseudos[j],0));
+				}
+				//les joueurs restants sont des IA
+				for (int k=0 ; k<(this.nbJoueurs - this.nbJoueursReels) ; k++) {
+					joueurs.add(new Joueur(""+k,difficulte));
+				}
+				this.joueurs= joueurs;
+				creerTrophees();
 	}
 	
 	/**
 	 * Cree le(s) trophee(s) a utiliser durant la partie
 	 * ceci dépend du nombre de joueur et des variantes
 	 */
-	public void creerTrophees(int regle) {
+	private void creerTrophees() {
 		
 		Carte carteTrophee1 =  this.deck.pop();
 		Trophee trophee1= new Trophee(carteTrophee1);
-		switch (regle) {
+		switch (this.regle) {
 		case 0 : //regles du jeu de base 
 			// s'il y a 3 joueurs on rajoute un deuxième trophée
 			if (this.joueurs.size()==3) {
@@ -521,14 +482,6 @@ public class PartieJest extends Observable {
 				//On affiche le score de chaque joueur également
 				System.out.println("Le joueur " + j.getNom() + " a obtenu " + scoreActu + " points.");
 			}
-			/* pour checker les jest a la fin de la game 
-			for(Joueur j : this.joueurs) {
-				System.out.println(j.getNom());
-				j.afficherJest();
-				System.out.println("\n");
-				
-			}
-			*/
 		}
 		return jGagnant;
 	}
@@ -633,10 +586,40 @@ public class PartieJest extends Observable {
 		return cartes;
 	}
 	
-	/**
-	 * le main du programme
-	 * @param args
-	 */
+	public void setNbJoueur(int nbJoueur) {
+		this.nbJoueurs = nbJoueur;
+		this.notifier();
+	}
+
+	public void setNbJoueurReel(int nbJoueurReel) {
+		this.nbJoueursReels = nbJoueurReel;
+		this.notifier();
+	}
+
+	public void setDifficulte(int difficulte) {
+		this.difficulte = difficulte;
+		this.notifier();
+	}
+
+	
+	public void setRegle(int regle) {
+		this.regle = regle;
+		this.notifier();
+	}
+
+	public void setConditionsVictoire(int conditionsVictoire) {
+		this.conditionsVictoire = conditionsVictoire;
+		this.notifier();
+	}
+
+	public int getNbJoueurs() {
+		return nbJoueurs;
+	}
+	
+	public int getNbJoueursReels() {
+		return nbJoueursReels;
+	}
+
 	public static void main(String[] args) {
 
 		new PartieJest();

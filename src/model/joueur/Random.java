@@ -6,7 +6,7 @@ import model.cards.Carte;
 import model.cards.*;
 
 /**
- * La classe de l'ia BAsique (c'est en fait une IA random pour l'instant)
+ * La classe de l'ia Random 
  * @author moras
  *
  */
@@ -57,7 +57,16 @@ public class Random implements IAStrategie {
 		return joueurAPrendre;
 	}
 	
-	//meme que random
+	/**
+	 * Méthode pour nullifier une carte 
+	 * elle est ici choisie aléatoirement
+	 * @param joueurs
+	 * 		la liste des joueurs concernés
+	 * @param pireJ
+	 * 		le joueur avec le pire jest
+	 * @param bestJ
+	 * 		le joueur avec le meilleur jest
+	 */
 	public void nullifierCarte (ArrayList<Joueur> joueurs,Joueur pireJ,Joueur bestJ) {
 		System.out.println("Joueur : "+pireJ.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
 		int i =  bestJ.nombreCartesJest();
