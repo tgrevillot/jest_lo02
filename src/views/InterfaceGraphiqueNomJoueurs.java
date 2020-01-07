@@ -6,9 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import java.util.Observable;
+
 import javax.swing.JButton;
 
-public class InterfaceGraphiqueNomJoueurs {
+public class InterfaceGraphiqueNomJoueurs extends Observable {
 
 	private JFrame frame;
 	private JTextField textField;

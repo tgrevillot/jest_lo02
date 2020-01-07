@@ -52,7 +52,7 @@ public class PartieJest extends Observable {
 	 */
 	private int conditionsVictoire;
 
-	private PartieJest() {
+	public PartieJest() {
 		initialiser();
 		faireUnTour(new LinkedList<Carte>());
 		Joueur gagnant = determinerGagnant();
@@ -94,7 +94,7 @@ public class PartieJest extends Observable {
 		
 		//Choix des conditions de victoires add
 		System.out.println("Veuillez choisir la règle additionnelle que vous voulez utiliser : \n0- Aucune \n1- A Coeur Ouvert");
-		this.conditionsVictoire = initCondiVictoires();
+		int condi = initCondiVictoires();
 		
 		//On crée le compteur de point
 		this.compteur = new CompteurClassique();
@@ -103,7 +103,7 @@ public class PartieJest extends Observable {
 		this.repartiteur = new RepartiteurTropheeClassique(this.compteur);
 		
 		remplirPaquet();
-		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte);		
+		ajouterJoueurs(nbHumains, nbJoueurs, tableauPseudos, difficulte,condi );		
 		creerTrophees(regles);
 		
 	}
@@ -231,7 +231,7 @@ public class PartieJest extends Observable {
 	/**
 	 * Cree les cartes et remplis le paquet avec
 	 */
-	private void remplirPaquet() {
+	public void remplirPaquet() {
 		//on créé et on remplit le deck de cartes
 		this.deck = new LinkedList<Carte>();
 		
@@ -258,25 +258,27 @@ public class PartieJest extends Observable {
 	 * @param difficulte
 	 * 		Franchement je sais pas pourquoi t'as mis une difficulte
 	 */
-	private void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte) {
+	public void ajouterJoueurs(int nbHumains, int nbJoueurs, String[] tabPseudos, int difficulte, int condi) {
 		//On initialise maintenant les joueurs 
-				ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
-				//on ajoute nbJoueurs joueurs
-				// on ajoute d'abbord nbHumains Humains
-				for (int j=0 ; j<nbHumains ; j++) {
-					joueurs.add(new Joueur(tabPseudos[j],0));
-				}
-				//les joueurs restants sont des IA
-				for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
-					joueurs.add(new Joueur(""+k,difficulte));
-				}
-				this.joueurs= joueurs;
+		ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+		//on ajoute nbJoueurs joueurs
+		// on ajoute d'abbord nbHumains Humains
+		for (int j=0 ; j<nbHumains ; j++) {
+			joueurs.add(new Joueur(tabPseudos[j],0));
+		}
+		//les joueurs restants sont des IA
+		for (int k=0 ; k<(nbJoueurs-nbHumains) ; k++) {
+			joueurs.add(new Joueur(""+k,difficulte));
+		}
+		this.joueurs= joueurs;
+		this.conditionsVictoire=condi;
+		
 	}
 	
 	/**
 	 * Cree le trophee a utiliser durant la partie
 	 */
-	private void creerTrophees(int regle) {
+	public void creerTrophees(int regle) {
 		
 		Carte carteTrophee1 =  this.deck.pop();
 		Trophee trophee1= new Trophee(carteTrophee1);

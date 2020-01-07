@@ -40,6 +40,7 @@ public class InterfaceGraphiqueTour3 {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new java.awt.Color(0, 100, 0));
 		frame.setBounds(100, 100, 633, 535);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);

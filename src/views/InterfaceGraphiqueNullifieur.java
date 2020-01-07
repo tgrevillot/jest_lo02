@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.JButton;
 
 public class InterfaceGraphiqueNullifieur {
 
@@ -52,5 +53,9 @@ public class InterfaceGraphiqueNullifieur {
 		spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		spinner.setBounds(66, 307, 47, 48);
 		frame.getContentPane().add(spinner);
+		
+		JButton button = new JButton("Termin\u00E9 ");
+		button.setBounds(223, 414, 97, 25);
+		frame.getContentPane().add(button);
 	}
 }
