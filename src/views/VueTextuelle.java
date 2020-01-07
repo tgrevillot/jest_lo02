@@ -15,7 +15,6 @@ public class VueTextuelle implements Observer, Runnable {
 	private TextViewStep avancement;
 	
 	public VueTextuelle(ControllerText ct, PartieJest model) {
-		//TODO A COMPLETER
 		if(ct == null)
 			throw new Error("Le controllerText fournie est NULL");
 		if(model == null)
@@ -95,9 +94,17 @@ public class VueTextuelle implements Observer, Runnable {
 			case TOURDEJEU:
 				//TODO A COMPLETER
 				break;
+			case DETERGAGNANT:
+				break;
 		}
 	}
 	
+	/**
+	 * sous-méthode pour determiner les pseudos des joueurs humains une interface textuelle
+	 *  @return String[] tableauPseudos
+	 *  	les pseudos des joueurs humains 
+	 */
+
 	private String[] getTabPseudos(int nbHumains) {
 		//On demande le(s) pseudo(s) a l'utilisateur 
 				String[] tableauPseudos = {"J1","J2","J3","J4"};
@@ -120,6 +127,11 @@ public class VueTextuelle implements Observer, Runnable {
 				return tableauPseudos;
 	}
 	
+	/**
+	 * sous-méthode pour determiner le nombre de joueurs via une interface textuelle
+	 * @return int nbJoueurs
+	 * 		le nombre de joueurs compatibles choisi
+	 */
 	private int initNBJoueurs() {
 		String nbJoueurs = getValeurUtilisee();
 		try {
@@ -137,6 +149,11 @@ public class VueTextuelle implements Observer, Runnable {
 	}
 	
 
+	/**
+	 * sous-méthode pour determiner le nombre de joueurs humains via une interface textuelle
+	 * @return int nbHumains
+	 * 		le nombre de joueurs humains compatibles choisi
+	 */
 	private int initNBHumains(int nbJoueurs) {
 		String lineSeparator = System.getProperty("line.separator");
 		String nbHumains = getValeurUtilisee();
@@ -156,6 +173,11 @@ public class VueTextuelle implements Observer, Runnable {
 		}
 	}
 	
+	/**
+	 * sous-méthode pour determiner le niveau des IA via une interface textuelle
+	 * @return int difficulte
+	 * 		le niveau des IA compatibles choisi
+	 */
 	private int initDifficulte(int nbJoueurs, int nbHumains) {
 		String difficulte = getValeurUtilisee();
 		try {//on vérifie que le nombre entré est bien compatible 
@@ -191,6 +213,12 @@ public class VueTextuelle implements Observer, Runnable {
 			return null;
 	}
 	
+	/**
+	 * sous-méthode pour determiner quelles règles utiliser pour la partie
+	 * @return int choix
+	 * 		0 pour les regles de base 
+	 * 		1 pour la variante trophé nullifieur
+	 */
 	private int initRegles() {
 		try {//on vérifie que le nombre entré est bien compatible
 			String choix = getValeurUtilisee();
@@ -211,6 +239,12 @@ public class VueTextuelle implements Observer, Runnable {
 		}
 	}
 	
+	/**
+	 * sous-méthode pour determiner quelles règles utiliser pour la partie
+	 * @return int choix
+	 * 		0 pour les regles de base 
+	 * 		1 pour la variante "a coeur ouvert"
+	 */
 	private int initCondiVictoires() {
 		String choix = getValeurUtilisee();
 		try {//on vérifie que le nombre entré est bien compatible 

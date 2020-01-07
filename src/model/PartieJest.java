@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Observable;
-import java.util.Scanner;
 
 import model.cards.Carte;
 import model.cards.Couleur;
@@ -51,12 +50,26 @@ public class PartieJest extends Observable {
 	 */
 	private RepartiteurTrophee repartiteur;
 	
+	/**
+	 * Nombre total de joueurs dans la partie, minimum 3 et maximum 4
+	 */
 	private int nbJoueurs;
 	
+	/**
+	 * Nombre de joueurs "humain"
+	 */
 	private int nbJoueursReels;
 	
+	/**
+	 * Niveau d'intelligence des joueurs virtuels
+	 * 1 = Aleatoire, Prend une carte aleatoirement
+	 * 2 = Basique, Choisit la plus grande carte sur le terrain
+	 */
 	private int difficulte;
 	
+	/**
+	 * 
+	 */
 	private int regle;
 	
 	/**
@@ -88,150 +101,7 @@ public class PartieJest extends Observable {
 	public void notifier() {
 		this.setChanged();
 		this.notifyObservers();
-	}
-	/**
-	 * sous-méthode pour determiner le nombre de joueurs via une interface textuelle
-	 * @return int nbJoueurs
-	 * 		le nombre de joueurs compatibles choisi
-	 */
-	private int initNBJoueurs() {
-		Scanner scan = new Scanner(System.in);
-		String nbJoueurs = scan.next();
-		try {
-			if ((Integer.parseInt(nbJoueurs) != 4) && (Integer.parseInt(nbJoueurs) != 3)) {
-				System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
-				return initNBJoueurs();
-			}else {
-				System.out.println("Vous avez choisi "+nbJoueurs+" joueurs \n");
-				return Integer.parseInt(nbJoueurs);
-			}
-		}catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
-			return initNBJoueurs();
-		}
-	}
-	/**
-	 * sous-méthode pour determiner le nombre de joueurs humains via une interface textuelle
-	 * @return int nbHumains
-	 * 		le nombre de joueurs humains compatibles choisi
-	 */
-	private int initNBHumains(int nbJoueurs) {
-		Scanner scan = new Scanner(System.in);
-		String lineSeparator = System.getProperty("line.separator");
-		String nbHumains = scan.next();
-		//on vérifie que le nombre entré est bien compatible 
-		try {
-			Integer.parseInt(nbHumains);
-			if ((Integer.parseInt(nbHumains) < 1) || (Integer.parseInt(nbHumains) > nbJoueurs)) {
-				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
-				return initNBHumains(nbJoueurs);
-			} else {
-				System.out.println("Il y aura donc "+nbHumains+" joueurs humains " + lineSeparator);
-				return Integer.parseInt(nbHumains);
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
-			return initNBHumains(nbJoueurs);
-		}
-	}
-	/**
-	 * sous-méthode pour determiner le niveau des IA via une interface textuelle
-	 * @return int difficulte
-	 * 		le niveau des IA compatibles choisi
-	 */
-	private int initDifficulte(int nbJoueurs, int nbHumains) {
-		Scanner scan = new Scanner(System.in);
-		String difficulte = scan.next();
-		try {//on vérifie que le nombre entré est bien compatible 
-			if ((Integer.parseInt(difficulte) < 1) || (Integer.parseInt(difficulte) > 2)) {
-				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
-				return initDifficulte(nbJoueurs, nbHumains);
-			}else {
-				System.out.println("Le niveau est donc reglé sur "+difficulte+ "\n");
-				return Integer.parseInt(difficulte);
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
-			return initDifficulte(nbJoueurs, nbHumains);
-		}
-	}
-	
-	/**
-	 * sous-méthode pour determiner les pseudos des joueurs humains une interface textuelle
-	 *  @return String[] tableauPseudos
-	 *  	les pseudos des joueurs humains 
-	 */
-	private String[] initPseudos(int nbHumains) {
-		Scanner scan = new Scanner(System.in);
-		//On demande le(s) pseudo(s) a l'utilisateur 
-		String[] tableauPseudos = {"J1","J2","J3","J4"};
-		//on regarde le nombre d'humains
-		if (nbHumains==1) {
-			System.out.println("Vous allez maintenant devoir entrer votre pseudo");
-		} else {
-			System.out.println("Vous allez maintenant devoir entrer les pseudos des joueurs humains");
-		}
-		//on demande nbHumains pseudos
-		for (int i=0; i<nbHumains;i++) {
-			System.out.println("Veuillez entrer le pseudo du joueur "+ (i+1));
-			tableauPseudos[i]= scan.next();
-		}
-		System.out.println("");
-		return tableauPseudos;
-	}
-	/**
-	 * sous-méthode pour determiner quelles règles utiliser pour la partie
-	 * @return int choix
-	 * 		0 pour les regles de base 
-	 * 		1 pour la variante trophé nullifieur
-	 */
-	private int initRegles() {
-		Scanner scan = new Scanner(System.in);
-		String choix = scan.next();
-		try {//on vérifie que le nombre entré est bien compatible 
-			switch (choix) {
-			case "0" : 
-				System.out.println("Vous allez jouer avec les trophées de base !");
-				return 0;
-			case "1" :
-				System.out.println("Vous allez jouer avec le trophée : \"nullifieur\" ");
-				return 1;
-			default : 
-				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-				return initRegles();
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-			return initRegles();
-		}
-	}
-	/**
-	 * sous-méthode pour determiner quelles règles utiliser pour la partie
-	 * @return int choix
-	 * 		0 pour les regles de base 
-	 * 		1 pour la variante "a coeur ouvert"
-	 */
-	private int initCondiVictoires() {
-		Scanner scan = new Scanner(System.in);
-		String choix = scan.next();
-		try {//on vérifie que le nombre entré est bien compatible 
-			switch (choix) {
-			case "0" : 
-				System.out.println("Vous allez jouer avec les règles de base !");
-				return 0;
-			case "1" :
-				System.out.println("Vous allez jouer avec l'extension : \"A Coeur Ouvert\" ");
-				return 1;
-			default : 
-				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-				return initCondiVictoires();
-			}
-		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
-			return initCondiVictoires();
-		}
-	}
-	
+	}	
 	
 	/**
 	 * Cree les cartes et remplis le paquet avec les cartes de base 

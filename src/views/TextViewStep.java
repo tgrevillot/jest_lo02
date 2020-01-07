@@ -7,5 +7,6 @@ public enum TextViewStep {
 	PSEUDO,
 	TROPHEE,
 	CONDIVICTOIRE,
-	TOURDEJEU;
+	TOURDEJEU,
+	DETERGAGNANT;
 }
