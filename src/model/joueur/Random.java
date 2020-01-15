@@ -3,7 +3,6 @@ package model.joueur;
 import java.util.ArrayList;
 
 import model.cards.Carte;
-import model.cards.*;
 
 /**
  * La classe de l'ia Random 
@@ -13,7 +12,7 @@ import model.cards.*;
 public class Random implements IAStrategie {
 
 	/**
-	 * méthode qui permet à cette IA de cacher l'une de ses deux cartes
+	 * Methode qui permet à cette IA de cacher l'une de ses deux cartes
 	 */
 	public void offrir(ArrayList<Carte> main, Joueur joueurJouant) {
 		//on utilise une décision random pour ce choix 
@@ -24,7 +23,7 @@ public class Random implements IAStrategie {
 		}
 	}
 	/**
-	 * Cette méthode prend une liste de joueur dont on peut prendre des cartes 
+	 * Cette methode prend une liste de joueur dont on peut prendre des cartes 
 	 * et elle choisis une carte aléatoirement parmis celles-ci pour la renvoyer
 	 * @param joueurs 
 	 * 		la liste des joueurs disponibles
@@ -58,8 +57,8 @@ public class Random implements IAStrategie {
 	}
 	
 	/**
-	 * Méthode pour nullifier une carte 
-	 * elle est ici choisie aléatoirement
+	 * Methode pour nullifier une carte 
+	 * elle est ici choisie aleatoirement
 	 * @param joueurs
 	 * 		la liste des joueurs concernés
 	 * @param pireJ

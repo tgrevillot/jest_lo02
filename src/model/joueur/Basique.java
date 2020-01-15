@@ -3,7 +3,6 @@ package model.joueur;
 import java.util.ArrayList;
 
 import model.cards.Carte;
-import model.cards.*;
 
 /**
  * La classe de l'ia BAsique (c'est en fait une IA random pour l'instant)

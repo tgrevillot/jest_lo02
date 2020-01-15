@@ -6,9 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
-import javafx.scene.paint.Color;
-
-import javax.swing.ImageIcon;
 /**
  * l'interface graphique pour un tour a 4 joueurs
  * @author moras
