@@ -1,8 +1,8 @@
 package model.joueur;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
+import controllers.ControllerText;
 import model.cards.Carte;
 
 /**
@@ -36,8 +36,7 @@ public class Reel implements IAStrategie {
 	 * 		le joueur en train de choisir
 	 */
 	public void demanderOffre(ArrayList<Carte> main, Joueur joueurJouant) {
-		Scanner scan = new Scanner(System.in);
-		String carteARetourner= scan.next();
+		String carteARetourner= getValeurUtilisee();
 		try {
 			Integer.parseInt(carteARetourner);
 			if (Integer.parseInt(carteARetourner) == 3) { // si le joueur a fait la commande voirJest
@@ -112,8 +111,7 @@ public class Reel implements IAStrategie {
 	 * 		utile pour la succession dans le tour
 	 */
 	public Joueur demanderChoixSeul(ArrayList<Joueur> joueurs,Joueur joueurJouant) {
-		Scanner scan = new Scanner(System.in);
-		String choixJoueur= scan.next();
+		String choixJoueur= getValeurUtilisee();
 		Carte cartePrise; //la carte que l'on prend
 		Joueur joueurAPrendre; //le joueur auquel on prend une carte) {
 		try {
@@ -156,8 +154,7 @@ public class Reel implements IAStrategie {
 	 * 		utile pour la succession dans le tour
 	 */
 	public Joueur demanderChoixPlusieurs(ArrayList<Joueur> joueurs,Joueur joueurJouant, int i) {
-		Scanner scan = new Scanner(System.in);
-		String choixJoueur= scan.next();
+		String choixJoueur = getValeurUtilisee();
 		Carte cartePrise; //la carte que l'on prend
 		Joueur joueurAPrendre; //le joueur auquel on prend une carte) {
 		try {
@@ -218,10 +215,8 @@ public class Reel implements IAStrategie {
 	 * 
 	 */
 	private void demanderCarteANullifier(Joueur pireJ,Joueur bestJ) {
-		Scanner scan = new Scanner(System.in);
-		String choixJoueur= scan.next();
+		String choixJoueur= getValeurUtilisee();
 		int i =  bestJ.nombreCartesJest();
-		Carte cartePrise; //la carte que l'on prend
 		try { // en cas d'erreur de parseInt
 			if (Integer.parseInt(choixJoueur) < 0 || Integer.parseInt(choixJoueur) > i) { //s'il est dans le bon intervalle
 				System.out.println("/!\\ Vous devez choisir entre 0 et "+i);
@@ -240,6 +235,26 @@ public class Reel implements IAStrategie {
 			demanderCarteANullifier(pireJ,bestJ);
 		}
 		
+	}
+	
+	private String getValeurUtilisee() {
+		//On attend qu'une valeur soit disponible ou que le modèle soit changé
+		ControllerText controller = ControllerText.getControllerText();
+		try {
+			controller.enableModifModele();
+			while(!controller.isValueDispo())
+				Thread.sleep(100);
+			
+		}catch(InterruptedException e) {
+			System.err.append("TimeInterruptedException a l'appel de getValeurUtilisee");
+		}
+		
+		//Si une valeur est disponible on la récupère sinon on renvoie null pour indiquer que le modele
+		//a déjà changé
+		if(controller.isValueDispo())
+			return controller.getEntree();
+		else
+			return null;
 	}
 }
 	

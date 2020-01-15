@@ -10,7 +10,7 @@ import model.joueur.Joueur;
 /**
  * Vue textuelle
  */
-public class VueTextuelle implements Observer, Runnable {
+public class VueTextuelle implements Observer, Runnable, Vue {
 	
 	private ControllerText controller;
 	private PartieJest model;
@@ -43,10 +43,10 @@ public class VueTextuelle implements Observer, Runnable {
 				System.out.println("Veuillez entrer le nombre de joueurs (3 ou 4) : ");
 				
 				nbJoueurs = initNBJoueurs();
-				this.model.setNbJoueur(nbJoueurs);
 				
 				//On fait avancer l'initialisation
 				this.avancement = TextViewStep.NBJOUEURSREELS;
+				this.model.setNbJoueur(nbJoueurs);
 				break;
 			case NBJOUEURSREELS:
 				//On demande le nombre de joueurs reels
@@ -54,10 +54,9 @@ public class VueTextuelle implements Observer, Runnable {
 				System.out.println("Veuillez entrer le nombre de joueurs humains (entre 1 et "+nbJoueurs+" inclus) : ");
 				nbJoueursReels = initNBHumains(nbJoueurs);
 				
-				this.model.setNbJoueurReel(nbJoueursReels);
-				
 				//On fait avancer l'initialisation
 				this.avancement = TextViewStep.DIFFICULTE;
+				this.model.setNbJoueurReel(nbJoueursReels);
 				break;
 			case DIFFICULTE:
 				//Choix de la difficulté 
@@ -65,9 +64,10 @@ public class VueTextuelle implements Observer, Runnable {
 				nbJoueursReels = this.model.getNbJoueursReels();
 				System.out.println("Veuillez entrer la difficulté souhaité : \n1 - Normal \n2 - Avancé");
 				int difficulte = initDifficulte(nbJoueurs, nbJoueursReels);
-				this.model.setDifficulte(difficulte);
+				
 				//On fait avancer l'initialisation
 				this.avancement = TextViewStep.PSEUDO;
+				this.model.setDifficulte(difficulte);
 				break;
 			case PSEUDO:
 				//On relève les différents pseudo et on crée les joueurs dans le modèle.
@@ -77,24 +77,25 @@ public class VueTextuelle implements Observer, Runnable {
 				
 				//On fait avancer l'initialisation
 				this.avancement = TextViewStep.TROPHEE;
+				this.model.notifier();
 				break;
 			case TROPHEE:
 				//Choix des trophées add
 				System.out.println("Veuillez choisir le trophée additionnel que vous voulez utiliser : \n0- Aucun \n1- Trophée Nullifieur");
 				int regles = initRegles();
-				this.model.setRegle(regles);
 				
 				//On fait avancer l'initialisation
 				this.avancement = TextViewStep.CONDIVICTOIRE;
+				this.model.setRegle(regles);
 				break;
 			case CONDIVICTOIRE:
 				//Choix des conditions de victoires add
 				System.out.println("Veuillez choisir la règle additionnelle que vous voulez utiliser : \n0- Aucune \n1- A Coeur Ouvert");
 				int conditionsVictoire = initCondiVictoires();
-				this.model.setConditionsVictoire(conditionsVictoire);
 				
 				//On fait avancer l'initialisation
 				this.avancement = TextViewStep.AFFICHESCORE;
+				this.model.setConditionsVictoire(conditionsVictoire);
 				break; 
 			case AFFICHESCORE:
 				HashMap<Joueur, Integer> resultat = null;
@@ -109,6 +110,8 @@ public class VueTextuelle implements Observer, Runnable {
 				//On boucle sur les résultats des joueurs
 				for(Joueur j : resultat.keySet())
 					System.out.println("Le joueur " + j.getNom() + " a obtenu " + resultat.get(j) + " points.");
+				
+				this.avancement = TextViewStep.ANNONCEGAGNANT;
 				break;
 			case ANNONCEGAGNANT:
 				//On annonce le gagnant
@@ -223,10 +226,10 @@ public class VueTextuelle implements Observer, Runnable {
 		try {
 			this.controller.enableModifModele();
 			while(!this.controller.isValueDispo() && !this.model.hasChanged())
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			
 		}catch(InterruptedException e) {
-			System.err.append("TimeInterruptedException a l'appel de EntreeDispo");
+			System.err.append("TimeInterruptedException a l'appel de getValeurUtilisee");
 		}
 		
 		//Si une valeur est disponible on la récupère sinon on renvoie null pour indiquer que le modele
@@ -289,6 +292,11 @@ public class VueTextuelle implements Observer, Runnable {
 		}
 	}
 	
+	@Override
+	public TextViewStep getAvancement() {
+		return this.avancement;
+	}
+
 	@Override
 	public void run() {
 		new Thread(this).start();

@@ -90,19 +90,18 @@ public class PartieJest extends Observable {
 		this.repartiteur = new RepartiteurTropheeClassique(this.compteur);
 		
 		remplirPaquet();	
-		
-		faireUnTour(new LinkedList<Carte>());
-		Joueur gagnant = determinerGagnant();
 	}
 	
-	public void notifier() {
+	public synchronized void notifier() {
 		this.setChanged();
 		this.notifyObservers();
+		notifyAll();
 	}
 	
-	public void notifier(Object object) {
+	public synchronized void notifier(Object object) {
 		this.setChanged();
 		this.notifyObservers(object);
+		notifyAll();
 	}
 	
 	/**
@@ -121,7 +120,6 @@ public class PartieJest extends Observable {
 		this.deck.add(new Carte(0, Couleur.JOKER));
 		//on mélange le deck
 		Collections.shuffle(this.deck);	
-		
 	}
 	
 	/**
@@ -180,7 +178,6 @@ public class PartieJest extends Observable {
 				this.trophees = trophee;
 			}
 			break;
-			
 		}
 		//S'il existe 2 trophées et que le celui dans la deuxième case du tableau est le Joker,
 		//On va le replacer dans la première case du tableau pour éviter les problèmes du type :
@@ -315,12 +312,7 @@ public class PartieJest extends Observable {
 	 * @return Joueur jGagnant
 	 * 		le joueur désigné comme gagnant de la partie
 	 */
-	private Joueur determinerGagnant() {
-		String lineSeparator = System.getProperty("line.separator");
-		
-		//On annonce que c'est la fin de la partie
-		System.out.println(lineSeparator + lineSeparator);
-		System.out.println("La partie est terminée ! Faisons le point sur les scores : ");
+	public Joueur determinerGagnant() {
 		
 		//Attribution des trophées
 		attribuerTrophee();
@@ -362,7 +354,7 @@ public class PartieJest extends Observable {
 	 * @param cartesRestantes
 	 * 		les cartes qui n'ont pas été prises au tour d'avant et qui seront donc redistribuées
 	 */
-	private void faireUnTour(LinkedList<Carte> cartesRestantes) {
+	public void faireUnTour(LinkedList<Carte> cartesRestantes) {
 		//On mélange les cartes restantes avec les cartes du deck
 		LinkedList<Carte> buffer = new LinkedList<Carte>();
 		
@@ -463,27 +455,28 @@ public class PartieJest extends Observable {
 	 * @param nbJoueur
 	 * 		le nombre de joueur a avoir
 	 */
-	public void setNbJoueur(int nbJoueur) {
+	public synchronized void setNbJoueur(int nbJoueur) {
 		this.nbJoueurs = nbJoueur;
-		this.notifier();
+		notifier();
 	}
+	
 	/**
 	 * setteur du nombre de joueurs humains dans la partie
 	 * @param nbJoueurReel
 	 * 		le nombre de joueur humains 
 	 */
-	public void setNbJoueurReel(int nbJoueurReel) {
+	public synchronized void setNbJoueurReel(int nbJoueurReel) {
 		this.nbJoueursReels = nbJoueurReel;
-		this.notifier();
+		notifier();
 	}
 	/**
 	 * setteur de la difficulté du jeu
 	 * @param difficulte
 	 * 		la difficultée choisie
 	 */
-	public void setDifficulte(int difficulte) {
+	public synchronized void setDifficulte(int difficulte) {
 		this.difficulte = difficulte;
-		this.notifier();
+		notifier();
 	}
 
 	/**
@@ -491,18 +484,17 @@ public class PartieJest extends Observable {
 	 * @param regle
 	 * 		la regle a utiliser
 	 */
-	public void setRegle(int regle) {
+	public synchronized void setRegle(int regle) {
 		this.regle = regle;
-		this.notifier();
+		notifier();
 	}
 	/**
 	 * setteur des conditions de victoires que l'on choisi
 	 * @param conditionsVictoire
 	 * 		la condition pour choisir un gagnant
 	 */
-	public void setConditionsVictoire(int conditionsVictoire) {
+	public synchronized void setConditionsVictoire(int conditionsVictoire) {
 		this.conditionsVictoire = conditionsVictoire;
-		this.notifier();
 	}
 	/**
 	 * getteur du nombre de joueurs
@@ -517,16 +509,5 @@ public class PartieJest extends Observable {
 	 */
 	public int getNbJoueursReels() {
 		return nbJoueursReels;
-	}
-
-	/**
-	 * fonction main 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-		new PartieJest();
-
-	}
-	
+	}	
 }

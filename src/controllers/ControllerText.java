@@ -30,16 +30,27 @@ public class ControllerText implements Runnable {
 	private String valeurLue;
 	
 	/**
+	 * Singleton de notre controller
+	 */
+	private static ControllerText controller;
+	
+	/**
 	 * Constructeur instanciant tous les attributs et lancant le Thread de ce controller
 	 * @param model
 	 * 		La partie de Jest en cours, si le parametre est null on renvoie une erreur
 	 */
-	public ControllerText() {
+	private ControllerText() {
 		this.sc = new Scanner(System.in);
 		this.waitEntry = false;
 		this.valueDispo = false;
 		this.valeurLue = "";
 		new Thread(this).start();
+	}
+	
+	public static synchronized ControllerText getControllerText() {
+		if(controller == null)
+			controller = new ControllerText();
+		return controller;
 	}
 	
 	/**
@@ -62,6 +73,7 @@ public class ControllerText implements Runnable {
 	
 	public String getEntree() {
 		this.waitEntry = false;
+		this.valueDispo = false;
 		return this.valeurLue;
 	}
 	
