@@ -6,42 +6,26 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
-/**
- * l'interface graphique pour un tour a 4 joueurs
- * @author moras
- *
- */
+import javafx.scene.paint.Color;
+
+import javax.swing.ImageIcon;
+
 public class InterfaceGraphiqueTour4 {
 
-	private JFrame frame;
+	public JFrame frame;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfaceGraphiqueTour4 window = new InterfaceGraphiqueTour4();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
-	public InterfaceGraphiqueTour4() {
-		initialize();
+	public InterfaceGraphiqueTour4(String[] s) {
+		initialize(s);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(String[] s) {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new java.awt.Color(0, 100, 0));
 		frame.setBounds(100, 100, 735, 539);
@@ -89,19 +73,19 @@ public class InterfaceGraphiqueTour4 {
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setText("Joueur : ");
+		textArea.setText("Joueur : "+s[0]);
 		textArea.setBounds(29, 170, 155, 25);
 		frame.getContentPane().add(textArea);
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setEditable(false);
-		textArea_1.setText("Joueur : ");
+		textArea_1.setText("Joueur : "+s[1]);
 		textArea_1.setBounds(248, 332, 155, 25);
 		frame.getContentPane().add(textArea_1);
 		
 		JTextArea textArea_2 = new JTextArea();
 		textArea_2.setEditable(false);
-		textArea_2.setText("Joueur : ");
+		textArea_2.setText("Joueur : "+s[2]);
 		textArea_2.setBounds(477, 170, 155, 25);
 		frame.getContentPane().add(textArea_2);
 		
@@ -123,7 +107,7 @@ public class InterfaceGraphiqueTour4 {
 		
 		JTextArea textArea_4 = new JTextArea();
 		textArea_4.setEditable(false);
-		textArea_4.setText("Joueur : ");
+		textArea_4.setText("Joueur : "+s[3]);
 		textArea_4.setBounds(249, 0, 155, 25);
 		frame.getContentPane().add(textArea_4);
 		

@@ -6,86 +6,61 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 
 import javax.swing.JButton;
 
-/**
- * l'interface graphique qui récupère les noms des joueurs humains
- * @author moras
- *
- */
 public class InterfaceGraphiqueNomJoueurs extends Observable {
 
-	private JFrame frame;
-	/**
-	 * l'endroit pour écrire le pseudo du joueur 1
-	 */
-	private JTextField textField;
-	/**
-	 * l'endroit pour écrire le pseudo du joueur 2
-	 */
-	private JTextField textField_1;
-	/**
-	 * l'endroit pour écrire le pseudo du joueur 3
-	 */
-	private JTextField textField_2;
-	/**
-	 * l'endroit pour écrire le pseudo du joueur 4
-	 */
-	private JTextField textField_3;
+	public  JFrame frame;
+	private JTextField txt1;
+	private JTextField txt2;
+	private JTextField txt3;
+	private JTextField txt4;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfaceGraphiqueNomJoueurs window = new InterfaceGraphiqueNomJoueurs();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the application.
 	 */
-	public InterfaceGraphiqueNomJoueurs() {
-		initialize();
+	public InterfaceGraphiqueNomJoueurs(int nbHumains,int nbJ) {
+		initialize(nbHumains,nbJ);
+		
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(int nbHumains, int nbJ) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(100, 60, 116, 22);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		txt1 = new JTextField();
+		txt1.setBounds(100, 60, 116, 22);
+		frame.getContentPane().add(txt1);
+		txt1.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(100, 100, 116, 22);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		txt2 = new JTextField();
+		txt2.setBounds(100, 100, 116, 22);
+		frame.getContentPane().add(txt2);
+		txt2.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(100, 140, 116, 22);
-		frame.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		txt3 = new JTextField();
+		txt3.setBounds(100, 140, 116, 22);
+		frame.getContentPane().add(txt3);
+		txt3.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(100, 180, 116, 22);
-		frame.getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		txt4 = new JTextField();
+		txt4.setBounds(100, 180, 116, 22);
+		frame.getContentPane().add(txt4);
+		txt4.setColumns(10);
 		
 		JTextArea txtrJoueur = new JTextArea();
 		txtrJoueur.setEditable(false);
@@ -118,8 +93,34 @@ public class InterfaceGraphiqueNomJoueurs extends Observable {
 		txtrEntrerLesPseudos.setBounds(28, 13, 370, 34);
 		frame.getContentPane().add(txtrEntrerLesPseudos);
 		
-		JButton btnNewButton = new JButton("Termin\u00E9 ");
-		btnNewButton.setBounds(327, 223, 97, 25);
-		frame.getContentPane().add(btnNewButton);
+		JButton term = new JButton("Termin\u00E9 ");
+		term.setBounds(327, 223, 97, 25);
+		frame.getContentPane().add(term);
+		frame.setVisible(false);
+	
+		if (nbHumains<=1) {
+			txt2.setEnabled(false);
+		}
+		if (nbHumains<=2) {
+			txt3.setEnabled(false);		
+		}
+		if (nbHumains<=3 || nbJ==3) {
+			txt4.setEnabled(false);
+		}
+		term.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setVisible(false);
+				if (nbJ==3) {
+					String[] ls= {txt1.getText(),txt2.getText(),txt3.getText(),txt4.getText()};
+					InterfaceGraphiqueTour3 window3 = new InterfaceGraphiqueTour3(ls);
+					window3.frame.setVisible(true);
+				}else {
+					String[] ls= {txt1.getText(),txt2.getText(),txt3.getText(),txt4.getText()};
+					InterfaceGraphiqueTour4 window3 = new InterfaceGraphiqueTour4(ls);
+					window3.frame.setVisible(true);
+				}
+			}
+		});
+		
 	}
 }
