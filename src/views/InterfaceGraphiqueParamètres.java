@@ -21,63 +21,34 @@ import model.RepartiteurTropheeClassique;
 import javax.swing.JTextArea;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-/**
- * interface graphique recoltant les paramètres géneraux de la partie
- * @author moras
- *
- */
-public class InterfaceGraphiqueParamètres implements Observer {
 
+public class InterfaceGraphiqueParamètres {
+	private int nbJoueurs;
+	private int nbHumains;
+	private int difficulte;
+	private int regles;
+	private int condition;
 	private JFrame frame;
-	/**
-	 * checkbox pour definir qu'il y aura 3 joueurs
-	 */
 	private JCheckBox check3;
-	/**
-	 * checkbox pour definir qu'il y aura 4 joueurs
-	 */
 	private JCheckBox check4;
-	/**
-	 * checkbox pour definir qu'il y aura 1 joueur humain
-	 */
 	private JCheckBox checkH1;
-	/**
-	 * checkbox pour definir qu'il y aura 2 joueur humain
-	 */
 	private JCheckBox checkH2;
-	/**
-	 * checkbox pour definir qu'il y aura 3 joueur humain
-	 */
 	private JCheckBox checkH3;
-	/**
-	 * checkbox pour definir qu'il y aura 4 joueur humain
-	 */
 	private JCheckBox checkH4;
-	/**
-	 * checkbox pour definir si on utilise le trophée bonus nulifieur
-	 */
 	private JCheckBox checkNuli;
-	/**
-	 * checkbox pour definir si on utilise la variante a coeur ouvert
-	 */
 	private JCheckBox checkCoeur;
-	/**
-	 * Bouton pour passer a la fenetre suivante
-	 */
 	private JButton term;
 	private InterfaceGraphiqueNomJoueurs interfacenom;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		// Construction des objets du Modèle
-		InterfaceGraphiqueNomJoueurs interfacenom = new InterfaceGraphiqueNomJoueurs();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					// * Création du Controleur : lien entre le Modéle et la Vue
-					InterfaceGraphiqueParamètres window = new InterfaceGraphiqueParamètres(interfacenom);
+					InterfaceGraphiqueParamètres window = new InterfaceGraphiqueParamètres();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -89,16 +60,8 @@ public class InterfaceGraphiqueParamètres implements Observer {
 	/**
 	 * Create the application.
 	 */
-	public InterfaceGraphiqueParamètres(InterfaceGraphiqueNomJoueurs interfacenom) {
+	public InterfaceGraphiqueParamètres() {
 		initialize();
-
-		//notifie que l'Interface graphique Observe les lampes et le commutateur
-		this.interfacenom = interfacenom;
-		interfacenom.addObserver(this);
-
-		// * Création du Controleur de l'interrupteur: lien entre le Modéle et la Vue
-		new ControllerGraphiqueParametres(check3, check4, checkH1, checkH2,checkH3, checkH4, checkNuli, checkCoeur, term, interfacenom);
-
 	}
 
 	/**
@@ -180,56 +143,92 @@ public class InterfaceGraphiqueParamètres implements Observer {
 		checkH4 = new JCheckBox("4");
 		checkH4.setBounds(296, 79, 35, 25);
 		frame.getContentPane().add(checkH4);
-	}
-	public void update(Observable o, Object arg) {
-		// Le Update est déclenché quand un bouton est appuyé 
 		
-		switch ((String) arg) {
-		case "check3" : 
-			check3.setSelected(false);
-			check4.setSelected(false);
-			break;
-		case "check4" : 
-			check4.setSelected(false);
-			check3.setSelected(false);
-			break;
-		case "checkNuli1" : 
-			checkNuli.setSelected(true);
-			break;
-		case "checkCoeur1" : 
-			checkCoeur.setSelected(true);
-			break;
-		case "checkNuli0" : 
-			checkNuli.setSelected(false);
-			break;
-		case "checkCoeur0" : 
-			checkCoeur.setSelected(false);
-			break;
-		case "checkH1" : 
-			checkH1.setSelected(true);
-			checkH2.setSelected(false);
-			checkH3.setSelected(false);
-			checkH4.setSelected(false);
-			break;
-		case "checkH2" : 
-			checkH1.setSelected(false);
-			checkH2.setSelected(true);
-			checkH3.setSelected(false);
-			checkH4.setSelected(false);
-			break;
-		case "checkH3" : 
-			checkH1.setSelected(false);
-			checkH2.setSelected(false);
-			checkH3.setSelected(true);
-			checkH4.setSelected(false);
-			break;
-		case "checkH4" : 
-			checkH1.setSelected(false);
-			checkH2.setSelected(false);
-			checkH3.setSelected(false);
-			checkH4.setSelected(true);
-			break;
-		}
+		// L'appuie sur le bouton
+		check3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				nbJoueurs=3;
+				check3.setSelected(true);
+				check4.setSelected(false); 
+			}
+		});
+		check4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				nbJoueurs=4;
+				check3.setSelected(false);
+				check4.setSelected(true);
+			}
+		});
+		checkH1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				nbHumains=1;
+				checkH1.setSelected(true);
+				checkH2.setSelected(false);
+				checkH3.setSelected(false);
+				checkH4.setSelected(false);
+			}
+		});
+		checkH2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				nbHumains=2;
+				checkH1.setSelected(false);
+				checkH2.setSelected(true);
+				checkH3.setSelected(false);
+				checkH4.setSelected(false);
+			}
+		});
+		checkH3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				nbHumains=3;
+				checkH1.setSelected(false);
+				checkH2.setSelected(false);
+				checkH3.setSelected(true);
+				checkH4.setSelected(false); 
+			}
+		});
+		checkH4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				nbHumains=4;
+				checkH1.setSelected(false);
+				checkH2.setSelected(false);
+				checkH3.setSelected(false);
+				checkH4.setSelected(true); 
+			}
+		});
+		checkNuli.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (regles==1) {
+					checkNuli.setSelected(false);
+					regles=0;
+				} else {
+					checkNuli.setSelected(true);
+					regles=1;
+				}
+			}
+		});
+		checkCoeur.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (condition==1) {
+					checkCoeur.setSelected(false);
+					condition=0;
+				} else {
+					checkCoeur.setSelected(true);
+					condition=1;
+				}
+			}
+		});
+		term.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (nbJoueurs>=nbHumains) {
+					frame.setVisible(false);
+					InterfaceGraphiqueNomJoueurs window2 = new InterfaceGraphiqueNomJoueurs(nbHumains,nbJoueurs);
+					window2.frame.setVisible(true);
+				}
+				
+			}
+		});
 	}
+	
 
 }

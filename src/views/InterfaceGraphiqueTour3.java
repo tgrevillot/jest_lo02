@@ -4,43 +4,30 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
-/**
- * l'interface graphique pour un tour a 3 joueurs
- * @author moras
- *
- */
+
 public class InterfaceGraphiqueTour3 {
 
-	private JFrame frame;
+	public JFrame frame;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfaceGraphiqueTour3 window = new InterfaceGraphiqueTour3();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the application.
 	 */
-	public InterfaceGraphiqueTour3() {
-		initialize();
+	public InterfaceGraphiqueTour3(String[] s) {
+		initialize(s);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(String[] s) {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new java.awt.Color(0, 100, 0));
 		frame.setBounds(100, 100, 633, 535);
@@ -87,19 +74,19 @@ public class InterfaceGraphiqueTour3 {
 		
 		JTextArea txtrJoueur = new JTextArea();
 		txtrJoueur.setEditable(false);
-		txtrJoueur.setText("Joueur : ");
+		txtrJoueur.setText("Joueur : "+s[0]);
 		txtrJoueur.setBounds(12, 85, 155, 25);
 		frame.getContentPane().add(txtrJoueur);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setText("Joueur : ");
+		textArea.setText("Joueur : "+s[1]);
 		textArea.setBounds(218, 328, 155, 25);
 		frame.getContentPane().add(textArea);
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setEditable(false);
-		textArea_1.setText("Joueur : ");
+		textArea_1.setText("Joueur : "+s[2]);
 		textArea_1.setBounds(446, 85, 155, 25);
 		frame.getContentPane().add(textArea_1);
 		
