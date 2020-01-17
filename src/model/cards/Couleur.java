@@ -1,7 +1,8 @@
 package model.cards;
 
 /**
- * enumération sur les couleurs et différents types de carte
+ * enumeration sur les couleurs et differents types de carte
+ * Utile pour avoir un ordre de priorite sur celles-ci et pouvoir faire des traitements relatifs a certaines couleurs en particulier
  * @author moras
  *
  */
@@ -13,7 +14,7 @@ public enum Couleur {
 	PIQUE(4, "Pique"),
 	EXTENSION(0,"Extension"); //pour les cartes bonus de la fin
 	/**
-	 * donne la priorité de la carte par rapport aux autres couleurs
+	 * donne la priorite de la carte par rapport aux autres couleurs
 	 */
 	private int priority;
 	/**
@@ -24,7 +25,7 @@ public enum Couleur {
 	/**
 	 * constructeur
 	 * @param prio
-	 * 		donne la priorité concernant la couleur voulue
+	 * 		donne la priorite concernant la couleur voulue
 	 * @param name
 	 * 		le nom de la Couleur 
 	 */
@@ -39,15 +40,15 @@ public enum Couleur {
 	}
 	
 	/**
-	 * getteur de la priorité de la Couleur
-	 * @return
+	 * getteur de la priorite de la Couleur
+	 * @return int
 	 */
 	public int getPriority() {
 		return this.priority;
 	}
 	/**
 	 * getteur du nom de la carte 
-	 * @return
+	 * @return String
 	 */
 	public String getName() {
 		return this.name;

@@ -1,6 +1,6 @@
 package model.cards;
 /**
- * enumeration de toutes les condition d'obtention d'un trophée
+ * enumeration de toutes les condition d'obtention d'un trophee
  * @author moras
  *
  */

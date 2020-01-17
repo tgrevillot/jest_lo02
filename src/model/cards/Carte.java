@@ -6,19 +6,19 @@ package model.cards;
  */
 public class Carte {
 	/**
-	 * La valeur de la carte est le chiffre qui lui est associé
-	 * Les valeurs vont de 1 à 5. Par défaut les As valent 1 et le Joker 4 
+	 * La valeur de la carte est le chiffre qui lui est associe
+	 * Les valeurs vont de 1 a 5. Par defaut les As valent 1 et le Joker 4 
 	 */
 	private int valeur;
 	
 	/**
-	 * Cet attribut indique si la carte est face cachée où non, i.e si n'importe quel joueur peut la voir une fois sur le plateau.
-	 * Par défaut, toute carte est visible.
+	 * Cet attribut indique si la carte est face cachee ou non, i.e si n'importe quel joueur peut la voir une fois sur le plateau.
+	 * Par defaut, toute carte est visible.
 	 */
 	private boolean cache;
 	
 	/**
-	 * Attribut permettant de déterminer l'ordre de la couleur de la carte.
+	 * Attribut permettant de determiner l'ordre de la couleur de la carte.
 	 * Utile lors de la selection de la carte lorsque les face values ont la meme valeur 
 	 */
 	private int priority;
@@ -29,9 +29,9 @@ public class Carte {
 	private Couleur couleur;
 	
 	/**Constructeur des Carte
-	 * Paramètre : val - La valeur de la carte (cf. Attribut valeur)
+	 * Parametre : val - La valeur de la carte (cf. Attribut valeur)
 	 * @param val
-	 * 		Ce paramètre permet de donner la valeu souhaitée a la carte 
+	 * 		Ce parametre permet de donner la valeu souhaitee a la carte 
 	 */
 	public Carte(int val, Couleur couleur) {
 		this.valeur=val;
@@ -41,8 +41,9 @@ public class Carte {
 		this.priority = couleur.getPriority();
 	}
 	/**
-	 * Un autre constructeur pour créer une copie d'une carte existante 
+	 * Un autre constructeur pour creer une copie d'une carte existante 
 	 * @param c
+	 * 		la carte a copier
 	 */
 	public Carte(Carte c) {
 		this.valeur = c.getFaceValue();
@@ -51,7 +52,10 @@ public class Carte {
 		this.priority = this.couleur.getPriority();
 	}
 	/**
-	 * méthode qui retourne true si les deux cartes ont les mêmes attributs
+	 * methode qui retourne true si les deux cartes ont les memes attributs
+	 * @param c
+	 * 		La carte a verifier 
+	 * @return boolean 
 	 */
 	@Override
 	public boolean equals(Object c) {
@@ -77,7 +81,7 @@ public class Carte {
 		return couleur.getName();
 	}
 	/**
-	 * donne la couleur de la carte selon l'énumeration
+	 * donne la couleur de la carte selon l'enumeration
 	 * @return Couleur
 	 */
 	public Couleur getCouleur() {
@@ -86,20 +90,21 @@ public class Carte {
 	
 	/**
 	 * Affiche les cartes sous une jolie forme
+	 * Si elle est cachee on ne voit que " [cache] "
 	 * @return
 	 * Cela renvois un String expliquant en Français quelle est la carte en question
 	 */
 	public String afficher() {
 		String str = "";
 		
-		//On affiche le Joker différemment, sans valeur.
+		//On affiche le Joker differemment, sans valeur.
 		if(this.couleur == Couleur.JOKER)
 			str += "Joker";
 		else if(this.valeur == 1)
 			str += "As de " + this.couleur.getName();
 		else
 			str += String.valueOf(this.valeur) + " de "  + this.couleur.getName();
-		//Si la carte est cachée, on indique qu'elle l'est dans le toString
+		//Si la carte est cachee, on indique qu'elle l'est dans le toString
 		if(this.cache)
 			str += " [cache] ";
 		
@@ -107,11 +112,11 @@ public class Carte {
 	}
 	
 	/**
-	 * méthode qui change la valeur d'un as de 1 à 5 
+	 * methode qui change la valeur d'un as de 1 a 5 
 	 */
 	public void changeAsFaceValue() {
-		//Dans le cas, où l'as est tout seul, il peut valoir 5 points.
-		//C'est pourquoi, nous allons vérifier qu'il s'agisse bien d'un As avant de changer effectivement 
+		//Dans le cas, ou l'as est tout seul, il peut valoir 5 points.
+		//C'est pourquoi, nous allons verifier qu'il s'agisse bien d'un As avant de changer effectivement 
 		//Sa faceValue
 		if(this.valeur == 1)
 			this.valeur = 5;
@@ -120,33 +125,34 @@ public class Carte {
 	
 	/**
 	 * Setter pour cacher une carte
+	 * Influe directment sur son ToString 
 	 */
 	public void cacherCarte() {
 		this.cache = true;
 	}
 	
 	/**
-	 * Setter pour "dé-cacher" une carte
+	 * Setter pour "de-cacher" une carte
 	 *  
 	 */
 	public void antiCacherCarte() {
 		this.cache = false;
 	}
 	/**
-	 * donne le staut de la carte (correspondant a sa visibilité)
+	 * donne le staut de la carte (correspondant a sa visibilite)
 	 */
 	public boolean isCacher() {
 		return this.cache;
 	}
 	/**
 	 * retrourne la valeur d'une carte
-	 * @return
+	 * @return int
 	 */
 	public int getFaceValue() {
 		return this.valeur;
 	}
 	/**
-	 * renvois la priorité de la carte
+	 * renvois la priorite de la carte
 	 * @return int
 	 */
 	public int getOrdre() {

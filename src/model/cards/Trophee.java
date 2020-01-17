@@ -2,6 +2,7 @@ package model.cards;
 
 /**
  * la classe correspondant aux trophées du jeu 
+ * ils sont composes d'une carte qu'ils cederont au detenteur legitime de celui-ci apres attribution
  * @author moras
  *
  */
@@ -128,7 +129,7 @@ public class Trophee {
 		return this.carte;
 	}
 	/**
-	 * methode de conversion du trophée en un strin lui correspondant
+	 * methode de conversion du trophée en un string lui correspondant
 	 * @return String
 	 */
 	public String afficher() {
