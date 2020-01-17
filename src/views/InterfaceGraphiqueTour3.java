@@ -7,25 +7,26 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
-
+/**
+ * Interface graphique principale d'un deroulement de partie a 3 joueurs 
+ * (non terminee)
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueTour3 {
 
 	public JFrame frame;
 
-	/**
-	 * Launch the application.
-	 */
-
 
 	/**
-	 * Create the application.
+	 * Cree l'interface
 	 */
 	public InterfaceGraphiqueTour3(String[] s) {
 		initialize(s);
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise le contenu de l'interface
 	 */
 	private void initialize(String[] s) {
 		frame = new JFrame();

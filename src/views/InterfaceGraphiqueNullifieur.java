@@ -7,36 +7,25 @@ import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
-
+/**
+ * interface graphique pour l'implementation du nullifieur 
+ * (pas encore implementee
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueNullifieur {
 
 	private JFrame frame;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfaceGraphiqueNullifieur window = new InterfaceGraphiqueNullifieur();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
+	 * Cree la fenetre
 	 */
 	public InterfaceGraphiqueNullifieur() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise le contenu de la fenetre
 	 */
 	private void initialize() {
 		frame = new JFrame();

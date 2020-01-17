@@ -6,36 +6,25 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import java.awt.Canvas;
 import javax.swing.JButton;
-
+/**
+ * interface graphique pour l'affichage de l'attribution des trophees et des resultats de la partie 
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueEcranFinal {
 
 	private JFrame frame;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfaceGraphiqueEcranFinal window = new InterfaceGraphiqueEcranFinal();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
-	 * Create the application.
+	 * Cree la fenetre
 	 */
 	public InterfaceGraphiqueEcranFinal() {
 		initialize();
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise le contenu de la fenetre
 	 */
 	private void initialize() {
 		frame = new JFrame();

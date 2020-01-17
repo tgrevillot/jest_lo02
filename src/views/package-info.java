@@ -1,4 +1,4 @@
 /**
- * package des différentes vues 
+ * package des differentes vues 
  */
 package views;

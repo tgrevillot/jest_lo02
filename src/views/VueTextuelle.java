@@ -8,14 +8,30 @@ import controllers.ControllerText;
 import model.PartieJest;
 import model.joueur.Joueur;
 /**
- * Vue textuelle
+ * Vue textuelle montrant tout ce qui se passe sous forme de chaines de caracteres
  */
 public class VueTextuelle implements Observer, Runnable, Vue {
-	
+	/**
+	 * Le controlleur de vue textuelle associe
+	 */
 	private ControllerText controller;
+	/**
+	 * Le model utilise pour faire tourner cette vue 
+	 */
 	private PartieJest model;
+	/**
+	 * L'avancement de la partie
+	 * Permet, en fonction de sa valeur de decider quelle action effectuer
+	 */
 	private TextViewStep avancement;
 	
+	/**
+	 * Le constructeur de la vue textuelle 
+	 * @param ct
+	 * 		Le controlleur qui va la releir a la vue 
+	 * @param model
+	 * 		Le model utilise 
+	 */
 	public VueTextuelle(ControllerText ct, PartieJest model) {
 		if(ct == null)
 			throw new Error("Le controllerText fournie est NULL");
@@ -27,8 +43,12 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 		//A VOIR PAR LA SUITE
 		new Thread(this).start();
 	}
-	 
-	@SuppressWarnings("unchecked")
+
+
+	/**
+	 * methode venant de l'interface observable
+	 * designe, en fonction de avancement de l'action a effectuer ensuite
+	 */
 	public void update(Observable obs, Object arg) {
 		int nbJoueurs;
 		int nbJoueursReels;
@@ -36,7 +56,7 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 		
 		switch(this.avancement) {
 			case NBJOUEURS:
-				//Initialisation du jeu, on affiche le début de partie
+				//Initialisation du jeu, on affiche le debut de partie
 				System.out.println("Bienvenue dans le Jest !");
 				System.out.println("Suivez les instructions suivantes pour configurer la partie et pouvoir jouer "+"\n");
 				//choix du nombre de joueurs	
@@ -59,10 +79,10 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 				this.model.setNbJoueurReel(nbJoueursReels);
 				break;
 			case DIFFICULTE:
-				//Choix de la difficulté 
+				//Choix de la difficulte 
 				nbJoueurs = this.model.getNbJoueurs();
 				nbJoueursReels = this.model.getNbJoueursReels();
-				System.out.println("Veuillez entrer la difficulté souhaité : \n1 - Normal \n2 - Avancé");
+				System.out.println("Veuillez entrer la difficulte souhaite : \n1 - Normal \n2 - Avance");
 				int difficulte = initDifficulte(nbJoueurs, nbJoueursReels);
 				
 				//On fait avancer l'initialisation
@@ -70,7 +90,7 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 				this.model.setDifficulte(difficulte);
 				break;
 			case PSEUDO:
-				//On relève les différents pseudo et on crée les joueurs dans le modèle.
+				//On releve les differents pseudo et on cree les joueurs dans le modele.
 				nbJoueursReels = this.model.getNbJoueursReels();				
 				String[] tabPseudos = this.getTabPseudos(nbJoueursReels);
 				this.model.ajouterJoueurs(tabPseudos);
@@ -80,8 +100,8 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 				this.model.notifier();
 				break;
 			case TROPHEE:
-				//Choix des trophées add
-				System.out.println("Veuillez choisir le trophée additionnel que vous voulez utiliser : \n0- Aucun \n1- Trophée Nullifieur");
+				//Choix des trophees add
+				System.out.println("Veuillez choisir le trophee additionnel que vous voulez utiliser : \n0- Aucun \n1- Trophee Nullifieur");
 				int regles = initRegles();
 				
 				//On fait avancer l'initialisation
@@ -90,7 +110,7 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 				break;
 			case CONDIVICTOIRE:
 				//Choix des conditions de victoires add
-				System.out.println("Veuillez choisir la règle additionnelle que vous voulez utiliser : \n0- Aucune \n1- A Coeur Ouvert");
+				System.out.println("Veuillez choisir la regle additionnelle que vous voulez utiliser : \n0- Aucune \n1- A Coeur Ouvert");
 				int conditionsVictoire = initCondiVictoires();
 				
 				//On fait avancer l'initialisation
@@ -105,9 +125,9 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 					
 				//On annonce que c'est la fin de la partie
 				System.out.println(lineSeparator + lineSeparator);
-				System.out.println("La partie est terminée ! Faisons le point sur les scores : ");
+				System.out.println("La partie est terminee ! Faisons le point sur les scores : ");
 				
-				//On boucle sur les résultats des joueurs
+				//On boucle sur les resultats des joueurs
 				for(Joueur j : resultat.keySet())
 					System.out.println("Le joueur " + j.getNom() + " a obtenu " + resultat.get(j) + " points.");
 				
@@ -120,14 +140,14 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 					gagnant = (Joueur) arg;
 				
 				System.out.println(System.getProperty("line.separator"));
-				System.out.println("Félicitation à " + gagnant.getNom() + " ! Vous remportez la partie !");
+				System.out.println("Felicitation a " + gagnant.getNom() + " ! Vous remportez la partie !");
 					
 				break;
 		}
 	}
 	
 	/**
-	 * Sous-méthode pour determiner les pseudos des joueurs humains une interface textuelle
+	 * Sous-methode pour determiner les pseudos des joueurs humains une interface textuelle
 	 *  @return String[] tableauPseudos
 	 *  	les pseudos des joueurs humains 
 	 */
@@ -144,7 +164,7 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 				//on demande nbHumains pseudos
 				TextViewStep avancementPrecedent = this.avancement;
 				for (int i=0; i<nbHumains;i++) {
-					//Si la vue graphique a été complété avant celle-ci on arrête tout
+					//Si la vue graphique a ete complete avant celle-ci on arrete tout
 					if(avancementPrecedent.ordinal() < avancement.ordinal())
 						return tableauPseudos;
 					System.out.println("Veuillez entrer le pseudo du joueur "+ (i+1));
@@ -155,7 +175,7 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 	}
 	
 	/**
-	 * sous-méthode pour determiner le nombre de joueurs via une interface textuelle
+	 * sous-methode pour determiner le nombre de joueurs via une interface textuelle
 	 * @return int nbJoueurs
 	 * 		le nombre de joueurs compatibles choisi
 	 */
@@ -163,66 +183,70 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 		String nbJoueurs = getValeurUtilisee();
 		try {
 			if ((Integer.parseInt(nbJoueurs) != 4) && (Integer.parseInt(nbJoueurs) != 3)) {
-				System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
+				System.out.println("Entree incorrecte, vous devez choisir 3 ou 4 : ");
 				return initNBJoueurs();
 			}else {
 				System.out.println("Vous avez choisi "+nbJoueurs+" joueurs \n");
 				return Integer.parseInt(nbJoueurs);
 			}
 		}catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir 3 ou 4 : ");
+			System.out.println("Entree incorrecte, vous devez choisir 3 ou 4 : ");
 			return initNBJoueurs();
 		}
 	}
 	
 
 	/**
-	 * sous-méthode pour determiner le nombre de joueurs humains via une interface textuelle
+	 * sous-methode pour determiner le nombre de joueurs humains via une interface textuelle
 	 * @return int nbHumains
 	 * 		le nombre de joueurs humains compatibles choisi
 	 */
 	private int initNBHumains(int nbJoueurs) {
 		String lineSeparator = System.getProperty("line.separator");
 		String nbHumains = getValeurUtilisee();
-		//on vérifie que le nombre entré est bien compatible 
+		//on verifie que le nombre entre est bien compatible 
 		try {
 			Integer.parseInt(nbHumains);
 			if ((Integer.parseInt(nbHumains) < 1) || (Integer.parseInt(nbHumains) > nbJoueurs)) {
-				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
+				System.out.println("Entree incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
 				return initNBHumains(nbJoueurs);
 			} else {
 				System.out.println("Il y aura donc "+nbHumains+" joueurs humains " + lineSeparator);
 				return Integer.parseInt(nbHumains);
 			}
 		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
+			System.out.println("Entree incorrecte, vous devez choisir entre 1 et "+nbJoueurs+" inclus : ");
 			return initNBHumains(nbJoueurs);
 		}
 	}
 	
 	/**
-	 * sous-méthode pour determiner le niveau des IA via une interface textuelle
+	 * sous-methode pour determiner le niveau des IA via une interface textuelle
 	 * @return int difficulte
 	 * 		le niveau des IA compatibles choisi
 	 */
 	private int initDifficulte(int nbJoueurs, int nbHumains) {
 		String difficulte = getValeurUtilisee();
-		try {//on vérifie que le nombre entré est bien compatible 
+		try {//on verifie que le nombre entre est bien compatible 
 			if ((Integer.parseInt(difficulte) < 1) || (Integer.parseInt(difficulte) > 2)) {
-				System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
+				System.out.println("Entree incorrecte, vous devez choisir entre 1 et 2 ");
 				return initDifficulte(nbJoueurs, nbHumains);
 			}else {
-				System.out.println("Le niveau est donc reglé sur "+difficulte+ "\n");
+				System.out.println("Le niveau est donc regle sur "+difficulte+ "\n");
 				return Integer.parseInt(difficulte);
 			}
 		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 1 et 2 ");
+			System.out.println("Entree incorrecte, vous devez choisir entre 1 et 2 ");
 			return initDifficulte(nbJoueurs, nbHumains);
 		}
 	}
-	
+	/**
+	 * Permet de recuperer une entree clavier tout en restant en concurrence 
+	 * @return String
+	 * 		La valeur (si elle existe) que l'utilisateur doit renvoyer 
+	 */
 	private String getValeurUtilisee() {
-		//On attend qu'une valeur soit disponible ou que le modèle soit changé
+		//On attend qu'une valeur soit disponible ou que le modele soit change
 		try {
 			this.controller.enableModifModele();
 			while(!this.controller.isValueDispo() && !this.model.hasChanged())
@@ -232,8 +256,8 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 			System.err.append("TimeInterruptedException a l'appel de getValeurUtilisee");
 		}
 		
-		//Si une valeur est disponible on la récupère sinon on renvoie null pour indiquer que le modele
-		//a déjà changé
+		//Si une valeur est disponible on la recupere sinon on renvoie null pour indiquer que le modele
+		//a deja change
 		if(this.controller.isValueDispo())
 			return this.controller.getEntree();
 		else
@@ -241,63 +265,70 @@ public class VueTextuelle implements Observer, Runnable, Vue {
 	}
 	
 	/**
-	 * sous-méthode pour determiner quelles règles utiliser pour la partie
+	 * sous-methode pour determiner quelles regles utiliser pour la partie
+	 * concernant l'utilisation ou non du trophee nullifieur 
 	 * @return int choix
 	 * 		0 pour les regles de base 
-	 * 		1 pour la variante trophé nullifieur
+	 * 		1 pour la variante trophe nullifieur
 	 */
 	private int initRegles() {
-		try {//on vérifie que le nombre entré est bien compatible
+		try {//on verifie que le nombre entre est bien compatible
 			String choix = getValeurUtilisee();
 			switch (choix) {
 			case "0" : 
-				System.out.println("Vous allez jouer avec les trophées de base !");
+				System.out.println("Vous allez jouer avec les trophees de base !");
 				return 0;
 			case "1" :
-				System.out.println("Vous allez jouer avec le trophée : \"nullifieur\" ");
+				System.out.println("Vous allez jouer avec le trophee : \"nullifieur\" ");
 				return 1;
 			default : 
-				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+				System.out.println("Entree incorrecte, vous devez choisir entre 0 et 1 ");
 				return initRegles();
 			}
 		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+			System.out.println("Entree incorrecte, vous devez choisir entre 0 et 1 ");
 			return initRegles();
 		}
 	}
 	
 	/**
-	 * sous-méthode pour determiner quelles règles utiliser pour la partie
+	 * sous-methode pour determiner quelles regles utiliser pour la partie
+	 * relativement aux conditions de victoire
 	 * @return int choix
 	 * 		0 pour les regles de base 
 	 * 		1 pour la variante "a coeur ouvert"
 	 */
 	private int initCondiVictoires() {
 		String choix = getValeurUtilisee();
-		try {//on vérifie que le nombre entré est bien compatible 
+		try {//on verifie que le nombre entre est bien compatible 
 			switch (choix) {
 			case "0" : 
-				System.out.println("Vous allez jouer avec les règles de base !");
+				System.out.println("Vous allez jouer avec les regles de base !");
 				return 0;
 			case "1" :
 				System.out.println("Vous allez jouer avec l'extension : \"A Coeur Ouvert\" ");
 				return 1;
 			default : 
-				System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+				System.out.println("Entree incorrecte, vous devez choisir entre 0 et 1 ");
 				return initCondiVictoires();
 			}
 		} catch (Exception e) {
-			System.out.println("Entrée incorrecte, vous devez choisir entre 0 et 1 ");
+			System.out.println("Entree incorrecte, vous devez choisir entre 0 et 1 ");
 			return initCondiVictoires();
 		}
 	}
 	
-	@Override
+	/**
+	 * getteur de l'avancement de la partie 
+	 * @return TextViewStep
+	 */
 	public TextViewStep getAvancement() {
 		return this.avancement;
 	}
-
-	@Override
+	
+	/**
+	 * Methode a effectuer lors de l'initialisation du thread 
+	 */
 	public void run() {
 		new Thread(this).start();
 	}

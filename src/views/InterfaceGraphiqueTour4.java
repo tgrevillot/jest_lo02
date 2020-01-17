@@ -9,21 +9,26 @@ import javax.swing.JTextArea;
 import javafx.scene.paint.Color;
 
 import javax.swing.ImageIcon;
-
+/**
+ * Interface graphique principale d'un deroulement de partie a 4 joueurs 
+ * (non terminee)
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueTour4 {
-
+	
 	public JFrame frame;
 
 
 	/**
-	 * Create the application.
+	 * Cree l'interface
 	 */
 	public InterfaceGraphiqueTour4(String[] s) {
 		initialize(s);
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise le contenu de l'interface
 	 */
 	private void initialize(String[] s) {
 		frame = new JFrame();

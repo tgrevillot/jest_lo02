@@ -22,50 +22,96 @@ import javax.swing.JTextArea;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class InterfaceGraphiqueParamètres {
+public class InterfaceGraphiqueParametres {
+	/**
+	 * le nombre de joueurs dans la partie
+	 * attendu entre 3 et 4
+	 */
 	private int nbJoueurs;
+	/**
+	 * le nombre d'humains dans la partie
+	 * attendu entre 1 et nbJoueurs
+	 */
 	private int nbHumains;
+	/**
+	 * le niveau de difficulte des IA
+	 *  attendu entre 1 et 2 
+	 */
 	private int difficulte;
+	/**
+	 * les regles additionnelles a utiliser
+	 * attendu entre 0 et 1 
+	 */
 	private int regles;
+	/**
+	 * les conditions de victoires a utiliser
+	 */
 	private int condition;
-	private JFrame frame;
+	
+	public JFrame frame;
+	
+	/**
+	 * checkbox pour definir qu'il y aura 3 joueurs
+	 * etat initial : non coche 
+	 * si coche alors check4 ne doit pas l'etre 
+	 */
 	private JCheckBox check3;
+	/**
+	 * checkbox pour definir qu'il y aura 4 joueurs
+	 * etat initial : non coche 
+	 * si coche alors check3 ne doit pas l'etre 
+	 */
 	private JCheckBox check4;
+	/**
+	 * checkbox pour definir qu'il y aura 1 joueur humain
+	 * etat initial : non coche 
+	 * si coche alors les autres checkH ne doivent pas l'etre 
+	 */
 	private JCheckBox checkH1;
+	/**
+	 * checkbox pour definir qu'il y aura 2 joueur humain
+	 * etat initial : non coche 
+	 * si coche alors les autres checkH ne doivent pas l'etre 
+	 */
 	private JCheckBox checkH2;
+	/**
+	 * checkbox pour definir qu'il y aura 3 joueur humain
+	 * etat initial : non coche 
+	 * si coche alors les autres checkH ne doivent pas l'etre 
+	 */
 	private JCheckBox checkH3;
+	/**
+	 * checkbox pour definir qu'il y aura 4 joueur humain
+	 * etat initial : non coche 
+	 * si coche alors les autres checkH ne doivent pas l'etre 
+	 */
 	private JCheckBox checkH4;
+	/**
+	 * checkbox pour definir si on utilise le trophee bonus nulifieur
+	 * etat initial : non coche 
+	 */
 	private JCheckBox checkNuli;
+	/**
+	 * checkbox pour definir si on utilise la variante a coeur ouvert
+	 * etat initial : non coche 
+	 */
 	private JCheckBox checkCoeur;
+	/**
+	 * Bouton pour passer a la fenetre suivante
+	 */
 	private JButton term;
-	private InterfaceGraphiqueNomJoueurs interfacenom;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					// * Création du Controleur : lien entre le Modéle et la Vue
-					InterfaceGraphiqueParamètres window = new InterfaceGraphiqueParamètres();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
-	 * Create the application.
+	 * Cree la fenetre
 	 */
-	public InterfaceGraphiqueParamètres() {
+	public InterfaceGraphiqueParametres() {
 		initialize();
+		
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise le contenu de la fenetre
 	 */
 	private void initialize() {
 		frame = new JFrame();

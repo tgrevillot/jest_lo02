@@ -11,22 +11,33 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 
 import javax.swing.JButton;
-
+/**
+ * Interface graphique qui recupere les entrees clavier des noms des joueurs humains presents 
+ * @author moras
+ *
+ */
 public class InterfaceGraphiqueNomJoueurs extends Observable {
 
 	public  JFrame frame;
+	/**
+	 * Boite de texte du pseudo du joueur humain numero 1 
+	 */
 	private JTextField txt1;
+	/**
+	 * Boite de texte du pseudo du joueur humain numero 2
+	 */
 	private JTextField txt2;
+	/**
+	 * Boite de texte du pseudo du joueur humain numero 3
+	 */
 	private JTextField txt3;
+	/**
+	 * Boite de texte du pseudo du joueur humain numero 4 
+	 */
 	private JTextField txt4;
 
 	/**
-	 * Launch the application.
-	 */
-
-
-	/**
-	 * Create the application.
+	 * Cree la fenetre
 	 */
 	public InterfaceGraphiqueNomJoueurs(int nbHumains,int nbJ) {
 		initialize(nbHumains,nbJ);
@@ -34,7 +45,7 @@ public class InterfaceGraphiqueNomJoueurs extends Observable {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise le contenu de la fenetre
 	 */
 	private void initialize(int nbHumains, int nbJ) {
 		frame = new JFrame();
