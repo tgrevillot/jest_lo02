@@ -14,20 +14,21 @@ import model.joueur.Joueur;
 
 /**
  * La classe regroupant toutes les methodes et attributs pour faire une partie de jest 
- * La classe principale jusqu'à la phase 3
+ * La classe principale jusqu'a la phase 3
  * @author moras
  *
  */
 public class PartieJest extends Observable {
 	
 	/** 
-	 * Le deck est l'ensemble des cartes jouables du jeu. Il comporte 17 cartes différentes au départ. 
+	 * Le deck est l'ensemble des cartes jouables du jeu. Il comporte 17 cartes differentes au depart. 
 	 * Il contient un ensemble vide, partiel ou total des cartes disponibles sans redondance.
+	 * Le but de la linked list est d epouvoir uniquement recuperer les cartes sur le haut/bas du packet 
 	 */
 	private LinkedList<Carte> deck;
 	
 	/** 
-	 * joueurs est la liste des joueurs présents dans la partie.
+	 * joueurs est la liste des joueurs presents dans la partie.
 	 * Cette liste contient 3 ou 4 Joueurs 
 	 */
 	private ArrayList<Joueur> joueurs;
@@ -35,18 +36,20 @@ public class PartieJest extends Observable {
 	/**
 	 * Trophee est le tableau de trophee du jeu 
 	 * Ce tableau contient 1 [resp. 2] trophee pour 4 [resp. 3] joueurs
+	 * Possiblement il peut contenir une carte de plus selon les variantes et extensions utilisees
 	 */
 	private Trophee[] trophees;
 	
 	/**
-	 * Le compteur de point à utiliser
-	 * Pour l'instant il n'existe qu'une seule manière de compter les points
+	 * Le compteur de point a utiliser
+	 * Pour avoir un code tres modulaire en vue d'ajout futurs
 	 */
 	private Visiteur compteur;
 	
 	/**
-	 * Cet objet va servir a déterminer a quel joueur donner le trophee.
-	 * Pour le moment, il n'existe qu'un seul moyen de répartir les trophees
+	 * Cet objet va servir a determiner a quel joueur donner le trophee.
+	 * Pour le moment, il n'existe qu'un seul moyen de repartir les trophees
+	 * Pour avoir un code tres modulaire en vue d'ajout futurs
 	 */
 	private RepartiteurTrophee repartiteur;
 	
@@ -57,24 +60,27 @@ public class PartieJest extends Observable {
 	
 	/**
 	 * Nombre de joueurs "humain"
+	 * minimum1 maximum nbJoueurs
 	 */
 	private int nbJoueursReels;
 	
 	/**
 	 * Niveau d'intelligence des joueurs virtuels
 	 * 1 = Aleatoire, Prend une carte aleatoirement
-	 * 2 = Basique, Choisit la plus grande carte sur le terrain
+	 * 2 = Basique, Choisit la plus grande carte sur le terrain  
+	 * Basique est pour le moment la meme IA que Random
 	 */
 	private int difficulte;
 	
 	/**
-	 * 
+	 * Le type de regle a utiliser
+	 * int allant de 0 (regles classique) a 1 (extension trophee nullifieur)
 	 */
 	private int regle;
 	
 	/**
 	 * Identifiant permettant de detecter la regle additionnelle choisie par l'utilisateur
-	 * 0 = Aucune regle additionnelle utilisee
+	 * int allant de 0 (regles classique) a 1 (a coeur ouvert)
 	 */
 	private int conditionsVictoire;
 
@@ -83,10 +89,10 @@ public class PartieJest extends Observable {
 	 */
 	public PartieJest() {
 		
-		//On crée le compteur de point
+		//On cree le compteur de point
 		this.compteur = new CompteurClassique();
 		
-		//On crée le répartiteur de trophée
+		//On cree le repartiteur de trophee
 		this.repartiteur = new RepartiteurTropheeClassique(this.compteur);
 		
 		remplirPaquet();	
@@ -108,7 +114,7 @@ public class PartieJest extends Observable {
 	 * Cree les cartes et remplis le paquet avec les cartes de base 
 	 */
 	public void remplirPaquet() {
-		//on créé et on remplit le deck de cartes
+		//on cree et on remplit le deck de cartes
 		this.deck = new LinkedList<Carte>();
 		
 		for (int i = 1; i<5; i++) {
@@ -118,7 +124,7 @@ public class PartieJest extends Observable {
 			this.deck.add(new Carte(i, Couleur.PIQUE));
 		}
 		this.deck.add(new Carte(0, Couleur.JOKER));
-		//on mélange le deck
+		//on melange le deck
 		Collections.shuffle(this.deck);	
 	}
 	
@@ -145,7 +151,7 @@ public class PartieJest extends Observable {
 	
 	/**
 	 * Cree le(s) trophee(s) a utiliser durant la partie
-	 * ceci dépend du nombre de joueur et des variantes
+	 * ceci depend du nombre de joueur et des variantes/extensions
 	 */
 	private void creerTrophees() {
 		
@@ -153,7 +159,7 @@ public class PartieJest extends Observable {
 		Trophee trophee1= new Trophee(carteTrophee1);
 		switch (this.regle) {
 		case 0 : //regles du jeu de base 
-			// s'il y a 3 joueurs on rajoute un deuxième trophée
+			// s'il y a 3 joueurs on rajoute un deuxieme trophee
 			if (this.joueurs.size()==3) {
 				Carte carteTrophee2 =  this.deck.pop();
 				Trophee trophee2= new Trophee(carteTrophee2);
@@ -165,9 +171,9 @@ public class PartieJest extends Observable {
 			}
 			break;
 		case 1 : //regle du jeu avec le nullifieur
-			//dans ce cas ci il y a aussi le trophée nullifieur ! 
+			//dans ce cas ci il y a aussi le trophee nullifieur ! 
 			Trophee tropheenullifieur = new Trophee(new Carte(0, Couleur.EXTENSION));
-			// s'il y a 3 joueurs on rajoute un deuxième trophée
+			// s'il y a 3 joueurs on rajoute un deuxieme trophee
 			if (this.joueurs.size()==3) {
 				Carte carteTrophee2 =  this.deck.pop();
 				Trophee trophee2= new Trophee(carteTrophee2);
@@ -179,19 +185,19 @@ public class PartieJest extends Observable {
 			}
 			break;
 		}
-		//S'il existe 2 trophées et que le celui dans la deuxième case du tableau est le Joker,
-		//On va le replacer dans la première case du tableau pour éviter les problèmes du type :
+		//S'il existe 2 trophees et que le celui dans la deuxieme case du tableau est le Joker,
+		//On va le replacer dans la premiere case du tableau pour eviter les problemes du type :
 		//Aucun Joker dans le jeu
 		if(this.trophees.length >= 2)
 			if(this.trophees[1].getCarte().getCouleur() == Couleur.JOKER) {
-				//On inverse la position des 2 trophées
+				//On inverse la position des 2 trophees
 				Trophee t = this.trophees[0];
 				this.trophees[0] = this.trophees[1];
 				this.trophees[1] = t;
 			}
 		
-		//On indique à l'utilisateur quelles sont les trophées
-		System.out.println("\n Le(s) trophée(s) a/ont été choisis ! Le(s) voici :");
+		//On indique a l'utilisateur quelles sont les trophees
+		System.out.println("\n Le(s) trophee(s) a/ont ete choisis ! Le(s) voici :");
 		for(int i = 0; i < this.trophees.length; i++) {
 			if(this.trophees[i] != null)
 				System.out.println(this.trophees[i].getCarte() + " avec la condition " + this.trophees[i].getCondition());
@@ -202,27 +208,27 @@ public class PartieJest extends Observable {
 		
 	}
 	/**
-	 * methode qui ajoute les trophées au jest de ceux qui remplissent les conditions
+	 * methode qui ajoute les trophees au jest de ceux qui remplissent les conditions du repartiteur utilise
 	 */
 	private void attribuerTrophee() {
 		Joueur[] j = new Joueur[this.trophees.length];
-		//On va entrer dans le tableau les joueurs à qui distribuer les cartes
+		//On va entrer dans le tableau les joueurs a qui distribuer les cartes
 		for(int i = 0; i < this.trophees.length; i++) 
 			if(this.trophees[i] != null) 
 				j[i] = this.repartiteur.attribuer(this.trophees[i].getCondition(), this.joueurs);
 		
-		//On attribue ensuite les trophées aux joueurs correspondant
+		//On attribue ensuite les trophees aux joueurs correspondant
 		
 		
 		
 		for(int i = 0; i < j.length; i++) {
 			if(j[i] != null && i<(5-this.joueurs.size())) {
 				j[i].ajouterDansJest(this.trophees[i].getCarte());
-				System.out.println("Le trophée " + this.trophees[i].getCondition() + " a été attribué à "
+				System.out.println("Le trophee " + this.trophees[i].getCondition() + " a ete attribue a "
 						+ j[i].getNom() + " !");
 			} else {
-				if (!(i==1 && this.trophees.length==1) && i<(5-this.joueurs.size())) { //si on ne cherche pas de 2eme trophée alors qu'il n'y en a qu'un seul 
-					System.out.println("Le trophée " + this.trophees[i].getCondition() + " n'a pas été attribué.");
+				if (!(i==1 && this.trophees.length==1) && i<(5-this.joueurs.size())) { //si on ne cherche pas de 2eme trophee alors qu'il n'y en a qu'un seul 
+					System.out.println("Le trophee " + this.trophees[i].getCondition() + " n'a pas ete attribue.");
 				}
 			}
 				
@@ -234,10 +240,10 @@ public class PartieJest extends Observable {
 	/**
 	 * fonction qui compte les points de tous les joueurs de la partie
 	 * @return HashMap<Joueur, Integer> tabPoints 
-	 * 		Map des points des joueurs comptés selon les règles choisies au départ
+	 * 		Map des points des joueurs comptes selon les regles choisies au depart
 	 */
 	private HashMap<Joueur, Integer> compterPoints() {
-		//On va utiliser un annuaire pour associer à chaque joueur son nombre de points
+		//On va utiliser un annuaire pour associer a chaque joueur son nombre de points
 		HashMap<Joueur, Integer> tabPoints = new HashMap<Joueur, Integer>();
 		//Pour chaque joueur on compte le nombre de points
 		for(Joueur j : this.joueurs)
@@ -246,21 +252,21 @@ public class PartieJest extends Observable {
 	}
 	
 	/**
-	 * méthode permettant de déterminer quel est le joueur qui dois jouer juste après
+	 * methode permettant de determiner quel est le joueur qui dois jouer juste apres
 	 * @param j 
-	 * 		peut être null dans le cas du premier joueur a jouer dans ce tour
-	 * 		sinon, si le joueur donné en paramètre n'as pas joué ce sera lui le prochain 
+	 * 		peut etre null dans le cas du premier joueur a jouer dans ce tour
+	 * 		sinon, si le joueur donne en parametre n'as pas joue ce sera lui le prochain 
 	 * @return Joueur joueur
 	 * 		le joueur qui dois jouer le prochain 
 	 */
 	private Joueur determinerTour(Joueur j) {
-		//Joueur à faire jouer
+		//Joueur a faire jouer
 		Joueur joueur;
 		
 		//Soit le joueur a deja joue et on se base sur la plus grande carte encore en lice
 		if(j == null || j.aJoue()) 
 			joueur = determinerPlusGrand();
-		//Soit le joueur n'a pas encoure joué et il joue
+		//Soit le joueur n'a pas encoure joue et il joue
 		else
 			joueur = j;
 		
@@ -272,7 +278,7 @@ public class PartieJest extends Observable {
 	 * 		le joueur avec la plus grande carte visible dans sa min 
 	 */
 	private Joueur determinerPlusGrand() {
-		//On crée notre tampon contenant les joueurs n'ayant pas encore joué
+		//On cree notre tampon contenant les joueurs n'ayant pas encore joue
 		Stack<Joueur> buffer = new Stack<Joueur>();
 		for(Joueur j : this.joueurs)
 			if(!j.aJoue())
@@ -297,7 +303,7 @@ public class PartieJest extends Observable {
 				//On recupere l'ordre de priorite de chaque carte et on les compare pour choisir 
 				//la carte la plus forte et determiner le joueur Max
 				if(carteActu.getOrdre() > carteMax.getOrdre()) {
-					//Si c'est le cas on met à jour la carte max et le joueur max
+					//Si c'est le cas on met a jour la carte max et le joueur max
 					carteMax = carteActu;
 					joueurMax = j;
 				}
@@ -308,30 +314,30 @@ public class PartieJest extends Observable {
 	}
 	
 	/**
-	 * méthode qui renvois le gagnant de la partie (celui avec le plus de points)
+	 * methode qui renvois le gagnant de la partie (celui avec le plus de points)
 	 * @return Joueur jGagnant
-	 * 		le joueur désigné comme gagnant de la partie
+	 * 		le joueur designe comme gagnant de la partie
 	 */
 	public Joueur determinerGagnant() {
 		
-		//Attribution des trophées
+		//Attribution des trophees
 		attribuerTrophee();
 	
-		//Affichage des résultats et détermination du gagnant
+		//Affichage des resultats et determination du gagnant
 		
-		//On applique les règles additionnelles choisies précédemment
+		//On applique les regles additionnelles choisies precedemment
 		Joueur jGagnant = null;
 		switch(this.conditionsVictoire) {
 			case 1:
 				jGagnant = ConditionsVictoire.aCoeurOuvert(this.joueurs);
 		}
 		
-		//Si la règle n'a pas renvoyé de vainqueur ou si aucune règle additionnelle n'a été
-		//sélectionnée, on utilise la méthode de calcul des points traditionnelle
+		//Si la regle n'a pas renvoye de vainqueur ou si aucune regle additionnelle n'a ete
+		//selectionnee, on utilise la methode de calcul des points traditionnelle
 		if(jGagnant != null) 
-			System.out.println("La règle additionnelle s'applique, nous avons un gagnant !");
+			System.out.println("La regle additionnelle s'applique, nous avons un gagnant !");
 		else {
-			//Récupération des scores sous forme de HashMap
+			//Recuperation des scores sous forme de HashMap
 			HashMap<Joueur, Integer> resultats = compterPoints();
 			
 			jGagnant = this.joueurs.get(0);
@@ -344,7 +350,7 @@ public class PartieJest extends Observable {
 					jGagnant = j;
 				}
 			}
-			//On notifie pour afficher les résultats définitifs
+			//On notifie pour afficher les resultats definitifs
 			this.notifier(resultats);
 		}
 		return jGagnant;
@@ -352,10 +358,10 @@ public class PartieJest extends Observable {
 	/**
 	 * pour faireun tour de jeu 
 	 * @param cartesRestantes
-	 * 		les cartes qui n'ont pas été prises au tour d'avant et qui seront donc redistribuées
+	 * 		les cartes qui n'ont pas ete prises au tour d'avant et qui seront donc redistribuees
 	 */
 	public void faireUnTour(LinkedList<Carte> cartesRestantes) {
-		//On mélange les cartes restantes avec les cartes du deck
+		//On melange les cartes restantes avec les cartes du deck
 		LinkedList<Carte> buffer = new LinkedList<Carte>();
 		
 		//On commence par ajouter 3 ou 4 cartes depuis le deck dans le buffer 
@@ -370,7 +376,7 @@ public class PartieJest extends Observable {
 			//On indique qu'on vient de finir un tour.
 			System.out.println("Fin du tour ! Redistribution des cartes ...");
 			
-			//On boucle dans cartesRestantes pour décacher les cartes 
+			//On boucle dans cartesRestantes pour decacher les cartes 
 			for(Carte c : cartesRestantes)
 				c.antiCacherCarte();
 			
@@ -380,13 +386,13 @@ public class PartieJest extends Observable {
 			
 			//On regroupe le buffer et les cartes restantes
 			buffer.addAll(cartesRestantes);
-			//On mélange le tout
+			//On melange le tout
 			Collections.shuffle(buffer);
 			
-			//On indique que le jeu est prêt
-			System.out.println("Le jeu a été distribué !");
+			//On indique que le jeu est pret
+			System.out.println("Le jeu a ete distribue !");
 		} else {
-			//On repioche 3 ou 4 cartes comme on se trouve en début de partie
+			//On repioche 3 ou 4 cartes comme on se trouve en debut de partie
 			for(int i = 0; i < this.joueurs.size(); i++)
 				buffer.add(this.deck.removeFirst());
 		}
@@ -396,12 +402,12 @@ public class PartieJest extends Observable {
 			for(Joueur j : this.joueurs)
 				j.accepterCarte(buffer.removeFirst());
 		
-		//Chacun choisie sa carte à mettre face cachée
+		//Chacun choisie sa carte a mettre face cachee
 		//Place donc les cartes en mode defense ou attaque
 		Joueur ancienJ;
 		for(Joueur j : this.joueurs)
 			j.choisirFaceCachee();
-		//On détermine le tour de l'utilisateur
+		//On determine le tour de l'utilisateur
 		Joueur j = null;
 		for(int k = 0; k < this.joueurs.size(); k++) {
 			j = determinerTour(j);
@@ -420,12 +426,12 @@ public class PartieJest extends Observable {
 			ancienJ.vientDeJouer();
 		}
 		
-		//On vérifie s'il y a encore des cartes dans le deck
+		//On verifie s'il y a encore des cartes dans le deck
 		if(!this.deck.isEmpty())
 			//Si c'est le cas on repart pour un nouveau tour
 			faireUnTour(recupererCartesRestantes());
 		else {
-			//Sinon c'est la fin de la partie donc on doit répartir les cartes en jeu
+			//Sinon c'est la fin de la partie donc on doit repartir les cartes en jeu
 			//dans les decks de chacun
 			for(Joueur jo : this.joueurs)
 				jo.ajouterCartesRestantesJest();
@@ -438,7 +444,7 @@ public class PartieJest extends Observable {
 	 * 		les cartes non prise et qui restent sur le plateau a la fin du tour 
 	 */
 	private LinkedList<Carte> recupererCartesRestantes() {
-		//Récupère à la fin de chaque tour les différentes cartes restantes après le
+		//Recupere a la fin de chaque tour les differentes cartes restantes apres le
 		//choix des offres
 		LinkedList<Carte> cartes = new LinkedList<Carte>();
 		Carte c;
@@ -470,9 +476,9 @@ public class PartieJest extends Observable {
 		notifier();
 	}
 	/**
-	 * setteur de la difficulté du jeu
+	 * setteur de la difficulte du jeu
 	 * @param difficulte
-	 * 		la difficultée choisie
+	 * 		la difficultee choisie
 	 */
 	public synchronized void setDifficulte(int difficulte) {
 		this.difficulte = difficulte;
@@ -504,7 +510,7 @@ public class PartieJest extends Observable {
 		return nbJoueurs;
 	}
 	/**
-	 * getteur du nombre de joueurs réels
+	 * getteur du nombre de joueurs reels
 	 * @return int
 	 */
 	public int getNbJoueursReels() {

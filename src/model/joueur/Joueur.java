@@ -10,44 +10,47 @@ import model.cards.Carte;
 import model.cards.Couleur;
 
 /**
- * La classe correspondant au joueur
+ * La classe correspondant a un joueur
+ * Regroupe la plupart des manipulations possibles sur les cartes et les actions a faire
  * @author moras
  *
  */
 public class Joueur implements Visitable {
 	/**
-	 * Indique si le joueur a déja joué pendant ce tour
-	 * par défaut a false 
+	 * Indique si le joueur a deja joue pendant ce tour
+	 * par defaut a false 
 	 */
 	private boolean aJoue;
 	
 	/**
-	 * La liste des cartes présentes dans la main du joueur pendant un tour précis
-	 * Par défaut vide. Contient 0, 1 ou 2 cartes selon le moment.
+	 * La liste des cartes presentes dans la main du joueur pendant un tour precis
+	 * Par defaut vide. Contient 0, 1 ou 2 cartes selon le moment.
 	 */
 	private ArrayList<Carte> main;
 	
 	/**
 	 * Correspond au jest du joueur, un ensemble de cartes qui lui sont propre
-	 * Selon les règles officielles, il peut contenir entre 0 et 7 cartes selon le type et l'avancée de la partie.
+	 * Selon les regles officielles, il peut contenir entre 0 et 7 cartes selon le type et l'avancee de la partie.
+	 * par defaut vide 
 	 */
 	private HashSet<Carte> jest;
 	
 	/**
-	 * La stratégie suivie par ce joueur 
-	 * Réel,Random,Basique
+	 * La strategie suivie par ce joueur 
+	 * Reel,Random ou Basique
 	 */
 	private IAStrategie strat;
 	
 	/**
-	 * les cartes triées du jest de ce joueur
+	 * les cartes triees du jest de ce joueur
 	 */
 	private HashMap<Couleur, HashSet<Carte>> cartesTri;
 	
 	
 	/** 
-	 * Chaîne de caractère représentant le pseudonyme du joueur affiché en jeu.
-	 * Les Ia seront nommées de la sorte : strategie_id (où l'id est unique de 1 jusqu'à 3)
+	 * Chaîne de caractere representant le pseudonyme du joueur affiche en jeu.
+	 * Les Ia seront nommees de la sorte : strategie_id (ou l'id est unique de 1 jusqu'a 3)
+	 * Les humains donneront leur pseudos en entree
 	 */
 	private String nom;
 	/**
@@ -55,7 +58,7 @@ public class Joueur implements Visitable {
 	 * @param pseudo
 	 * 		le nom du joueur
 	 * @param iaType
-	 * 		le type de stratégie 
+	 * 		le type de strategie 
 	 */
 	public Joueur(String pseudo, int iaType) {
 		this.aJoue=false;
@@ -64,7 +67,7 @@ public class Joueur implements Visitable {
 		this.cartesTri = new HashMap<Couleur, HashSet<Carte>>(4);
 		
 		//on associe le type de comportement selon l'entier iaType
-		// De même on associe pseudo aux reel et strategie_pseudo (ou pseudo est un chiffre) aux IA 
+		// De meme on associe pseudo aux reel et strategie_pseudo (ou pseudo est un chiffre) aux IA 
 		switch (iaType) {
 			case 0 :
 				this.nom = pseudo;
@@ -88,14 +91,14 @@ public class Joueur implements Visitable {
 	
 	@Override
 	public int accept(Visiteur visiteur) {
-		//On envoie au visiteur le joueur actuel pour qu'il puisse avoir accès aux différentes méthodes
+		//On envoie au visiteur le joueur actuel pour qu'il puisse avoir acces aux differentes methodes
 		return visiteur.visit(this);
 	}
 	
 	/**
-	 * Cette fonction définie le choix de l'offre pour chaque joueur 
-	 * S'il est reel : un choix entre les cartes des autres joueurs (qui n'ont pas déja donné une offre)
-	 * S'il est une IA : une décision random parmis ces mêmes personnes
+	 * Cette fonction definie le choix de l'offre pour chaque joueur 
+	 * S'il est reel : un choix entre les cartes des autres joueurs (qui n'ont pas deja donne une offre)
+	 * S'il est une IA : une decision random parmis ces memes personnes
 	 * @param lJoueurs
 	 * 		lJoueurs est la liste des joueurs qui peuvent donner une carte (i.e qui en ont encore 2)
 	 */
@@ -106,13 +109,14 @@ public class Joueur implements Visitable {
 	/**
 	 * Cette fonction est le choix de l'offre par le joueur 
 	 * S'il est reel : un choix entre la carte 1ere et la 2eme carte 
-	 * S'il est une IA : une décision random
+	 * S'il est une IA : une decision random
 	 */
 	public void choisirFaceCachee() {
 		this.strat.offrir(this.main, this);
 	}
 	/**
-	 * on récupère les cartes qui restes et on les ajoute dans le jest
+	 * on recupere les cartes qui restes et on les ajoute dans le jest
+	 * Utile surtout lors de la derniere phase du jeu 
 	 */
 	public void ajouterCartesRestantesJest() {
 		Carte c = this.getCarteRestante();
@@ -129,16 +133,18 @@ public class Joueur implements Visitable {
 			this.main.add(c);
 	}
 	/**
-	 * On retire la carte d'indice i 
+	 * On retire la carte d' "indice i" 
+	 * en realite on prend juste la i-eme carte que le trouve
+	 * L'ordre des cartes etant toujours le meme c'est plus simple pour un joueur de donner la position de la carte qu'il veut 
 	 * @param i
-	 * 		l'indice de l'élement a retirer
+	 * 		l'indice de l'element a retirer
 	 */
 	public void jestRemoveCarte(int i) {
 		int j = 1; //on initialise un compteur (il n'y en a pas dans les hashset ...)
 		for(Carte c : this.jest) { //on parcoure toutes les cartes du jest
 			if (j==i) { // si l'indice est le bon 
 				System.out.println("a choisi de nullifier la carte : "+ c.afficher()+ " du jest du joueur "+this.nom +" !");
-				this.jest.remove(c); //on enlève la carte indiquée
+				this.jest.remove(c); //on enleve la carte indiquee
 				break;
 			}
 			j++; //on incremente j
@@ -152,7 +158,7 @@ public class Joueur implements Visitable {
 		return this.jest.size(); 
 	}
 	/**
-	 * dit si le jest possède le joker ou non 
+	 * dit si le jest possede le joker ou non 
 	 * @return boolean
 	 */
 	public boolean hasJoker() {
@@ -171,7 +177,7 @@ public class Joueur implements Visitable {
 		Carte joker;
 		for(Carte c : this.jest)
 			if(c.getCouleur() == Couleur.JOKER) {
-				//On fait pointer la référence vers un autre objet, celui-ci allant être détruit
+				//On fait pointer la reference vers un autre objet, celui-ci allant etre detruit
 				joker = new Carte(c);
 				this.jest.remove(c);
 				return joker;
@@ -184,10 +190,10 @@ public class Joueur implements Visitable {
 	 */
 	private void generateSortJest() {
 		
-		//Si les listes n'ont pas été déjà générées
+		//Si les listes n'ont pas ete deja generees
 		if(this.cartesTri.isEmpty()) {
 	
-			//On crée une liste de cartes par couleur 
+			//On cree une liste de cartes par couleur 
 			HashSet<Carte> carreau = new HashSet<Carte>();
 			HashSet<Carte> trefle = new HashSet<Carte>();
 			HashSet<Carte> pique = new HashSet<Carte>();
@@ -210,7 +216,7 @@ public class Joueur implements Visitable {
 						break;
 				}
 			}
-			//On range les différents paquet dans la Map précédemment créé.
+			//On range les differents paquet dans la Map precedemment cree.
 			this.cartesTri.put(Couleur.CARREAU, carreau);
 			this.cartesTri.put(Couleur.PIQUE, pique);
 			this.cartesTri.put(Couleur.TREFLE, trefle);
@@ -218,7 +224,8 @@ public class Joueur implements Visitable {
 		}
 	}
 	/**
-	 * on récupère la carte restante sur le plateau
+	 * on recupere la carte restante sur le plateau
+	 * (La carte qui n'a pas ete prise)
 	 * @return Carte
 	 */
 	public Carte getCarteRestante() {
@@ -227,8 +234,8 @@ public class Joueur implements Visitable {
 		return null;
 	}
 	/**
-	 * Getteur sur LA carte qui n'est pas cachée de la main
-	 * note:  s'il y en a deux on prend la première trouvée
+	 * Getteur sur LA carte qui n'est pas cachee de la main
+	 * note:  s'il y en a deux on prend la premiere trouvee
 	 * @return Carte
 	 */
 	public Carte getVisibleCard() {
@@ -239,7 +246,7 @@ public class Joueur implements Visitable {
 		return null;
 	}
 	/**
-	 * getteur sur la stratégie du joueur
+	 * getteur sur la strategie du joueur
 	 * @return IAStrategie
 	 */
 	public IAStrategie getStrat() {
@@ -254,7 +261,7 @@ public class Joueur implements Visitable {
 	}
 	
 	/**
-	 * recupere les cartes du jest triées
+	 * recupere les cartes du jest triees
 	 * @return HashMap<Couleur, HashSet<Carte>>
 	 */
 	public HashMap<Couleur, HashSet<Carte>> getCartesTri() {
@@ -265,7 +272,7 @@ public class Joueur implements Visitable {
 	}
 	
 	/**
-	 * getteur des cartes triées dans la couleur donnée du jest du joueur
+	 * getteur des cartes triees dans la couleur donnee du jest du joueur
 	 * @param coul
 	 * 		la couleur choisie
 	 * @return HashSet<Carte>
@@ -277,7 +284,8 @@ public class Joueur implements Visitable {
 		return this.cartesTri.get(coul);
 	}
 	/**
-	 * Pour savoir si le joueur a deja joué durant ce tour
+	 * Pour savoir si le joueur a deja joue durant ce tour
+	 * (utile pour la gestion de l'ordre des joueurs dans un tour)
 	 * @return
 	 */
 	public boolean aJoue() {
@@ -291,7 +299,8 @@ public class Joueur implements Visitable {
 		return this.nom;
 	}
 	/**
-	 * Indique que le joueur a joué pendant ce tour
+	 * Indique que le joueur a joue pendant ce tour
+	 * (pour ne pas que l'on puisse lui re-demander de jouer ce tour ci)
 	 */
 	public void vientDeJouer() {
 		this.aJoue = true;
@@ -305,6 +314,7 @@ public class Joueur implements Visitable {
 	
 	/**
 	 * trouve la carte avec le meilleur ordre avec une certaine valeur
+	 * (utile pour les trophees)
 	 * @param faceValueToCheck
 	 * 		la valeur a trouver
 	 * @return Carte
@@ -322,7 +332,8 @@ public class Joueur implements Visitable {
 		return cMax;
 	}
 	/**
-	 * on compte el nombre de cartes portant la valeur donnée dans le jest
+	 * on compte le nombre de cartes portant la valeur donnee dans le jest
+	 * (utile pour les trophees)
 	 * @param faceValueToSearch
 	 * 		la valeur a chercher
 	 * @return int
@@ -337,6 +348,7 @@ public class Joueur implements Visitable {
 	}
 	/**
 	 * on prend la plus grande valeur individuelle d'une carte dans le jest du joueur
+	 * (utile pour les trophees)
 	 * @return int
 	 */
 	public int plusGrandeFaceValue() {
@@ -348,11 +360,11 @@ public class Joueur implements Visitable {
 	}
 	
 	/**
-	 * Cette methode renvoie la carte (cachée ou non) après l'avoir enlevé 
+	 * Cette methode renvoie la carte (cachee ou non) apres l'avoir enleve 
 	 * @param cache
-	 * 		signifie que l'on veut la carte cachée ou visible 
+	 * 		signifie que l'on veut la carte cachee ou visible 
 	 * @return 
-	 * 		renvois la carte que l'on a enlevé de la main
+	 * 		renvois la carte que l'on a enleve de la main
 	 */
 	public Carte prendreCarte(boolean cache) {
 		
@@ -363,13 +375,13 @@ public class Joueur implements Visitable {
 			}
 		}
 		
-		throw new Error("Pas de carte correspondant au critère :" + cache + " dans " + this.main);
+		throw new Error("Pas de carte correspondant au critere :" + cache + " dans " + this.main);
 	}
 	
 	/**
 	 * Cette fonction ajoute la crte en parametre dans le jest
 	 * @param carte
-	 * 		la carte à ajouter dans le jest
+	 * 		la carte a ajouter dans le jest
 	 */
 	public void ajouterDansJest(Carte carte) {
 		carte.antiCacherCarte();

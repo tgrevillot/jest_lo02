@@ -6,7 +6,8 @@ import model.cards.Condition;
 import model.joueur.Joueur;
 
 /**
- * Interface pour répartir les trophées
+ * Interface pour repartir les trophees
+ * On pourrait ainsi changer facilement la repartition des trophees en creant plusieurs repartiteur
  * @author moras
  *
  */

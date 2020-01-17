@@ -14,8 +14,7 @@ import java.util.HashSet;
 public class ConditionsVictoire {
 
 	/**
-	 * Si un joueur possede toutes les cartes Coeur et le joker
-	 * alors il gagne
+	 * Si un joueur possede toutes les cartes Coeur et le joker alors il gagne la partie
 	 * @param joueurs
 	 * 		La liste des joueurs disponible
 	 * @return jGagnant

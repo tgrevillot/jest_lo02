@@ -12,7 +12,7 @@ import model.cards.Couleur;
 import model.joueur.Joueur;
 
 /**
- * Classe servant a repartir chaque trophée a un joueur
+ * Classe servant a repartir chaques trophee a son juste proprietaire
  * @author moras
  *
  */
@@ -27,19 +27,19 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 	 */
 	public RepartiteurTropheeClassique(Visiteur v) {
 		if(v == null)
-			throw new Error("Le comptur de points n'est pas instancié");
+			throw new Error("Le comptur de points n'est pas instancie");
 		this.compteur = v;
 	}
 	
 
 	/**
-	 * Determine quel joueur doit recevoir le trophé donné via les fonctions auxiliaires
+	 * Determine quel joueur doit recevoir le trophe donne via les fonctions auxiliaires
 	 * @param cond 
-	 * 		la condition pour obtenir le trophé
+	 * 		la condition pour obtenir le trophe
 	 * @param joueurs 
-	 * 		la liste complète des joueurs
+	 * 		la liste complete des joueurs
 	 * @return j
-	 * 		le joueur auquel on attribuera le trophée
+	 * 		le joueur auquel on attribuera le trophee
 	 */
 	public Joueur attribuer(Condition cond, ArrayList<Joueur> joueurs) {
 		Joueur j = null;
@@ -96,7 +96,7 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 	}
 	
 	/**
-	 * trouve le joueur qui possède le Joker
+	 * trouve le joueur qui possede le Joker
 	 * @param joueurs
 	 * 		la List de tous les joueurs
 	 * @return Joueur j
@@ -106,11 +106,11 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		for(Joueur j : joueurs)
 			if(j.hasJoker())
 				return j;
-		throw new Error("Aucune Carte Joker n'a été trouvée");
+		throw new Error("Aucune Carte Joker n'a ete trouvee");
 	}
 	
 	/**
-	 * trouve le joueur qui possède le jest avec le plus de score
+	 * trouve le joueur qui possede le jest avec le plus de score
 	 * @param joueurs 
 	 * 		la liste de tous les joueurs
 	 * @return Joueur jMax
@@ -131,11 +131,11 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 				scoreMax = scoreActu;
 				jMax = jActu;				
 			} else if(scoreActu == scoreMax) {
-				//Dans le cas d'une égalité, on va tout d'abord checker la plus grande faceValue dans le Jest
+				//Dans le cas d'une egalite, on va tout d'abord checker la plus grande faceValue dans le Jest
 				int fvActu = jActu.plusGrandeFaceValue();
 				int fvMax = jMax.plusGrandeFaceValue();
 				
-				//Puis si on a encore une égalité
+				//Puis si on a encore une egalite
 				if(fvActu == fvMax) {
 					//on va comparer les couleurs
 					if(jActu.meilleurCartePlusDe(fvActu).getOrdre() > jMax.meilleurCartePlusDe(fvMax).getOrdre()) {
@@ -153,32 +153,32 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		return jMax;
 	}
 	/**
-	 * Trouve le meilleur jest sans considérer le joker
+	 * Trouve le meilleur jest sans considerer le joker
 	 * @param joueurs
 	 * 		la list des joueurs a considerer
 	 * @return Joueur bestJest
 	 * 		le joueur avec le meilleur jest sans compter le joker
 	 */
 	private Joueur bestJestWithoutJoker(ArrayList<Joueur> joueurs) {
-		//On va tout d'abord enlever le Joker du joueur incriminé
+		//On va tout d'abord enlever le Joker du joueur incrimine
 		Joueur jJoker = null;
 		for(int i = 0; i < joueurs.size(); i++)
 			if(joueurs.get(i).hasJoker()) {
 				jJoker = joueurs.get(i);
 				i = joueurs.size();
 			}
-		//TODO Bizarre : on génère bien un Joker à chaque fois ?
+		//TODO Bizarre : on genere bien un Joker a chaque fois ?
 		if (jJoker !=null){
 			Carte joker = jJoker.removeJoker();
 			//Ensuite on va calculer les points
 			Joueur bestJest = bestJest(joueurs);
-			//Le meilleur Jest remportera le trophée
+			//Le meilleur Jest remportera le trophee
 			//Puis nous allons remettre le joker dans le jest du joueur
 			jJoker.ajouterDansJest(joker);
 			return bestJest;
 		} else {
 			Joueur bestJest = bestJest(joueurs);
-			//Le meilleur Jest remportera le trophée
+			//Le meilleur Jest remportera le trophee
 			return bestJest;
 		}
 		
@@ -186,21 +186,21 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		
 	}
 	/**
-	 * Cherche le joueur qui a la carte la plus grande de la couleur donnée
+	 * Cherche le joueur qui a la carte la plus grande de la couleur donnee
 	 * @param joueurs
-	 * 		la liste des joueurs considérés
+	 * 		la liste des joueurs consideres
 	 * @param coul
-	 * 		la couleur considérée
+	 * 		la couleur consideree
 	 * @return Joueur jCherche
-	 * 		le joueur qui possède cette carte
+	 * 		le joueur qui possede cette carte
 	 */
 	private Joueur rechercheJoueurPlusGrand(ArrayList<Joueur> joueurs, Couleur coul) {
-		//Pour les conditions de recherche des plus grands [insérer couleur] on boucle sur l'ensemble des
-		//joueurs et dès qu'on trouve une meilleure carte on la met à jour
+		//Pour les conditions de recherche des plus grands [inserer couleur] on boucle sur l'ensemble des
+		//joueurs et des qu'on trouve une meilleure carte on la met a jour
 		//Les calculs se basent ici sur les valeurs des faces values
 		Joueur jCherche = null;
 		int cMax = -1, cActu;
-		//Pour chaque joueur si on trouve une meilleure carte que la sienne on met à jour
+		//Pour chaque joueur si on trouve une meilleure carte que la sienne on met a jour
 		for(Joueur jo : joueurs) {
 			cActu = rechercheCartePlusGrande(jo.getCartesParCouleur(coul));
 			if(cActu > cMax) {
@@ -211,21 +211,21 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		return jCherche;
 	}
 	/**
-	 * Cherche le joueur qui a la carte la plus petite de la couleur donnée
+	 * Cherche le joueur qui a la carte la plus petite de la couleur donnee
 	 * @param joueurs
-	 * 		la liste des joueurs considérés
+	 * 		la liste des joueurs consideres
 	 * @param coul
-	 * 		la couleur considérée
+	 * 		la couleur consideree
 	 * @return Joueur jCherche
-	 * 		le joueur qui possède cette carte
+	 * 		le joueur qui possede cette carte
 	 */
 	private Joueur rechercheJoueurPlusPetit(ArrayList<Joueur> joueurs, Couleur coul) {
-		//Pour les conditions de recherche des plus petit [insérer couleur] on boucle sur l'ensemble des
-		//joueurs et dès qu'on trouve une face value plus petite on met cMax à jour
+		//Pour les conditions de recherche des plus petit [inserer couleur] on boucle sur l'ensemble des
+		//joueurs et des qu'on trouve une face value plus petite on met cMax a jour
 		//Les calculs se basent ici sur les valeurs des faces values
 		Joueur jCherche = null;
 		int cMin = 6, cActu;
-		//Pour chaque joueur si on trouve une meilleure carte que la sienne on met à jour
+		//Pour chaque joueur si on trouve une meilleure carte que la sienne on met a jour
 		for(Joueur jo : joueurs) {
 			HashSet<Carte> c = jo.getCartesParCouleur(coul);
 			cActu = rechercheCartePlusPetite(c);
@@ -238,7 +238,7 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 	}
 	
 	/**
-	 * cherche la plus grande carte dans le set donné
+	 * cherche la plus grande carte dans le set donne
 	 * @param cartes
 	 * 		le set de cartes dans lequel on recherche
 	 * @return int
@@ -259,14 +259,14 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		return cMax.getFaceValue();
 	}
 	/**
-	 * cherche la plus petite carte dans le set donné
+	 * cherche la plus petite carte dans le set donne
 	 * @param cartes
 	 * 		le set de cartes dans lequel on recherche
 	 * @return int
 	 * 		retourne la face value de la plus petite carte
 	 */
 	private int rechercheCartePlusPetite(HashSet<Carte> cartes) {
-		//La valeur des face values s'arrêtant à 4 pour le moment, il sera impossible de monter au-dessus de
+		//La valeur des face values s'arretant a 4 pour le moment, il sera impossible de monter au-dessus de
 		//6
 		if(cartes.isEmpty())
 			return 6;
@@ -282,9 +282,9 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		return cMax.getFaceValue();
 	}
 	/**
-	 * recherche le joueur qui a le plus de cartes de la face value donnée
+	 * recherche le joueur qui a le plus de cartes de la face value donnee
 	 * @param joueurs
-	 * 		la liste des joueurs concernés
+	 * 		la liste des joueurs concernes
 	 * @param faceValueToSearch
 	 * 		la valeur que l'on cherche
 	 * @return Joueur
@@ -297,16 +297,16 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 		for(Joueur j : joueurs) {
 			valueAct = j.compterNbCartesMemeValue(faceValueToSearch);
 			if(valueAct > valueMax) {
-				//On met à jour à la fois le joueur, la value et les cartesMax
+				//On met a jour a la fois le joueur, la value et les cartesMax
 				valueMax = valueAct;
 				jMax = j;
 			} else if(valueAct == valueMax) {
-				//Dans le cas d'une égalité on doit déterminer parmi les cartes des 2 joueurs 
+				//Dans le cas d'une egalite on doit determiner parmi les cartes des 2 joueurs 
 				//laquelle a la meilleure couleur
 				Carte cAct = j.meilleurCartePlusDe(faceValueToSearch);
 				Carte cMax = jMax.meilleurCartePlusDe(faceValueToSearch);
 				
-				//Si la priorité est plus importante sur la carteActu alors le nouveau joueur
+				//Si la priorite est plus importante sur la carteActu alors le nouveau joueur
 				//devient le joueur Max
 				if(cAct.getOrdre() > cMax.getOrdre()) {
 					jMax = j;
@@ -319,7 +319,7 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 	/**
 	 * renvois le joueur avec le pire jest
 	 * @param joueurs
-	 * 		la liste des joueurs concernés
+	 * 		la liste des joueurs concernes
 	 * @return Joueur
 	 */
 	private Joueur pireJest(ArrayList<Joueur> joueurs) {
@@ -337,11 +337,11 @@ public class RepartiteurTropheeClassique implements RepartiteurTrophee {
 				scoreMax = scoreActu;
 				jMin = jActu;				
 			} else if(scoreActu == scoreMax) {
-				//Dans le cas d'une égalité, on va tout d'abord checker la plus grande faceValue dans le Jest
+				//Dans le cas d'une egalite, on va tout d'abord checker la plus grande faceValue dans le Jest
 				int fvActu = jActu.plusGrandeFaceValue();
 				int fvMin = jMin.plusGrandeFaceValue();
 				
-				//Puis si on a encore une égalité
+				//Puis si on a encore une egalite
 				if(fvActu == fvMin) {
 					//on va comparer les couleurs
 					if(jActu.meilleurCartePlusDe(fvActu).getOrdre() < jMin.meilleurCartePlusDe(fvMin).getOrdre()) {
