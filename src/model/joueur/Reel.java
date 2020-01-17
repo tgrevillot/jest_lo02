@@ -6,16 +6,16 @@ import controllers.ControllerText;
 import model.cards.Carte;
 
 /**
- * classe stratégie reel : pour les joueurs humains dans la vue textuelle
+ * classe strategie reel : pour les joueurs humains dans la vue textuelle
  * @author moras
  *
  */
 public class Reel implements IAStrategie {
 
 	/**
-	 * méthode qui effectue la proposition d'offre
+	 * methode qui effectue la proposition d'offre
 	 * @param main
-	 * 		la main du joueur concerné
+	 * 		la main du joueur concerne
 	 * @param joueurJouant 
 	 * 		le joueur en train de choisir
 	 */
@@ -29,9 +29,9 @@ public class Reel implements IAStrategie {
 	}
 	
 	/**
-	 * méthode qui demande le choix d'offre du joueur humain
+	 * methode qui demande le choix d'offre du joueur humain
 	 * @param main
-	 * 		la main du joueur concerné
+	 * 		la main du joueur concerne
 	 * @param joueurJouant 
 	 * 		le joueur en train de choisir
 	 */
@@ -65,7 +65,7 @@ public class Reel implements IAStrategie {
 	}
 	
 	/**
-	 * la méthode qui régule le choix de la carte a mettre dans le jest
+	 * la methode qui regule le choix de la carte a mettre dans le jest
 	 * @param joueurs
 	 * 		la liste des joueurs 
 	 * @param joueurJouant
@@ -78,30 +78,30 @@ public class Reel implements IAStrategie {
 		if (joueurs.size()==0) { //CAS ou le joueur est le dernier et doit prendre ses propres cartes
 			System.out.println("Joueur "+joueurJouant.getNom()+", il ne reste plus que vos carte : ");
 			System.out.println("1- "+ (joueurJouant.getVisibleCard()).afficher());
-			System.out.println("2- Carte cachée");
+			System.out.println("2- Carte cachee");
 			System.out.println("Quelle carte voulez vous prendre pour mettre dans votre jest ? (1 ou 2)");
 			System.out.println("=> Commandes disponibles : 3-voirJest, 4-voirMain");
 			return demanderChoixSeul(joueurs,joueurJouant);
 		} else { // cas ou il reste d'autres joueurs avec des offres disponibles
 			System.out.println("Joueur "+joueurJouant.getNom()+", les cartes disponibles sont : ");
 			int i = 1 ; //initialisation
-			for (Joueur j : joueurs) { // on affiche toutes les cartes disponibles (les cachées ne sont pas dévoilées)
+			for (Joueur j : joueurs) { // on affiche toutes les cartes disponibles (les cachees ne sont pas devoilees)
 				String lineSeparator = System.getProperty("line.separator");
 				System.out.println(lineSeparator + "Cartes de l'offre du joueur : "+j.getNom());
 				System.out.println(i +"- "+ (j.getVisibleCard()).afficher());
 				i++;
-				System.out.println(i +"- Carte cachée");
+				System.out.println(i +"- Carte cachee");
 				i++;
 			}
 			i--; //on corrige le dernier up de i pour en faire le compteur de carte disponibles
-			System.out.println("Quelle carte voulez vous prendre dans votre jest ? (numéro)");
+			System.out.println("Quelle carte voulez vous prendre dans votre jest ? (numero)");
 			System.out.println("=> Commandes disponible : "+(i+1)+"- voirJest, "+(i+2)+"- voirMain");
 			return demanderChoixPlusieurs(joueurs,joueurJouant,i);
 		}
 	}
 	
 	/**
-	 * méthode de demande de choix de carte lorsque le joueur dois prendre dans sa propre main
+	 * methode de demande de choix de carte lorsque le joueur dois prendre dans sa propre main
 	 * @param joueurs
 	 * 		la liste des joueurs
 	 * @param joueurJouant
@@ -126,8 +126,8 @@ public class Reel implements IAStrategie {
 				System.out.println("/!\\ Vous devez choisir entre 1 et 2 (ou les commandes : 3-voirJest, 4-voirMain)");
 				return demanderChoixSeul(joueurs,joueurJouant);
 			} else {
-				joueurAPrendre = joueurJouant; //dans ce cas ci, le joueur qui joue se prend une care a lui-même
-				if (Integer.parseInt(choixJoueur)==2) { //la carte 2 est la carte cachée
+				joueurAPrendre = joueurJouant; //dans ce cas ci, le joueur qui joue se prend une care a lui-meme
+				if (Integer.parseInt(choixJoueur)==2) { //la carte 2 est la carte cachee
 					cartePrise = joueurJouant.prendreCarte(true);
 				}else {//la carte 1 est la carte visible
 					cartePrise = joueurJouant.prendreCarte(false);
@@ -142,7 +142,7 @@ public class Reel implements IAStrategie {
 		}
 	}
 	/**
-	 * méthode de demande de choix de carte lorsque le joueur dois choisir parmis les offres d'autres joueurs
+	 * methode de demande de choix de carte lorsque le joueur dois choisir parmis les offres d'autres joueurs
 	 * @param joueurs
 	 * 		la liste des joueurs
 	 * @param joueurJouant
@@ -170,7 +170,7 @@ public class Reel implements IAStrategie {
 				return demanderChoixPlusieurs(joueurs,joueurJouant,i);	
 			}else {
 				boolean cache;  // si le choix est pair c'est une carte cachee
-				if (Integer.parseInt(choixJoueur)%2==0) { // test de parité
+				if (Integer.parseInt(choixJoueur)%2==0) { // test de parite
 					cache= true; // pair c'est une carte cachee
 				}else { //impair et c'est une carte visible
 					cache=false;
@@ -189,7 +189,7 @@ public class Reel implements IAStrategie {
 	}
 	
 	/**
-	 * méthode du trophée nullifieur 
+	 * methode du trophee nullifieur 
 	 * @param joueurs
 	 * 		la liste des joueurs
 	 * @param pireJ
@@ -199,7 +199,7 @@ public class Reel implements IAStrategie {
 	 * 
 	 */
 	public void nullifierCarte (ArrayList<Joueur> joueurs,Joueur pireJ,Joueur bestJ) {
-		System.out.println("Joueur "+pireJ.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
+		System.out.println("Joueur "+pireJ.getNom()+ " vous recevez le trophee bonus \"nullifieur\"");
 		System.out.println("Veuillez choisir une carte du meilleur jest que vous voulez retirer");
 		System.out.println("0- Aucunes");
 		bestJ.afficherJest();
@@ -237,8 +237,13 @@ public class Reel implements IAStrategie {
 		
 	}
 	
+	/**
+	 * Permet de recuperer une entree clavier tout en restant en concurrence 
+	 * @return String
+	 * 		La valeur (si elle existe) que l'utilisateur doit renvoyer 
+	 */
 	private String getValeurUtilisee() {
-		//On attend qu'une valeur soit disponible ou que le modèle soit changé
+		//On attend qu'une valeur soit disponible ou que le modele soit change
 		ControllerText controller = ControllerText.getControllerText();
 		try {
 			controller.enableModifModele();
@@ -249,8 +254,8 @@ public class Reel implements IAStrategie {
 			System.err.append("TimeInterruptedException a l'appel de getValeurUtilisee");
 		}
 		
-		//Si une valeur est disponible on la récupère sinon on renvoie null pour indiquer que le modele
-		//a déjà changé
+		//Si une valeur est disponible on la recupere sinon on renvoie null pour indiquer que le modele
+		//a deja change
 		if(controller.isValueDispo())
 			return controller.getEntree();
 		else

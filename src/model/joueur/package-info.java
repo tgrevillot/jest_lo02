@@ -1,4 +1,4 @@
 /**
- * toutes les classes relatives au joueur et stratégies correspondantes 
+ * toutes les classes relatives aux joueurs et strategies correspondantes 
  */
 package model.joueur;

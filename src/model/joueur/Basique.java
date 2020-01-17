@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import model.cards.Carte;
 
 /**
- * La classe de l'ia BAsique (c'est en fait une IA random pour l'instant)
+ * La classe de l'ia BAsique 
+ * (c'est en fait une IA random pour l'instant)
  * @author moras
  *
  */
 public class Basique implements IAStrategie {
 
 	/**
-	 * méthode qui permet à cette IA de cacher l'une de ses deux cartes
+	 * Methode qui permet a cette IA de cacher l'une de ses deux cartes 
+	 * cette action est faite aleatoirement 
 	 */
 	public void offrir(ArrayList<Carte> main, Joueur joueurJouant) {
-		//on utilise une décision random pour ce choix 
+		//on utilise une decision random pour ce choix 
 		if (Math.random()<0.5) {
 			main.get(0).cacherCarte();
 		} else {
@@ -23,8 +25,8 @@ public class Basique implements IAStrategie {
 		}
 	}
 	/**
-	 * Cette méthode prend une liste de joueur dont on peut prendre des cartes 
-	 * et elle choisis une carte aléatoirement parmis celles-ci pour la renvoyer
+	 * Cette methode prend une liste de joueur dont on peut prendre des cartes 
+	 * et elle choisis une carte aleatoirement parmis celles-ci pour la renvoyer
 	 * @param joueurs 
 	 * 		la liste des joueurs disponibles
 	 * @param joueurJouant
@@ -39,7 +41,7 @@ public class Basique implements IAStrategie {
 		int choixJoueur = (int) ((Math.random())*(joueurs.size())); // un int random entre 0 et nombre de joueurs-1 inclus
 		joueurAPrendre = joueurs.get(choixJoueur);
 		}
-		double choixCache = Math.round(Math.random()); //on choisis aleatoirement si on veut la cachée ou la visible
+		double choixCache = Math.round(Math.random()); //on choisis aleatoirement si on veut la cachee ou la visible
 		if (choixCache==0) {
 			cartePrise = joueurAPrendre.prendreCarte(false); //on recupere la carte visible du joueur choisi
 		}else {
@@ -47,7 +49,7 @@ public class Basique implements IAStrategie {
 		}
 		String stringCarte = "";
 		if (cartePrise.isCacher()) {
-			stringCarte = "[carte cachée]";
+			stringCarte = "[carte cachee]";
 		} else {
 			stringCarte = cartePrise.afficher();
 		}
@@ -56,14 +58,23 @@ public class Basique implements IAStrategie {
 		return joueurAPrendre;
 	}
 	
-	//meme que random
+	/**
+	 * Methode pour nullifier une carte 
+	 * elle est ici choisie aleatoirement
+	 * @param joueurs
+	 * 		la liste des joueurs concernes
+	 * @param pireJ
+	 * 		le joueur avec le pire jest
+	 * @param bestJ
+	 * 		le joueur avec le meilleur jest
+	 */
 	public void nullifierCarte (ArrayList<Joueur> joueurs,Joueur pireJ,Joueur bestJ) {
-		System.out.println("Joueur : "+pireJ.getNom()+ " vous recevez le trophée bonus \"nullifieur\"");
+		System.out.println("Joueur : "+pireJ.getNom()+ " vous recevez le trophee bonus \"nullifieur\"");
 		int i =  bestJ.nombreCartesJest();
 		int choixJoueur = (int) ((Math.random())*(i));
 		System.out.print(pireJ.getNom()+" ");
 		if (choixJoueur!=0) { //si le choix n'est pas "aucunes cartes"
-			bestJ.jestRemoveCarte(choixJoueur);//on l'enlève
+			bestJ.jestRemoveCarte(choixJoueur);//on l'enleve
 		} else {
 			System.out.println("a choisi de ne nullifier aucune carte ! ");
 		}

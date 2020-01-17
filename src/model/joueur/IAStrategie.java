@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import model.cards.Carte;
 
 /**
- * L'interface regulant les stratégies
+ * L'interface regulant les strategies de jeu pour differents joueurs 
  * @author moras
  *
  */
 public interface IAStrategie {
 	/**
-	 * Pour choisir une carte face cachée
+	 * Pour choisir une carte a mettre en face cachee
 	 * @param main
 	 * 		la main du joueur qui joue
 	 * @param
@@ -19,7 +19,7 @@ public interface IAStrategie {
 	 */
 	public void offrir(ArrayList<Carte> main, Joueur joueur);
 	/**
-	 * La méthode pour choisir la carte a récuperer dans son jest
+	 * La methode pour choisir la carte a recuperer dans son jest
 	 * @param joueurs
 	 * 		les joueurs du plateau
 	 * @param joueur
@@ -29,7 +29,7 @@ public interface IAStrategie {
 	 */
 	public Joueur choisir(ArrayList<Joueur> joueurs,Joueur joueur);
 	/**
-	 * Méthode pour nullifier la carte voulue
+	 * Methode pour nullifier la carte voulue
 	 * @param joueurs
 	 * 		les joueurs du plateau
 	 * @param pireJ
