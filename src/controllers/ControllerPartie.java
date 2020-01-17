@@ -7,6 +7,11 @@ import model.cards.Carte;
 import views.TextViewStep;
 import views.VueTextuelle;
 
+/**
+ * Le controlleur de la partie en géneral 
+ * @author moras
+ *
+ */
 public class ControllerPartie implements Runnable {
 
 	/**

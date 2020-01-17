@@ -2,6 +2,11 @@ package controllers;
 
 import java.util.Scanner;
 
+/**
+ * Classe du controleur de la vue textuelle et du mode de jeu en ligne de commandes
+ * @author moras
+ *
+ */
 public class ControllerText implements Runnable {
 	/**
 	 * Attribut nous servant a recuperer les entrees clavier utilisateur.
